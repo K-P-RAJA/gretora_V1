@@ -1,0 +1,173 @@
+/* ── Scandy Design System tokens ───────────────────────────── */
+:root {
+  --brand:        #6c47ff;
+  --brand-light:  #8b6bff;
+  --brand-dark:   #4f2fe8;
+  --surface:      #ffffff;
+  --bg:           #f4f3ff;
+  --text:         #1a1730;
+  --muted:        #7b7a99;
+  --border:       #e4e2f5;
+  --radius:       14px;
+  --card-radius:  22px;
+}
+
+/* ── Section ────────────────────────────────────────────────── */
+.whySection {
+  background: var(--surface);
+  padding: 48px 56px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: var(--text);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ambient glow */
+.whySection::before {
+  content: '';
+  position: absolute;
+  bottom: -160px;
+  right: -100px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: rgba(108, 71, 255, 0.07);
+  filter: blur(90px);
+  pointer-events: none;
+}
+
+.sectionInner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ── Eyebrow ────────────────────────────────────────────────── */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand);
+  background: rgba(108, 71, 255, 0.08);
+  border: 1px solid rgba(108, 71, 255, 0.15);
+  border-radius: 100px;
+  padding: 5px 14px 5px 10px;
+  letter-spacing: 0.02em;
+  margin-bottom: 20px;
+}
+
+.eyebrowLine {
+  display: inline-block;
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--brand), var(--brand-light));
+  flex-shrink: 0;
+}
+
+/* ── Heading ────────────────────────────────────────────────── */
+.heading {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  line-height: 1.2;
+  color: var(--text);
+  margin: 0 0 16px;
+}
+
+.heading em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--brand), var(--brand-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sectionLead {
+  font-size: 1.0625rem;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 520px;
+  margin: 0 0 48px;
+}
+
+/* ── Grid ───────────────────────────────────────────────────── */
+.whyGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+/* ── Card ───────────────────────────────────────────────────── */
+.whyCard {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 36px 32px;
+  position: relative;
+  box-shadow: 0 2px 16px rgba(108, 71, 255, 0.05);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+}
+
+.whyCard:hover {
+  transform: translateY(-2px);
+  background: var(--surface);
+  box-shadow: 0 8px 32px rgba(108, 71, 255, 0.11);
+}
+
+/* ── Icon ───────────────────────────────────────────────────── */
+.whyIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+  box-shadow: 0 4px 18px rgba(108, 71, 255, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+/* ── Card typography ────────────────────────────────────────── */
+.whyCard h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--text);
+  margin: 0 0 10px;
+}
+
+.whyCard p {
+  font-size: 0.9375rem;
+  color: var(--muted);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .whyGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .whySection {
+    padding: 36px 20px;
+  }
+
+  .whyGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .whyCard {
+    padding: 28px 22px;
+  }
+
+  .heading {
+    font-size: 1.5rem;
+  }
+}

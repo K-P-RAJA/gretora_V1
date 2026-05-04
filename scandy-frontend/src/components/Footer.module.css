@@ -1,0 +1,179 @@
+/* Scandy Design System — Footer.module.css */
+
+/* ── Root variables ─────────────────────────────────────── */
+:root {
+  --brand:        #6c47ff;
+  --brand-light:  #8b6bff;
+  --brand-dark:   #4f2fe8;
+  --surface:      #ffffff;
+  --bg:           #f4f3ff;
+  --text:         #1a1730;
+  --muted:        #7b7a99;
+  --border:       #e4e2f5;
+  --error:        #ff3b5c;
+  --radius:       14px;
+  --card-radius:  22px;
+}
+
+/* ── Footer shell ───────────────────────────────────────── */
+.footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: var(--text);
+  padding: 0;
+}
+
+/* ── Top grid ───────────────────────────────────────────── */
+.footerTop {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding: 48px 56px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Brand column ───────────────────────────────────────── */
+.footerBrandName {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.footerBrandName em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.footerTagline {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand);
+  letter-spacing: 0.1px;
+  margin-bottom: 14px;
+}
+
+.footerDesc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 280px;
+  margin: 0;
+}
+
+/* ── Link columns ───────────────────────────────────────── */
+.footerColTitle {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.footerLinks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footerLinks a {
+  font-size: 14px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.18s ease, opacity 0.18s ease;
+  display: inline-block;
+}
+
+.footerLinks a:hover {
+  color: var(--brand);
+  opacity: 0.85;
+}
+
+/* ── Bottom bar ─────────────────────────────────────────── */
+.footerBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 56px;
+  gap: 16px;
+}
+
+.footerCopy {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.footerLegal {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.footerLegal a {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.footerLegal a:hover {
+  color: var(--brand);
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .footerTop {
+    grid-template-columns: 1fr 1fr;
+    padding: 40px 32px;
+    gap: 32px;
+  }
+
+  .footerBottom {
+    padding: 18px 32px;
+  }
+}
+
+@media (max-width: 600px) {
+  .footerTop {
+    grid-template-columns: 1fr;
+    padding: 36px 24px;
+    gap: 28px;
+  }
+
+  .footerDesc {
+    max-width: 100%;
+  }
+
+  .footerBottom {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 18px 24px;
+    gap: 10px;
+  }
+
+  .footerLegal {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footerTop {
+    padding: 28px 16px;
+  }
+
+  .footerBottom {
+    padding: 16px 16px;
+  }
+}

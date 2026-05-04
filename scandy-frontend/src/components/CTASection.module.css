@@ -1,0 +1,190 @@
+/* ─── Scandy Design Tokens ─────────────────────────────────────────────────── */
+.ctaSection {
+  --brand:        #6c47ff;
+  --brand-light:  #8b6bff;
+  --brand-dark:   #4f2fe8;
+  --surface:      #ffffff;
+  --bg:           #f4f3ff;
+  --text:         #1a1730;
+  --muted:        #7b7a99;
+  --border:       #e4e2f5;
+  --radius:       14px;
+  --card-radius:  22px;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 100px 56px;
+  overflow: hidden;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+
+  /* Dark hero surface */
+  background: linear-gradient(145deg, #1a1136, #2c1f6e, #3b2a8c);
+}
+
+/* ─── Ambient glows ─────────────────────────────────────────────────────────── */
+.ctaSection::before {
+  content: '';
+  position: absolute;
+  top: -140px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: rgba(108, 71, 255, 0.3);
+  filter: blur(90px);
+  pointer-events: none;
+}
+
+.ctaSection::after {
+  content: '';
+  position: absolute;
+  bottom: -100px;
+  right: -60px;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: rgba(108, 71, 255, 0.18);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+/* ─── Eyebrow pill tag ──────────────────────────────────────────────────────── */
+.ctaTag {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 16px;
+  border-radius: 999px;
+  background: rgba(108, 71, 255, 0.18);
+  border: 1px solid rgba(108, 71, 255, 0.35);
+  color: var(--brand-light);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+/* ─── Reveal animation base ─────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Heading ───────────────────────────────────────────────────────────────── */
+.ctaTitle {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.12;
+  color: #ffffff;
+  margin: 0 0 22px;
+  max-width: 640px;
+  transition-delay: 0.05s;
+}
+
+.ctaTitle em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--brand-light), #c4b5fd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Sub-copy ──────────────────────────────────────────────────────────────── */
+.ctaSub {
+  position: relative;
+  z-index: 1;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 480px;
+  margin: 0 0 40px;
+  transition-delay: 0.13s;
+}
+
+/* ─── Primary CTA button ────────────────────────────────────────────────────── */
+.btnCta {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 36px;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.1px;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+  box-shadow: 0 4px 18px rgba(108, 71, 255, 0.38);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+  transition-delay: 0.22s;
+  margin-bottom: 24px;
+}
+
+.btnCta:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 28px rgba(108, 71, 255, 0.45);
+}
+
+.btnCta:active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.btnCta:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ─── Fine-print note ───────────────────────────────────────────────────────── */
+.ctaNote {
+  position: relative;
+  z-index: 1;
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.38);
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+/* ─── Responsive ────────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .ctaSection {
+    padding: 80px 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ctaSection {
+    padding: 64px 20px;
+  }
+
+  .btnCta {
+    width: 100%;
+    max-width: 360px;
+  }
+}

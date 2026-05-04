@@ -1,0 +1,18 @@
+# Frontend
+node_modules/
+dist/
+.vite/
+.env
+
+# Backend
+bin/
+obj/
+scandy-backend/Scandy.API/appsettings.json
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Logs
+*.log
