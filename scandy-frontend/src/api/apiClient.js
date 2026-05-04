@@ -13,9 +13,10 @@ export async function apiRequest(path, options = {}) {
   });
 
   const data = await res.json();
+  console.log(data);
 
-  // ✅ FIXED: backend success = 1
-  if (!res.ok || data.statusCode !== 1) {
+  // ❌ actual HTTP failure
+  if (!res.ok) {
     throw new Error(data.statusMessage || "API error");
   }
 

@@ -2,15 +2,16 @@ import { apiRequest } from "./apiClient";
 
 // 👤 GET PROFILE
 export async function getProfile() {
-  const data = await apiRequest("/Login/GetProfile");
-  return data.data;
+  const profileData = await apiRequest("/Login/GetProfile");
+  console.log(profileData);
+  return profileData 
 }
 
 // ➕ CREATE PROFILE
-export async function createProfile(name) {
+export async function createProfile(profileData) {
   return await apiRequest("/Login/CreateProfile", {
     method: "POST",
-    body: JSON.stringify({ name }),
+    body: JSON.stringify(profileData),
   });
 }
 

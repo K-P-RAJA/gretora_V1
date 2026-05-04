@@ -88,7 +88,7 @@ export default function Occasions() {
         <div className={`${styles.reveal}`} ref={addRef}>
           <div className={styles.eyebrow}>Every celebration</div>
           <h2 id="occasions-title">
-            Where <em>Vizhiq</em> belongs
+            Where <em>Scandy</em> belongs
           </h2>
           <p className={styles.sectionLead}>
             Video messages belong everywhere love is shared — not just on screens. Here are the moments Vizhiq was made for.

@@ -52,7 +52,7 @@ namespace Scandy.API.Services
 
             try
             {
-                var query = @"SELECT id, name, email FROM profiles WHERE id = @Id";
+                var query = @"SELECT id AS Id,name AS Name,email AS Email FROM profiles WHERE id = @Id";
 
                 var data = await dbConnection.QueryFirstOrDefaultAsync<UserModel>(
                     query,
@@ -74,6 +74,7 @@ namespace Scandy.API.Services
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
                 response.StatusCode = 3;
                 response.StatusMessage = ex.Message;
                 response.Data = null;
