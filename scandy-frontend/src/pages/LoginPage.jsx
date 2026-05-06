@@ -34,7 +34,7 @@ export default function LoginPage() {
       
 
      if (profile.statusCode === 1) {
-        navigate("/dashboard");
+        navigate("/Home");
       } else {
         setPendingUser(data.user);
         setStep("setup");
@@ -59,7 +59,7 @@ export default function LoginPage() {
         name: name.trim(),
         email: pendingUser.email,
       });
-      navigate("/dashboard");
+      navigate("/Home");
     } catch (err) {
       setError(err.message || "Something went wrong.");
     } finally {

@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Scandy.API.Request;
 using Scandy.API.Services;
-using Supabase.Gotrue;
 using System.Security.Claims;
 
 [ApiController]
@@ -14,15 +15,37 @@ public class VideoController : ControllerBase
         _videoService = videoService;
     }
 
+    [Authorize]
     [HttpPost("upload")]
-    public async Task<IActionResult> Upload(IFormFile file)
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> Upload(
+        [FromForm] UploadVideoRequest request
+    )
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (string.IsNullOrEmpty(userId))
-            return Unauthorized();
+        {
+            return Unauthorized(new
+            {
+                StatusCode = 2,
+                StatusMessage = "Invalid token"
+            });
+        }
 
-        var result = await _videoService.UploadVideo(Guid.Parse(userId), file);
+        if (request.File == null)
+        {
+            return BadRequest(new
+            {
+                StatusCode = 3,
+                StatusMessage = "No file uploaded"
+            });
+        }
+
+        var result = await _videoService.UploadVideo(
+            Guid.Parse(userId),
+            request.File
+        );
 
         return Ok(result);
     }

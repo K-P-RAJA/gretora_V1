@@ -1,0 +1,296 @@
+/* ── Wrapper ── */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0 24px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── Success pill ── */
+.successPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #eaf3de;
+  color: #3b6d11;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 14px;
+  border-radius: 99px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #639922;
+}
+
+/* ── Card shell ── */
+.greetingCard {
+  width: 100%;
+  max-width: 480px;
+  background: #fffdf8;
+  border: 1px solid #e8e0d0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* ── Top band ── */
+.topBand {
+  background: #1a1a2e;
+  padding: 24px 28px 22px;
+}
+
+.occasionLabel {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #c9a84c;
+  margin: 0 0 6px;
+}
+
+.recipientName {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  color: #fffdf8;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.recipientName em {
+  color: #c9a84c;
+  font-style: italic;
+}
+
+/* ── Card body ── */
+.cardBody {
+  display: flex;
+  gap: 22px;
+  align-items: flex-start;
+  padding: 24px 28px 20px;
+}
+
+/* ── QR side ── */
+.qrSide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.qrFrame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 130px;
+  height: 130px;
+  border: 2px solid #1a1a2e;
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform 0.15s;
+}
+
+.qrFrame:hover {
+  transform: scale(1.02);
+}
+
+.playOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 26, 46, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.qrFrame:hover .playOverlay {
+  opacity: 1;
+}
+
+.playIcon {
+  width: 38px;
+  height: 38px;
+  background: #c9a84c;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.playIcon::after {
+  content: '';
+  border-style: solid;
+  border-width: 8px 0 8px 14px;
+  border-color: transparent transparent transparent #1a1a2e;
+  margin-left: 3px;
+  position: absolute;
+}
+
+.qrHint {
+  font-size: 10px;
+  color: #a89880;
+  text-align: center;
+  max-width: 120px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* ── Message side ── */
+.messageSide {
+  flex: 1;
+  min-width: 0;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background: #e8e0d0;
+}
+
+.dividerDiamond {
+  width: 6px;
+  height: 6px;
+  background: #c9a84c;
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.messageText {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  color: #3a3020;
+  line-height: 1.75;
+  font-style: italic;
+  margin: 0 0 14px;
+}
+
+.fromLabel {
+  font-size: 11px;
+  color: #a89880;
+  margin: 0;
+}
+
+/* ── Card footer ── */
+.cardFooter {
+  border-top: 1px solid #e8e0d0;
+  padding: 12px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brandMark {
+  font-size: 12px;
+  color: #c9a84c;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+.brandMark em {
+  font-style: italic;
+  color: #a89880;
+}
+
+.scanCta {
+  font-size: 11px;
+  color: #a89880;
+}
+
+/* ── Action buttons ── */
+.actionsRow {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  background: white;
+  color: #1a1a2e;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.actionBtn:hover {
+  background: #f5f5f0;
+}
+
+.actionBtn:active {
+  transform: scale(0.97);
+}
+
+.whatsapp {
+  background: #25d366;
+  color: white;
+  border-color: #25d366;
+}
+
+.whatsapp:hover {
+  background: #1ebe5d;
+}
+
+.dark {
+  background: #1a1a2e;
+  color: #fffdf8;
+  border-color: #1a1a2e;
+}
+
+.dark:hover {
+  background: #2d2d4e;
+}
+
+/* ── Placeholder (no qrUrl) ── */
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 160px;
+  border: 1px dashed #ccc;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #aaa;
+  font-style: italic;
+}
+
+/* ── Print styles ── */
+@media print {
+  .actionsRow,
+  .successPill {
+    display: none !important;
+  }
+
+  .greetingCard {
+    border: 1px solid #ccc;
+    box-shadow: none;
+    max-width: 100%;
+  }
+}

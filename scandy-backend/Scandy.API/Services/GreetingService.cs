@@ -26,8 +26,8 @@ namespace Scandy.API.Services
                 var greetingId = Guid.NewGuid();
 
                 var sql = @"
-                    INSERT INTO greetings (id, user_id, video_id, title, message)
-                    VALUES (@Id, @UserId, @VideoId, @Title, @Message);
+                    INSERT INTO greetings (id, user_id, video_id, title, message,occassion,receiptant_name)
+                    VALUES (@Id, @UserId, @VideoId, @Title, @Message,@Occassion,@ReceiptantName);
                 ";
 
                 await dbConnection.ExecuteAsync(sql, new
@@ -36,11 +36,14 @@ namespace Scandy.API.Services
                     UserId = userId,
                     VideoId = request.VideoId,
                     Title = request.Title,
-                    Message = request.Message
+                    Message = request.Message,
+                    Occassion = request.Occassion,
+                    ReceiptantName = request.ReceiptantName,
                 });
 
-                var baseUrl = _config["App:BaseUrl"];
-                var qrUrl = $"{baseUrl}/g/{greetingId}";
+                var baseUrl = _config["App:FrontendUrl"];
+                var qrUrl = $"{baseUrl}/view/{greetingId}";
+               
 
                 response.StatusCode = 1;
                 response.StatusMessage = "Greeting created successfully";

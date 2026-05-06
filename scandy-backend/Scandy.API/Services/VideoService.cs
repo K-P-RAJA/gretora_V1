@@ -31,15 +31,15 @@ namespace Scandy.API.Services
 
                 // ✅ 2. Save in DB
                 var sql = @"
-                    INSERT INTO videos (id, user_id, title, file_path, created_at)
-                    VALUES (@Id, @UserId, @Title, @FilePath, NOW());
+                    INSERT INTO videos (id, user_id, file_name, file_path, created_at)
+                    VALUES (@Id, @UserId, @FileName, @FilePath, NOW());
                 ";
 
                 var video = new
                 {
                     Id = videoId,
                     UserId = userId,
-                    Title = file.FileName,
+                    FileName = file.FileName,
                     FilePath = filePath
                 };
 
