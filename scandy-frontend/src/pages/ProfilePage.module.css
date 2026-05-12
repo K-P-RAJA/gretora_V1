@@ -1,0 +1,452 @@
+:root {
+  --brand: #6c47ff;
+  --brand-light: #8b6bff;
+  --brand-dark: #4f2fe8;
+
+  --surface: #ffffff;
+  --bg: #f4f3ff;
+
+  --text: #1a1730;
+  --muted: #7b7a99;
+
+  --border: #e4e2f5;
+
+  --radius: 14px;
+  --card-radius: 22px;
+}
+
+.page {
+  position: relative;
+
+  min-height: 100vh;
+
+  background: var(--bg);
+
+  padding: 0 56px 56px;
+
+  overflow: hidden;
+
+  font-family:
+    "Segoe UI",
+    system-ui,
+    sans-serif;
+}
+
+/* GLOWS */
+
+.bgGlowOne,
+.bgGlowTwo {
+  position: absolute;
+
+  border-radius: 50%;
+
+  filter: blur(90px);
+
+  z-index: 0;
+}
+
+.bgGlowOne {
+  width: 340px;
+  height: 340px;
+
+  background:
+    rgba(108, 71, 255, 0.18);
+
+  top: -120px;
+  left: -80px;
+}
+
+.bgGlowTwo {
+  width: 280px;
+  height: 280px;
+
+  background:
+    rgba(139, 107, 255, 0.16);
+
+  right: -80px;
+  top: 220px;
+}
+
+/* HERO */
+
+.hero {
+  position: relative;
+  z-index: 2;
+
+  margin-top: 34px;
+}
+
+.profileCard {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+
+  padding: 38px;
+
+  border-radius: 30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #1a1136,
+      #2c1f6e,
+      #3b2a8c
+    );
+
+  overflow: hidden;
+
+  position: relative;
+
+  box-shadow:
+    0 24px 60px
+      rgba(37, 22, 92, 0.28);
+}
+
+.profileCard::before {
+  content: "";
+
+  position: absolute;
+
+  width: 260px;
+  height: 260px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(108, 71, 255, 0.3);
+
+  filter: blur(90px);
+
+  top: -80px;
+  right: -80px;
+}
+
+.avatar {
+  position: relative;
+  z-index: 2;
+
+  width: 110px;
+  height: 110px;
+
+  border-radius: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 42px;
+  font-weight: 800;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6c47ff,
+      #4f2fe8
+    );
+
+  box-shadow:
+    0 8px 24px
+      rgba(108, 71, 255, 0.35);
+}
+
+.profileMini {
+  position: relative;
+  z-index: 2;
+
+  color: #b6aef5;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  margin-bottom: 10px;
+}
+
+.profileCard h1 {
+  position: relative;
+  z-index: 2;
+
+  color: white;
+
+  font-size: 42px;
+
+  font-weight: 800;
+
+  letter-spacing: -1px;
+
+  margin-bottom: 10px;
+}
+
+.email {
+  position: relative;
+  z-index: 2;
+
+  color: rgba(255,255,255,0.8);
+
+  font-size: 16px;
+
+  margin-bottom: 10px;
+}
+
+.joined {
+  position: relative;
+  z-index: 2;
+
+  color: rgba(255,255,255,0.62);
+
+  font-size: 14px;
+}
+
+/* STATS */
+
+.statsGrid {
+  position: relative;
+  z-index: 2;
+
+  margin-top: 28px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 22px;
+}
+
+.statCard {
+  background: white;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    var(--card-radius);
+
+  padding: 30px;
+
+  box-shadow:
+    0 8px 30px
+      rgba(108,71,255,0.08);
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 16px 40px
+      rgba(108,71,255,0.12);
+}
+
+.statCard span {
+  font-size: 30px;
+
+  display: block;
+
+  margin-bottom: 18px;
+}
+
+.statCard strong {
+  display: block;
+
+  color: var(--text);
+
+  font-size: 34px;
+
+  font-weight: 800;
+
+  margin-bottom: 6px;
+}
+
+.statCard p {
+  color: var(--muted);
+
+  font-size: 14px;
+}
+
+/* RECENT */
+
+.recentSection {
+  position: relative;
+  z-index: 2;
+
+  margin-top: 42px;
+}
+
+.sectionMini {
+  color: var(--brand);
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  margin-bottom: 10px;
+}
+
+.sectionHeader h2 {
+  color: var(--text);
+
+  font-size: 34px;
+
+  font-weight: 800;
+
+  letter-spacing: -0.8px;
+}
+
+.recentGrid {
+  margin-top: 24px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(280px, 1fr));
+
+  gap: 22px;
+}
+
+.recentCard {
+  background: white;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    var(--card-radius);
+
+  padding: 28px;
+
+  box-shadow:
+    0 8px 28px
+      rgba(108,71,255,0.06);
+
+  transition:
+    transform 0.22s ease;
+}
+
+.recentCard:hover {
+  transform: translateY(-3px);
+}
+
+.recentTop {
+  display: flex;
+  justify-content: flex-start;
+
+  margin-bottom: 18px;
+}
+
+.occasionTag {
+  padding: 8px 14px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(108,71,255,0.08);
+
+  border:
+    1px solid
+    rgba(108,71,255,0.16);
+
+  color: var(--brand);
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+.recentCard h3 {
+  color: var(--text);
+
+  font-size: 22px;
+
+  font-weight: 700;
+
+  margin-bottom: 10px;
+}
+
+.recentCard p {
+  color: var(--muted);
+
+  font-size: 14px;
+}
+
+.emptyCard {
+  margin-top: 22px;
+
+  background: white;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    var(--card-radius);
+
+  padding: 40px;
+
+  text-align: center;
+
+  color: var(--muted);
+
+  box-shadow:
+    0 8px 28px
+      rgba(108,71,255,0.06);
+}
+
+/* LOADING */
+
+.loadingPage {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+
+  color: var(--muted);
+
+  background: var(--bg);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .page {
+    padding:
+      0 24px 40px;
+  }
+
+  .profileCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .profileCard h1 {
+    font-size: 32px;
+  }
+
+  .sectionHeader h2 {
+    font-size: 28px;
+  }
+
+  .avatar {
+    width: 90px;
+    height: 90px;
+
+    font-size: 34px;
+  }
+}

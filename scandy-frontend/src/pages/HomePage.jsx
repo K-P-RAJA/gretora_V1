@@ -6,26 +6,23 @@ import styles from "./HomePage.module.css";
 import { uploadVideo } from "../api/videoService";
 import { createGreeting } from "../api/greetingService";
 
-export default function HomePage() {
+import AppNavbar from "../components/AppNavbar";
+import Footer from "../components/Footer";
 
+export default function HomePage() {
   const navigate = useNavigate();
 
   const fileInputRef = useRef(null);
 
-  // FORM STATES
   const [recipientName, setRecipientName] = useState("");
   const [occasion, setOccasion] = useState("");
   const [message, setMessage] = useState("");
 
-  // VIDEO
   const [videoFile, setVideoFile] = useState(null);
 
-  // LOADING
   const [loading, setLoading] = useState(false);
 
-  // VIDEO SELECT
   const handleVideoUpload = (e) => {
-
     const file = e.target.files[0];
 
     if (!file) return;
@@ -43,11 +40,8 @@ export default function HomePage() {
     setVideoFile(file);
   };
 
-  // GENERATE
   const handleGenerateGreeting = async () => {
-
     try {
-
       if (
         !recipientName ||
         !occasion ||
@@ -60,147 +54,223 @@ export default function HomePage() {
 
       setLoading(true);
 
-      // 1️⃣ Upload video
       const uploadRes = await uploadVideo(videoFile);
 
-      // 2️⃣ Create greeting
       const greetingRes = await createGreeting({
         videoId: uploadRes.videoId,
         title: `${occasion} for ${recipientName}`,
         message: message,
-        Occassion:occasion,
-        ReceiptantName:recipientName
+        Occassion: occasion,
+        ReceiptantName: recipientName,
       });
 
-      // 3️⃣ Navigate
       navigate(`/greeting/${greetingRes.greetingId}`, {
-  state: {
-    qrUrl: greetingRes.qrUrl,
-    recipientName,
-    occasion,
-    message,
-  },
-});
-
+        state: {
+          qrUrl: greetingRes.qrUrl,
+          recipientName,
+          occasion,
+          message,
+        },
+      });
     } catch (err) {
-
       console.error(err);
       alert(err.message || "Something went wrong.");
-
     } finally {
-
       setLoading(false);
-
     }
   };
 
   return (
     <div className={styles.page}>
+      <div className={styles.bgGlowOne}></div>
+      <div className={styles.bgGlowTwo}></div>
 
-      {/* NAVBAR */}
-      <header className={styles.navbar}>
+      {/* PREMIUM NAVBAR */}
+      <AppNavbar />
 
-        <div className={styles.logo}>
-          Scan<em>dy</em>
-        </div>
-
-        <div className={styles.navActions}>
-
-          <button className={styles.navBtn}>
-            My Greetings
-          </button>
-
-          <button className={styles.profileBtn}>
-            Y
-          </button>
-
-        </div>
-
-      </header>
-
-      {/* DASHBOARD */}
-      <main className={styles.dashboard}>
-
+      <main className={styles.heroSection}>
         {/* LEFT SIDE */}
-        <section className={styles.leftSection}>
+        <section className={styles.leftPanel}>
+          <div className={styles.heroCard}>
+            <div className={styles.heroBadge}>
+              ✨ Personalized Video Greeting Cards
+            </div>
 
-          <div className={styles.welcomeCard}>
-
-            <span className={styles.welcomeBadge}>
-              QR Video Greetings
-            </span>
-
-            <h1>
-              Create meaningful greetings
-              with videos & QR codes
-            </h1>
+            <h2>
+              Turn your memories into
+              <span> magical surprise cards</span>
+            </h2>
 
             <p>
-              Upload a personal video, write your message,
-              and instantly generate a shareable QR greeting card.
+              Upload a heartfelt video, write a
+              meaningful message, and instantly
+              create a premium QR greeting
+              experience your loved ones will
+              never forget.
             </p>
 
-          </div>
-
-          {/* CREATE CARD */}
-          <div className={styles.formCard}>
-
-            <div className={styles.cardHeader}>
-
-              <div>
-                <h2>Create Greeting</h2>
-                <p>
-                  Fill in the details below
-                </p>
+            <div className={styles.heroStats}>
+              <div className={styles.heroStat}>
+                <strong>10k+</strong>
+                <span>Greetings Shared</span>
               </div>
 
+              <div className={styles.heroStat}>
+                <strong>4.9★</strong>
+                <span>User Experience</span>
+              </div>
+
+              <div className={styles.heroStat}>
+                <strong>100%</strong>
+                <span>Personalized</span>
+              </div>
+            </div>
+          </div>
+
+          {/* LIVE PREVIEW */}
+          <div className={styles.previewCard}>
+            <div className={styles.previewTop}>
+              <div>
+                <p className={styles.previewLabel}>
+                  Greeting Preview
+                </p>
+
+                <h3>
+                  {occasion ||
+                    "Birthday Surprise"}
+                </h3>
+              </div>
+
+              <div className={styles.liveBadge}>
+                Live Preview
+              </div>
+            </div>
+
+            <div className={styles.previewGreeting}>
+              <div
+                className={
+                  styles.previewRibbonVertical
+                }
+              ></div>
+
+              <div
+                className={
+                  styles.previewRibbonHorizontal
+                }
+              ></div>
+
+              <div className={styles.previewInner}>
+                <p className={styles.previewSmall}>
+                  A special greeting for
+                </p>
+
+                <h2>
+                  {recipientName ||
+                    "Someone Special"}
+                </h2>
+
+                <div
+                  className={
+                    styles.previewDivider
+                  }
+                >
+                  <span></span>
+                  <div></div>
+                  <span></span>
+                </div>
+
+                <p
+                  className={
+                    styles.previewMessage
+                  }
+                >
+                  {message ||
+                    "Your heartfelt message will appear beautifully here for your loved one."}
+                </p>
+
+                <div
+                  className={styles.previewQr}
+                ></div>
+
+                <p className={styles.previewScan}>
+                  Scan to unwrap your surprise
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* RIGHT SIDE */}
+        <section className={styles.rightPanel}>
+          <div className={styles.formCard}>
+            <div className={styles.formHeader}>
+              <div>
+                <p className={styles.formMini}>
+                  CREATE YOUR CARD
+                </p>
+
+                <h2>Create Greeting</h2>
+              </div>
+
+              <div className={styles.formIcon}>
+                🎁
+              </div>
             </div>
 
             {/* RECIPIENT */}
             <div className={styles.formGroup}>
-
-              <label>Recipient Name</label>
+              <label>
+                Recipient Name
+              </label>
 
               <input
                 type="text"
                 placeholder="Enter recipient name"
                 value={recipientName}
-                onChange={(e) => setRecipientName(e.target.value)}
+                onChange={(e) =>
+                  setRecipientName(
+                    e.target.value
+                  )
+                }
               />
-
             </div>
 
             {/* OCCASION */}
             <div className={styles.formGroup}>
-
               <label>Occasion</label>
 
               <input
                 type="text"
                 placeholder="Birthday, Wedding, Anniversary..."
                 value={occasion}
-                onChange={(e) => setOccasion(e.target.value)}
+                onChange={(e) =>
+                  setOccasion(
+                    e.target.value
+                  )
+                }
               />
-
             </div>
 
             {/* MESSAGE */}
             <div className={styles.formGroup}>
-
-              <label>Greeting Message</label>
+              <label>
+                Greeting Message
+              </label>
 
               <textarea
                 rows="5"
                 placeholder="Write your heartfelt message..."
                 value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                onChange={(e) =>
+                  setMessage(
+                    e.target.value
+                  )
+                }
               ></textarea>
-
             </div>
 
             {/* VIDEO */}
-            <div className={styles.uploadBox}>
-
+            <div className={styles.uploadCard}>
               <input
                 type="file"
                 accept="video/*"
@@ -209,18 +279,16 @@ export default function HomePage() {
                 onChange={handleVideoUpload}
               />
 
-              <div className={styles.uploadTop}>
-
+              <div className={styles.uploadLeft}>
                 <div className={styles.uploadIcon}>
-                  {videoFile ? "✓" : "↑"}
+                  {videoFile ? "✓" : "▶"}
                 </div>
 
                 <div>
-
                   <h3>
                     {videoFile
-                      ? "Video Selected"
-                      : "Upload Greeting Video"}
+                      ? "Video Ready"
+                      : "Upload Video"}
                   </h3>
 
                   <p>
@@ -228,111 +296,89 @@ export default function HomePage() {
                       ? videoFile.name
                       : "MP4 or MOV up to 100MB"}
                   </p>
-
                 </div>
-
               </div>
 
               <button
                 className={styles.uploadBtn}
-                onClick={() => fileInputRef.current.click()}
+                onClick={() =>
+                  fileInputRef.current.click()
+                }
               >
                 {videoFile
-                  ? "Change Video"
-                  : "Choose Video"}
+                  ? "Change"
+                  : "Choose File"}
               </button>
-
             </div>
 
-            {/* BUTTON */}
+            {/* GENERATE */}
             <button
               className={styles.generateBtn}
-              onClick={handleGenerateGreeting}
+              onClick={
+                handleGenerateGreeting
+              }
             >
               {loading
-                ? "Generating..."
+                ? "Generating Greeting..."
                 : "Generate QR Greeting"}
             </button>
-
           </div>
 
+          {/* FEATURES */}
+          <div className={styles.sideGrid}>
+            <div className={styles.infoCard}>
+              <span>🎉</span>
+
+              <strong>
+                Instant Sharing
+              </strong>
+
+              <p>
+                Send beautiful greeting cards
+                with a scannable QR.
+              </p>
+            </div>
+
+            <div className={styles.infoCard}>
+              <span>🎥</span>
+
+              <strong>
+                Video Memories
+              </strong>
+
+              <p>
+                Turn ordinary wishes into
+                emotional experiences.
+              </p>
+            </div>
+
+            <div className={styles.infoCard}>
+              <span>💜</span>
+
+              <strong>
+                Made for Gifts
+              </strong>
+
+              <p>
+                Perfect for birthdays,
+                anniversaries & surprises.
+              </p>
+            </div>
+
+            <div className={styles.infoCard}>
+              <span>⚡</span>
+
+              <strong>Fast & Easy</strong>
+
+              <p>
+                Create premium greeting cards
+                in under a minute.
+              </p>
+            </div>
+          </div>
         </section>
-
-        {/* RIGHT SIDE */}
-        <aside className={styles.rightSection}>
-
-          {/* STATS */}
-          <div className={styles.sideCard}>
-
-            <h3>Quick Overview</h3>
-
-            <div className={styles.statList}>
-
-              <div className={styles.statItem}>
-                <span>Total Greetings</span>
-                <strong>12</strong>
-              </div>
-
-              <div className={styles.statItem}>
-                <span>Videos Uploaded</span>
-                <strong>8</strong>
-              </div>
-
-              <div className={styles.statItem}>
-                <span>Shared This Month</span>
-                <strong>24</strong>
-              </div>
-
-            </div>
-
-          </div>
-
-          {/* TIPS */}
-          <div className={styles.sideCard}>
-
-            <h3>Tips</h3>
-
-            <ul className={styles.tipList}>
-
-              <li>
-                Keep videos under 60 seconds for faster sharing
-              </li>
-
-              <li>
-                Use personal messages to make greetings memorable
-              </li>
-
-              <li>
-                QR greetings work great for gifts and surprise cards
-              </li>
-
-            </ul>
-
-          </div>
-
-          {/* RECENT */}
-          <div className={styles.sideCard}>
-
-            <h3>Recent Activity</h3>
-
-            <div className={styles.activityItem}>
-              Birthday greeting created
-            </div>
-
-            <div className={styles.activityItem}>
-              Anniversary QR shared
-            </div>
-
-            <div className={styles.activityItem}>
-              Wedding video uploaded
-            </div>
-
-          </div>
-
-        </aside>
-
       </main>
-
+      <Footer />
     </div>
   );
 }

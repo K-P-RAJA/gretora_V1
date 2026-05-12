@@ -22,3 +22,7 @@ export async function updateProfile(name) {
     body: JSON.stringify({ name }),
   });
 }
+
+export async function getProfileDashboard() {
+  return await apiRequest("/Login/profile/dashboard");
+}

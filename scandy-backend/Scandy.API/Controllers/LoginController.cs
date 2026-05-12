@@ -88,6 +88,22 @@ namespace Scandy.API.Controllers
             );
         }
 
+        [Authorize]
+        [HttpGet("profile/dashboard")]
+        public async Task<IActionResult> GetProfileDashboard()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized();
+
+            var result = await _loginService.GetProfileDashboard(
+                Guid.Parse(userId)
+            );
+
+            return Ok(result);
+        }
+
 
     }
 }

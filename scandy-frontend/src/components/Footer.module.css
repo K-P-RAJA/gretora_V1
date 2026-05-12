@@ -131,6 +131,9 @@
 .footerLegal a:hover {
   color: var(--brand);
 }
+.footer {
+  margin-top: 80px;
+}
 
 /* ── Responsive ─────────────────────────────────────────── */
 @media (max-width: 900px) {

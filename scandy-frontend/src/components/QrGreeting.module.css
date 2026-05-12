@@ -1,296 +1,213 @@
-/* ── Wrapper ── */
-.wrapper {
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Syne:wght@700;800&display=swap');
+
+.pageWrapper {
+  --gold: #c5a059;
+  --black: #121212;
+  --off-white: #fcfcfc;
+  
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  padding: 8px 0 24px;
-  font-family: 'DM Sans', sans-serif;
+  justify-content: center;
+  background: #e8e8e8;
+  padding: 40px 20px;
+  font-family: 'Inter', sans-serif;
 }
 
-/* ── Success pill ── */
-.successPill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: #eaf3de;
-  color: #3b6d11;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 5px 14px;
-  border-radius: 99px;
-}
-
-.dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #639922;
-}
-
-/* ── Card shell ── */
-.greetingCard {
+.luxeCard {
   width: 100%;
-  max-width: 480px;
-  background: #fffdf8;
-  border: 1px solid #e8e0d0;
-  border-radius: 16px;
+  max-width: 900px;
+  background: white;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.15);
+  position: relative;
   overflow: hidden;
 }
 
-/* ── Top band ── */
-.topBand {
-  background: #1a1a2e;
-  padding: 24px 28px 22px;
+.cardContent {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
 }
 
-.occasionLabel {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #c9a84c;
-  margin: 0 0 6px;
+/* Info Side */
+.infoSide {
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #f0f0f0;
 }
+
+.brandHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 60px;
+}
+
+.brandLogo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.brandLogo em { color: var(--gold); font-style: normal; }
+
+.tag { font-size: 9px; font-weight: 700; color: #bbb; }
 
 .recipientName {
-  font-family: 'Playfair Display', serif;
-  font-size: 26px;
-  color: #fffdf8;
+  font-family: 'Syne', sans-serif;
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1;
+  margin: 10px 0 20px;
+  color: var(--black);
+  text-transform: uppercase;
+}
+
+.smallLabel { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 2px; }
+
+.goldDivider {
+  width: 60px;
+  height: 4px;
+  background: var(--gold);
+}
+
+.messageBlock { margin: 40px 0; flex-grow: 1; }
+
+.messageText {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #555;
   font-weight: 400;
-  margin: 0;
-  line-height: 1.2;
 }
 
-.recipientName em {
-  color: #c9a84c;
-  font-style: italic;
-}
-
-/* ── Card body ── */
-.cardBody {
+.cardFooter {
   display: flex;
-  gap: 22px;
-  align-items: flex-start;
-  padding: 24px 28px 20px;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 30px;
+  border-top: 1px solid #f5f5f5;
 }
 
-/* ── QR side ── */
-.qrSide {
+.securityCode { font-size: 9px; font-weight: 800; color: #999; display: flex; align-items: center; gap: 6px; }
+.dot { width: 6px; height: 6px; background: #2ecc71; border-radius: 50%; }
+
+/* Product Side */
+.productSide {
+  background: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.displayFrame {
+  position: relative;
+  width: 320px;
+  height: 400px;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-}
-
-.qrFrame {
-  display: flex;
-  align-items: center;
   justify-content: center;
-  width: 130px;
-  height: 130px;
-  border: 2px solid #1a1a2e;
-  border-radius: 10px;
-  background: white;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  text-decoration: none;
-  transition: transform 0.15s;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 20px;
 }
 
-.qrFrame:hover {
-  transform: scale(1.02);
-}
-
-.playOverlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(26, 26, 46, 0.55);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.qrFrame:hover .playOverlay {
-  opacity: 1;
-}
-
-.playIcon {
-  width: 38px;
-  height: 38px;
-  background: #c9a84c;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.playIcon::after {
-  content: '';
-  border-style: solid;
-  border-width: 8px 0 8px 14px;
-  border-color: transparent transparent transparent #1a1a2e;
-  margin-left: 3px;
-  position: absolute;
-}
-
-.qrHint {
-  font-size: 10px;
-  color: #a89880;
-  text-align: center;
-  max-width: 120px;
-  line-height: 1.4;
-  margin: 0;
-}
-
-/* ── Message side ── */
-.messageSide {
-  flex: 1;
-  min-width: 0;
-}
-
-.divider {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.dividerLine {
-  flex: 1;
-  height: 1px;
-  background: #e8e0d0;
-}
-
-.dividerDiamond {
-  width: 6px;
-  height: 6px;
-  background: #c9a84c;
-  transform: rotate(45deg);
-  flex-shrink: 0;
-}
-
-.messageText {
-  font-family: 'Playfair Display', serif;
-  font-size: 14px;
-  color: #3a3020;
-  line-height: 1.75;
-  font-style: italic;
-  margin: 0 0 14px;
-}
-
-.fromLabel {
-  font-size: 11px;
-  color: #a89880;
-  margin: 0;
-}
-
-/* ── Card footer ── */
-.cardFooter {
-  border-top: 1px solid #e8e0d0;
-  padding: 12px 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.brandMark {
-  font-size: 12px;
-  color: #c9a84c;
-  letter-spacing: 0.04em;
-  font-weight: 500;
-}
-
-.brandMark em {
-  font-style: italic;
-  color: #a89880;
-}
-
-.scanCta {
-  font-size: 11px;
-  color: #a89880;
-}
-
-/* ── Action buttons ── */
-.actionsRow {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.actionBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 9px 18px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid #ddd;
-  background: white;
-  color: #1a1a2e;
-  transition: background 0.15s, transform 0.1s;
-}
-
-.actionBtn:hover {
-  background: #f5f5f0;
-}
-
-.actionBtn:active {
-  transform: scale(0.97);
-}
-
-.whatsapp {
-  background: #25d366;
-  color: white;
-  border-color: #25d366;
-}
-
-.whatsapp:hover {
-  background: #1ebe5d;
-}
-
-.dark {
-  background: #1a1a2e;
-  color: #fffdf8;
-  border-color: #1a1a2e;
-}
-
-.dark:hover {
-  background: #2d2d4e;
-}
-
-/* ── Placeholder (no qrUrl) ── */
-.placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.displayFrame.videoActive {
   width: 100%;
-  min-height: 160px;
-  border: 1px dashed #ccc;
-  border-radius: 12px;
-  font-size: 13px;
-  color: #aaa;
-  font-style: italic;
+  height: 100%;
+  background: #000;
+  border-radius: 0;
 }
 
-/* ── Print styles ── */
-@media print {
-  .actionsRow,
-  .successPill {
-    display: none !important;
-  }
+.qrInteraction {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .greetingCard {
-    border: 1px solid #ccc;
-    box-shadow: none;
-    max-width: 100%;
-  }
+.qrGlass {
+  padding: 15px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+}
+
+.frameHeader {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+}
+
+.playHint {
+  margin-top: 25px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  background: var(--black);
+  padding: 10px 24px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hologram {
+  position: absolute;
+  top: 20px;
+  right: -15px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  color: #444;
+  padding: 6px 12px;
+  font-size: 8px;
+  font-weight: 900;
+  transform: rotate(15deg);
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.videoContainer { width: 100%; height: 100%; display: flex; flex-direction: column; }
+.videoPlayer { width: 100%; flex-grow: 1; border-radius: 8px; }
+.closeBtn {
+  background: none; border: none; color: white; padding: 15px;
+  font-size: 10px; font-weight: 800; cursor: pointer; opacity: 0.7;
+}
+
+/* Controls */
+.uiControls { margin-top: 40px; display: flex; gap: 15px; }
+
+.shareBtn, .printBtn {
+  padding: 16px 32px;
+  border-radius: 50px;
+  border: none;
+  font-weight: 800;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: 0.2s;
+}
+
+.shareBtn { background: var(--black); color: white; }
+.printBtn { background: white; color: var(--black); border: 1px solid #ddd; }
+
+.shareBtn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+
+@media (max-width: 850px) {
+  .cardContent { grid-template-columns: 1fr; }
+  .infoSide { padding: 40px; }
+}
+
+@media print {
+  .uiControls, .pageWrapper::before { display: none; }
+  .pageWrapper { background: white; padding: 0; }
 }

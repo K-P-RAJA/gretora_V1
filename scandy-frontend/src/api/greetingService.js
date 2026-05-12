@@ -9,3 +9,15 @@ export async function createGreeting(payload) {
     },
   });
 }
+
+export async function getMyGreetings() {
+  return await apiRequest("/greetings", {
+    method: "GET",
+  });
+}
+
+export async function deleteGreeting(id) {
+  return await apiRequest(`/greetings/${id}`, {
+    method: "DELETE",
+  });
+}

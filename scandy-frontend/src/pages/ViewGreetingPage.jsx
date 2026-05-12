@@ -1,18 +1,17 @@
+// ViewGreetingPage.jsx
+
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import styles from "./ViewGreetingPage.module.css";
 
 export default function ViewGreetingPage() {
-
   const { id } = useParams();
 
   const [greeting, setGreeting] = useState(null);
 
   useEffect(() => {
-
     async function fetchGreeting() {
-
       try {
-
         const res = await fetch(
           `https://localhost:7246/g/${id}`
         );
@@ -20,70 +19,125 @@ export default function ViewGreetingPage() {
         const data = await res.json();
 
         setGreeting(data);
-
       } catch (err) {
-
         console.error(err);
-
       }
     }
 
     fetchGreeting();
-
   }, [id]);
 
   if (!greeting) {
-    return <h2>Loading...</h2>;
+    return (
+      <div className={styles.loadingPage}>
+        <div className={styles.loader}></div>
+      </div>
+    );
   }
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#f4f6fb",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "30px",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "700px",
-          background: "white",
-          borderRadius: "24px",
-          padding: "30px",
-          boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
-        }}
-      >
-        <h1>{greeting.title}</h1>
+    <div className={styles.page}>
+      {/* Ambient Lights */}
+      <div className={styles.glowOne}></div>
+      <div className={styles.glowTwo}></div>
+      <div className={styles.glowThree}></div>
 
-        <p
-          style={{
-            marginTop: "12px",
-            color: "#666",
-            lineHeight: 1.7,
-          }}
-        >
-          {greeting.message}
-        </p>
+      <div className={styles.container}>
+        {/* Small Branding */}
+        <div className={styles.brandBar}>
+          <div className={styles.logo}>
+            S
+          </div>
 
-        <video
-          controls
-          autoPlay
-          style={{
-            width: "100%",
-            borderRadius: "20px",
-            marginTop: "24px",
-          }}
-        >
-          <source
-            src={greeting.videoUrl}
-            type="video/mp4"
-          />
-        </video>
+          <div>
+            <h4>Scandy</h4>
+            <p>Premium Video Greetings</p>
+          </div>
+        </div>
 
+        {/* Main Video Hero */}
+        <div className={styles.heroCard}>
+          {/* Animated Lid */}
+          <div className={styles.giftLid}></div>
+
+          {/* Sparkles */}
+          <div className={styles.sparkle1}></div>
+          <div className={styles.sparkle2}></div>
+          <div className={styles.sparkle3}></div>
+
+          {/* Floating Particles */}
+          <div className={styles.particle1}></div>
+          <div className={styles.particle2}></div>
+          <div className={styles.particle3}></div>
+
+          {/* Header */}
+          <div className={styles.cardHeader}>
+            <div className={styles.badge}>
+              ✨ Personalized Surprise
+            </div>
+
+            <div className={styles.live}>
+              ● Playing
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className={styles.content}>
+            <h1 className={styles.title}>
+              {greeting.title}
+            </h1>
+
+            <p className={styles.message}>
+              {greeting.message}
+            </p>
+
+            {/* Video Priority */}
+            <div className={styles.videoFrame}>
+              <div
+                className={styles.videoGlow}
+              ></div>
+
+              <video
+                controls
+                autoPlay
+                className={styles.video}
+              >
+                <source
+                  src={greeting.videoUrl}
+                  type="video/mp4"
+                />
+              </video>
+            </div>
+          </div>
+        </div>
+
+        {/* Marketing AFTER Video */}
+        <div className={styles.bottomSection}>
+          <div className={styles.marketingCard}>
+            <div className={styles.marketingBadge}>
+              Made with Scandy
+            </div>
+
+            <h3>
+              Turn memories into unforgettable
+              gift experiences.
+            </h3>
+
+            <p>
+              Create personalized QR video
+              greetings for birthdays,
+              anniversaries, surprises, and
+              special moments.
+            </p>
+
+            <a
+              href="/"
+              className={styles.ctaButton}
+            >
+              Create Your Own Surprise
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );

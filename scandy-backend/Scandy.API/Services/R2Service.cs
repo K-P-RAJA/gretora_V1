@@ -57,5 +57,14 @@ namespace Scandy.API.Services
 
             return _client.GetPreSignedURL(request);
         }
+
+        public async Task DeleteFile(string filePath)
+        {
+            await _client.DeleteObjectAsync(new DeleteObjectRequest
+            {
+                BucketName = _bucketName,
+                Key = filePath
+            });
+        }
     }
 }

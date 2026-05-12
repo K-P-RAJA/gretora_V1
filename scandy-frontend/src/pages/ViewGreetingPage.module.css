@@ -1,0 +1,760 @@
+/* ViewGreetingPage.module.css */
+
+:root {
+  --brand: #6c47ff;
+  --brand-light: #8b6bff;
+  --brand-dark: #4f2fe8;
+
+  --surface: #ffffff;
+  --bg: #f4f3ff;
+
+  --text: #1a1730;
+  --muted: #7b7a99;
+
+  --border: #e4e2f5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.page {
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(108, 71, 255, 0.12),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(79, 47, 232, 0.1),
+      transparent 28%
+    ),
+    #f4f3ff;
+
+  overflow: hidden;
+  position: relative;
+
+  padding: 40px 18px;
+
+  font-family:
+    "Segoe UI",
+    system-ui,
+    sans-serif;
+}
+
+/* Ambient Lights */
+
+.glowOne,
+.glowTwo,
+.glowThree {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+}
+
+.glowOne {
+  width: 300px;
+  height: 300px;
+
+  background: rgba(108, 71, 255, 0.18);
+
+  top: -120px;
+  left: -120px;
+
+  animation:
+    floatGlow 8s ease-in-out infinite;
+}
+
+.glowTwo {
+  width: 360px;
+  height: 360px;
+
+  background: rgba(79, 47, 232, 0.14);
+
+  bottom: -160px;
+  right: -120px;
+
+  animation:
+    floatGlow 10s ease-in-out infinite;
+}
+
+.glowThree {
+  width: 220px;
+  height: 220px;
+
+  background: rgba(139, 107, 255, 0.16);
+
+  top: 40%;
+  left: 50%;
+
+  animation:
+    floatGlow 12s ease-in-out infinite;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Brand */
+
+.brandBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  margin-bottom: 34px;
+
+  animation:
+    fadeUp 1s ease;
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6c47ff,
+      #4f2fe8
+    );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  font-size: 20px;
+  font-weight: 800;
+
+  box-shadow:
+    0 6px 24px rgba(108, 71, 255, 0.28);
+}
+
+.brandBar h4 {
+  margin: 0;
+
+  color: #1a1730;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.brandBar p {
+  margin: 3px 0 0;
+
+  color: #7b7a99;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Main Card */
+
+.heroCard {
+  position: relative;
+  overflow: hidden;
+
+  background: white;
+
+  border-radius: 36px;
+
+  border: 1px solid #e4e2f5;
+
+  box-shadow:
+    0 30px 70px rgba(108, 71, 255, 0.1),
+    0 12px 30px rgba(108, 71, 255, 0.08);
+
+  animation:
+    cardEnter 1.2s
+    cubic-bezier(0.2, 1, 0.2, 1)
+    forwards;
+
+  transform:
+    translateY(40px)
+    scale(0.96);
+
+  opacity: 0;
+}
+
+/* Animated Lid */
+
+.giftLid {
+  position: absolute;
+
+  width: 92%;
+  height: 90px;
+
+  left: 50%;
+  top: -20px;
+
+  transform:
+    translateX(-50%)
+    rotateX(0deg);
+
+  border-radius: 28px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #7f5cff,
+      #5938ef
+    );
+
+  z-index: 5;
+
+  animation:
+    openLid 1.5s
+    cubic-bezier(0.2, 1, 0.2, 1)
+    forwards;
+
+  animation-delay: 0.3s;
+
+  box-shadow:
+    0 18px 40px rgba(108, 71, 255, 0.24);
+}
+
+/* Floating Particles */
+
+.particle1,
+.particle2,
+.particle3 {
+  position: absolute;
+
+  border-radius: 50%;
+
+  background: rgba(108, 71, 255, 0.18);
+
+  filter: blur(4px);
+}
+
+.particle1 {
+  width: 18px;
+  height: 18px;
+
+  top: 120px;
+  left: 12%;
+
+  animation:
+    floatParticle 7s ease-in-out infinite;
+}
+
+.particle2 {
+  width: 12px;
+  height: 12px;
+
+  top: 200px;
+  right: 14%;
+
+  animation:
+    floatParticle 5s ease-in-out infinite;
+}
+
+.particle3 {
+  width: 10px;
+  height: 10px;
+
+  bottom: 180px;
+  left: 60%;
+
+  animation:
+    floatParticle 6s ease-in-out infinite;
+}
+
+/* Sparkles */
+
+.sparkle1,
+.sparkle2,
+.sparkle3 {
+  position: absolute;
+
+  border-radius: 50%;
+
+  background: rgba(255,255,255,0.7);
+
+  z-index: 3;
+}
+
+.sparkle1 {
+  width: 6px;
+  height: 6px;
+
+  top: 120px;
+  right: 20%;
+
+  animation:
+    sparkle 3s ease infinite;
+}
+
+.sparkle2 {
+  width: 10px;
+  height: 10px;
+
+  top: 240px;
+  left: 14%;
+
+  animation:
+    sparkle 4s ease infinite;
+}
+
+.sparkle3 {
+  width: 8px;
+  height: 8px;
+
+  bottom: 140px;
+  right: 18%;
+
+  animation:
+    sparkle 5s ease infinite;
+}
+
+/* Header */
+
+.cardHeader {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 30px 34px 0;
+}
+
+.badge {
+  padding: 9px 16px;
+
+  border-radius: 999px;
+
+  background: rgba(108, 71, 255, 0.08);
+
+  border: 1px solid rgba(108, 71, 255, 0.14);
+
+  color: #6c47ff;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.live {
+  padding: 9px 16px;
+
+  border-radius: 999px;
+
+  background: rgba(20, 184, 166, 0.08);
+
+  border: 1px solid rgba(20, 184, 166, 0.18);
+
+  color: #14b8a6;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Content */
+
+.content {
+  position: relative;
+  z-index: 2;
+
+  padding: 28px 34px 34px;
+}
+
+.title {
+  margin: 10px 0 0;
+
+  color: #1a1730;
+
+  font-size: 48px;
+  line-height: 1.05;
+
+  font-weight: 800;
+
+  letter-spacing: -1.2px;
+
+  animation:
+    fadeUp 1s ease;
+}
+
+.message {
+  margin-top: 18px;
+
+  color: #7b7a99;
+
+  font-size: 16px;
+  line-height: 1.9;
+
+  animation:
+    fadeUp 1.2s ease;
+}
+
+/* VIDEO FIRST */
+
+.videoFrame {
+  position: relative;
+  overflow: hidden;
+
+  margin-top: 30px;
+
+  padding: 12px;
+
+  border-radius: 30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #1a1136,
+      #2c1f6e,
+      #3b2a8c
+    );
+
+  box-shadow:
+    0 25px 50px rgba(44, 31, 110, 0.24);
+
+  animation:
+    videoReveal 1.4s ease;
+}
+
+.videoGlow {
+  position: absolute;
+  inset: -140px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(108, 71, 255, 0.28),
+      transparent 55%
+    );
+
+  animation:
+    pulseGlow 5s ease infinite;
+}
+
+.video {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  display: block;
+
+  border-radius: 22px;
+
+  background: black;
+
+  transform: scale(1);
+
+  transition:
+    transform 0.4s ease;
+}
+
+.video:hover {
+  transform: scale(1.01);
+}
+
+/* Bottom Marketing */
+
+.bottomSection {
+  margin-top: 26px;
+
+  animation:
+    fadeUp 1.8s ease;
+}
+
+.marketingCard {
+  background: rgba(255,255,255,0.72);
+
+  backdrop-filter: blur(18px);
+
+  border: 1px solid rgba(228, 226, 245, 0.8);
+
+  border-radius: 28px;
+
+  padding: 30px;
+
+  text-align: center;
+
+  box-shadow:
+    0 14px 34px rgba(108, 71, 255, 0.06);
+}
+
+.marketingBadge {
+  display: inline-flex;
+
+  padding: 9px 16px;
+
+  border-radius: 999px;
+
+  background: rgba(108, 71, 255, 0.08);
+
+  border: 1px solid rgba(108, 71, 255, 0.14);
+
+  color: #6c47ff;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.marketingCard h3 {
+  margin: 18px 0 0;
+
+  color: #1a1730;
+
+  font-size: 34px;
+  line-height: 1.15;
+
+  font-weight: 800;
+
+  letter-spacing: -1px;
+}
+
+.marketingCard p {
+  margin-top: 16px;
+
+  color: #7b7a99;
+
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.ctaButton {
+  position: relative;
+  overflow: hidden;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 24px;
+
+  padding: 16px 24px;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6c47ff,
+      #4f2fe8
+    );
+
+  color: white;
+
+  text-decoration: none;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  box-shadow:
+    0 6px 24px rgba(108, 71, 255, 0.28);
+
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+  opacity: 0.94;
+}
+
+.ctaButton::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: -120%;
+
+  width: 100%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.3),
+      transparent
+    );
+
+  transition: left 0.8s ease;
+}
+
+.ctaButton:hover::before {
+  left: 120%;
+}
+
+/* Loader */
+
+.loadingPage {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f4f3ff;
+}
+
+.loader {
+  width: 64px;
+  height: 64px;
+
+  border-radius: 50%;
+
+  border: 4px solid rgba(108,71,255,0.12);
+  border-top-color: #6c47ff;
+
+  animation:
+    spin 0.9s linear infinite;
+}
+
+/* ANIMATIONS */
+
+@keyframes openLid {
+  0% {
+    transform:
+      translateX(-50%)
+      rotateX(0deg)
+      translateY(0);
+  }
+
+  100% {
+    transform:
+      translateX(-50%)
+      rotateX(78deg)
+      translateY(-90px);
+
+    opacity: 0;
+  }
+}
+
+@keyframes cardEnter {
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@keyframes videoReveal {
+  from {
+    opacity: 0;
+    transform:
+      scale(0.96)
+      translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      scale(1)
+      translateY(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+@keyframes floatParticle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-24px);
+  }
+}
+
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.8);
+  }
+}
+
+@keyframes floatGlow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-30px);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+  .title {
+    font-size: 34px;
+  }
+
+  .marketingCard h3 {
+    font-size: 26px;
+  }
+
+  .cardHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .content,
+  .cardHeader {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  .giftLid {
+    display: none;
+  }
+}

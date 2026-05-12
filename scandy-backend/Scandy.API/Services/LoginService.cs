@@ -119,6 +119,85 @@ namespace Scandy.API.Services
             return response;
         }
 
+        public async Task<GetProfileDashboardResponse> GetProfileDashboard(Guid userId)
+        {
+            using var dbConnection = _db.CreateConnection();
+
+            var response = new GetProfileDashboardResponse();
+
+            try
+            {
+                // PROFILE
+                var profileQuery = @"
+            SELECT
+                name,
+                email,
+                created_at
+            FROM profiles
+            WHERE id = @Id
+        ";
+
+                var profile = await dbConnection.QueryFirstOrDefaultAsync<dynamic>(
+                    profileQuery,
+                    new { Id = userId }
+                );
+
+                if (profile == null)
+                {
+                    response.StatusCode = 2;
+                    response.StatusMessage = "Profile not found";
+
+                    return response;
+                }
+
+                // GREETINGS COUNT
+                var greetingsCount = await dbConnection.ExecuteScalarAsync<int>(
+                    @"SELECT COUNT(*) FROM greetings WHERE user_id = @Id",
+                    new { Id = userId }
+                );
+
+                // VIDEOS COUNT
+                var videosCount = await dbConnection.ExecuteScalarAsync<int>(
+                    @"SELECT COUNT(*) FROM videos WHERE user_id = @Id",
+                    new { Id = userId }
+                );
+
+                // RECENT GREETINGS
+                var recentGreetings = await dbConnection.QueryAsync<RecentGreetingModel>(
+                    @"
+                SELECT
+                    title,
+                    occassion,
+                    created_at AS CreatedAt
+                FROM greetings
+                WHERE user_id = @Id
+                ORDER BY created_at DESC
+                LIMIT 3
+            ",
+                    new { Id = userId }
+                );
+
+                response.StatusCode = 1;
+                response.StatusMessage = "Success";
+
+                response.Name = profile.name;
+                response.Email = profile.email;
+                response.CreatedAt = profile.created_at;
+
+                response.GreetingsCount = greetingsCount;
+                response.VideosCount = videosCount;
+
+                response.RecentGreetings = recentGreetings.ToList();
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 3;
+                response.StatusMessage = ex.Message;
+            }
+
+            return response;
+        }
+
 
 
     }
