@@ -1,0 +1,222 @@
+/* ═══════════════════════════════════════════════════
+   SCANDY — ADMIN SIDEBAR CSS
+═══════════════════════════════════════════════════ */
+
+.sidebar {
+  width: 260px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  padding: 32px 18px;
+  z-index: 100;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logoArea {
+  cursor: pointer;
+  margin-bottom: 40px;
+  padding-left: 12px;
+}
+
+.logo {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text-main);
+}
+
+.logo em {
+  font-style: normal;
+  color: var(--brand);
+  text-shadow: 0 0 20px rgba(124, 110, 248, 0.4);
+}
+
+.adminTag {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  color: var(--brand-light);
+  display: block;
+  margin-top: 4px;
+}
+
+/* Nav Menu */
+.navMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: 15px;
+  font-weight: 500;
+  text-align: left;
+  transition: all 0.25s ease;
+  width: 100%;
+}
+
+.navButton svg {
+  color: var(--text-muted);
+  transition: color 0.25s ease;
+}
+
+.navButton:hover {
+  background: var(--bg-elevated);
+  color: var(--text-main);
+}
+
+.navButton:hover svg {
+  color: var(--brand-light);
+}
+
+.active {
+  background: var(--brand-soft) !important;
+  color: var(--brand-light) !important;
+  border-left: 3px solid var(--brand);
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  font-weight: 600;
+}
+
+.active svg {
+  color: var(--brand) !important;
+}
+
+/* Sidebar Footer */
+.sidebarFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 24px;
+}
+
+.backButton,
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.backButton {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--glass-border);
+}
+
+.backButton:hover {
+  background: var(--bg-hover);
+  border-color: var(--brand-border);
+}
+
+.logoutButton {
+  background: transparent;
+  color: #ef4444;
+}
+
+.logoutButton:hover {
+  background: rgba(239, 68, 68, 0.08);
+}
+
+/* Mobile styles */
+.mobileHeader {
+  display: none;
+}
+
+.overlay {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+
+  .mobileHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 0 var(--gap);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+  }
+
+  .mobileLogo {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--text-main);
+    cursor: pointer;
+  }
+
+  .mobileLogo em {
+    font-style: normal;
+    color: var(--brand);
+  }
+
+  .adminBadge {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    color: var(--brand-light);
+    border: 1px solid var(--brand-border);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .hamburger {
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 98;
+  }
+}

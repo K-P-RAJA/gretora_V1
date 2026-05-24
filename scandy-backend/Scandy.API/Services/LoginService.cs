@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using Scandy.API.Models;
 using Scandy.API.Request;
 using Scandy.API.Response;
@@ -44,7 +44,7 @@ namespace Scandy.API.Services
             return response;
         }
 
-        public async Task<GetUserProfileResponse> GetProfile(Guid userId)
+        public async Task<GetUserProfileResponse> GetProfile(Guid userId, string? name = null, string? email = null)
         {
             using var dbConnection = _db.CreateConnection();
 
@@ -52,12 +52,30 @@ namespace Scandy.API.Services
 
             try
             {
-                var query = @"SELECT id AS Id,name AS Name,email AS Email FROM profiles WHERE id = @Id";
+                var query = @"SELECT id AS Id, name AS Name, email AS Email, has_accepted_policy AS HasAcceptedPolicy, is_admin AS IsAdmin, is_banned AS IsBanned FROM profiles WHERE id = @Id";
 
                 var data = await dbConnection.QueryFirstOrDefaultAsync<UserModel>(
                     query,
                     new { Id = userId }
                 );
+
+                if (data == null && !string.IsNullOrEmpty(email))
+                {
+                    // Auto-generate profile for first-time OAuth / Google sign ins
+                    var displayName = !string.IsNullOrEmpty(name) ? name : email.Split('@')[0];
+                    await CreateProfile(new CreateProfileModel
+                    {
+                        Id = userId,
+                        Name = displayName,
+                        Email = email
+                    });
+
+                    // Re-query new profile
+                    data = await dbConnection.QueryFirstOrDefaultAsync<UserModel>(
+                        query,
+                        new { Id = userId }
+                    );
+                }
 
                 if (data == null)
                 {
@@ -198,7 +216,39 @@ namespace Scandy.API.Services
             return response;
         }
 
+        public async Task<CommonStatusResponse> AcceptPolicy(Guid userId)
+        {
+            using var dbConnection = _db.CreateConnection();
 
+            var response = new CommonStatusResponse();
 
+            try
+            {
+                var query = @"UPDATE profiles SET has_accepted_policy = TRUE WHERE id = @Id";
+
+                var rowsAffected = await dbConnection.ExecuteAsync(
+                    query,
+                    new { Id = userId }
+                );
+
+                if (rowsAffected == 0)
+                {
+                    response.StatusCode = 2;
+                    response.StatusMessage = "Profile not found";
+                }
+                else
+                {
+                    response.StatusCode = 1;
+                    response.StatusMessage = "Policy accepted successfully";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 3;
+                response.StatusMessage = ex.Message;
+            }
+
+            return response;
+        }
     }
 }

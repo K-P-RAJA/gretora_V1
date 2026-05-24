@@ -1,173 +1,129 @@
-/* ── Scandy Design System tokens ───────────────────────────── */
-:root {
-  --brand:        #6c47ff;
-  --brand-light:  #8b6bff;
-  --brand-dark:   #4f2fe8;
-  --surface:      #ffffff;
-  --bg:           #f4f3ff;
-  --text:         #1a1730;
-  --muted:        #7b7a99;
-  --border:       #e4e2f5;
-  --radius:       14px;
-  --card-radius:  22px;
-}
-
-/* ── Section ────────────────────────────────────────────────── */
-.whySection {
-  background: var(--surface);
-  padding: 48px 56px;
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  color: var(--text);
+.why {
+  padding: 120px 40px;
+  background: var(--bg-surface);
   position: relative;
   overflow: hidden;
 }
 
-/* Ambient glow */
-.whySection::before {
+.why::before {
   content: '';
   position: absolute;
-  bottom: -160px;
+  bottom: -100px;
   right: -100px;
-  width: 500px;
-  height: 500px;
-  border-radius: 50%;
-  background: rgba(108, 71, 255, 0.07);
-  filter: blur(90px);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(124, 110, 248, 0.06) 0%, transparent 65%);
   pointer-events: none;
 }
 
-.sectionInner {
-  max-width: 1100px;
+.inner {
+  max-width: 1200px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
-/* ── Eyebrow ────────────────────────────────────────────────── */
 .eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--brand);
-  background: rgba(108, 71, 255, 0.08);
-  border: 1px solid rgba(108, 71, 255, 0.15);
-  border-radius: 100px;
-  padding: 5px 14px 5px 10px;
-  letter-spacing: 0.02em;
-  margin-bottom: 20px;
-}
-
-.eyebrowLine {
-  display: inline-block;
-  width: 18px;
-  height: 2px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--brand), var(--brand-light));
-  flex-shrink: 0;
-}
-
-/* ── Heading ────────────────────────────────────────────────── */
-.heading {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: -0.4px;
-  line-height: 1.2;
-  color: var(--text);
-  margin: 0 0 16px;
+  color: var(--brand-light);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: block;
 }
 
-.heading em {
-  font-style: italic;
-  background: linear-gradient(135deg, var(--brand), var(--brand-light));
+.title {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 900;
+  color: var(--text-main);
+  letter-spacing: -0.04em;
+  margin-bottom: 16px;
+}
+
+.title em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--brand-light) 0%, var(--accent-pink) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.sectionLead {
-  font-size: 1.0625rem;
-  color: var(--muted);
-  line-height: 1.65;
-  max-width: 520px;
-  margin: 0 0 48px;
+.desc {
+  font-size: 16px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 540px;
+  margin-bottom: 72px;
 }
 
-/* ── Grid ───────────────────────────────────────────────────── */
-.whyGrid {
+.featureGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
 }
 
-/* ── Card ───────────────────────────────────────────────────── */
-.whyCard {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--card-radius);
-  padding: 36px 32px;
+.feature {
+  padding: 36px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  box-shadow: 0 2px 16px rgba(108, 71, 255, 0.05);
-  transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+  overflow: hidden;
 }
 
-.whyCard:hover {
-  transform: translateY(-2px);
-  background: var(--surface);
-  box-shadow: 0 8px 32px rgba(108, 71, 255, 0.11);
+.feature::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--brand) 0%, var(--accent-pink) 100%);
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
-/* ── Icon ───────────────────────────────────────────────────── */
-.whyIcon {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius);
-  background: linear-gradient(135deg, var(--brand), var(--brand-dark));
-  box-shadow: 0 4px 18px rgba(108, 71, 255, 0.28);
+.feature:hover {
+  border-color: var(--brand-border);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+}
+
+.feature:hover::before {
+  opacity: 1;
+}
+
+.fIcon {
+  width: 48px;
+  height: 48px;
+  background: var(--brand-soft);
+  border: 1px solid var(--brand-border);
+  color: var(--brand-light);
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  margin-bottom: 20px;
-  flex-shrink: 0;
+  margin-bottom: 24px;
+  font-size: 22px;
 }
 
-/* ── Card typography ────────────────────────────────────────── */
-.whyCard h3 {
-  font-size: 1rem;
+.feature h3 {
+  font-size: 18px;
   font-weight: 700;
-  letter-spacing: -0.3px;
-  color: var(--text);
-  margin: 0 0 10px;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
 }
 
-.whyCard p {
-  font-size: 0.9375rem;
-  color: var(--muted);
-  line-height: 1.65;
-  margin: 0;
+.feature p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
 }
 
-/* ── Responsive ─────────────────────────────────────────────── */
-@media (max-width: 900px) {
-  .whyGrid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .whySection {
-    padding: 36px 20px;
-  }
-
-  .whyGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .whyCard {
-    padding: 28px 22px;
-  }
-
-  .heading {
-    font-size: 1.5rem;
-  }
+@media (max-width: 768px) {
+  .why { padding: 60px 20px; }
+  .desc { margin-bottom: 40px; }
 }

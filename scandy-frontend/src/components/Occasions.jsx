@@ -82,38 +82,30 @@ export default function Occasions() {
   };
 
   return (
-    <section className={styles.occasionsSection} id="occasions" aria-labelledby="occasions-title">
-      <div className={styles.sectionInner}>
-
-        <div className={`${styles.reveal}`} ref={addRef}>
-          <div className={styles.eyebrow}>Every celebration</div>
-          <h2 id="occasions-title">
+    <section className={styles.occasions} id="occasions" aria-labelledby="occasions-title">
+      <div>
+        <div className={styles.header}>
+          <div className={styles.tag}>Every celebration</div>
+          <h2 id="occasions-title" className={styles.h2}>
             Where <em>Scandy</em> belongs
           </h2>
-          <p className={styles.sectionLead}>
-            Video messages belong everywhere love is shared — not just on screens. Here are the moments Vizhiq was made for.
+          <p className={styles.cardDesc}>
+            Video messages belong everywhere love is shared — not just on screens. Here are the moments Scandy was made for.
           </p>
         </div>
 
-        <div className={`${styles.photoGrid} ${styles.reveal}`} ref={addRef}>
+        <div className={styles.grid}>
           {occasions.map((o, i) => (
-            <article
-              key={i}
-              className={`${styles.photoCard} ${styles[o.span]}`}
-            >
-              <div className={styles.imageWrap}>
-                <img src={o.img} alt={o.alt} loading="lazy" />
-                <div className={styles.overlay} />
-              </div>
+            <article key={i} className={styles.card}>
+              <span className={styles.icon}>{o.emoji}</span>
               <div className={styles.cardContent}>
-                <span className={styles.cardLabel}>{o.emoji} {o.label}</span>
-                <h3>{o.title}</h3>
-                <p>{o.desc}</p>
+                <span className={styles.tag}>{o.label}</span>
+                <h3 className={styles.cardTitle}>{o.title}</h3>
+                <p className={styles.cardDesc}>{o.desc}</p>
               </div>
             </article>
           ))}
         </div>
-
       </div>
     </section>
   );

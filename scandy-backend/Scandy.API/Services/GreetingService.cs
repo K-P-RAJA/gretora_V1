@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using Scandy.API.Request;
 using Scandy.API.Response.GreetingResponse;
 
@@ -73,6 +73,26 @@ namespace Scandy.API.Services
                 var baseUrl = _config["App:FrontendUrl"];
                 var qrUrl = $"{baseUrl}/g/{greetingId}";
 
+                // --- Register QR Code Record ---
+                try
+                {
+                    var qrId = Guid.NewGuid();
+                    await dbConnection.ExecuteAsync(@"
+                        INSERT INTO qr_codes (id, video_id, watch_url, scan_count)
+                        VALUES (@QrId, @VideoId, @WatchUrl, 0);
+                    ", new
+                    {
+                        QrId = qrId,
+                        VideoId = request.VideoId,
+                        WatchUrl = qrUrl
+                    });
+                }
+                catch (Exception qrEx)
+                {
+                    Console.WriteLine($"[Telemetry Warning] Failed to insert QR code record: {qrEx.Message}");
+                }
+                // -------------------------------
+
                 response.StatusCode = 1;
                 response.StatusMessage = "Greeting created successfully";
                 response.GreetingId = greetingId;
@@ -91,37 +111,127 @@ namespace Scandy.API.Services
         // GET SINGLE GREETING
         // =========================================
 
-        public async Task<object?> GetGreeting(Guid id)
+        public async Task<object?> GetGreeting(Guid id, string? countryCode = null)
         {
             using var dbConnection = _db.CreateConnection();
 
             var query = @"
-                SELECT
-                    v.file_path,
-                    g.title,
-                    g.message
+                SELECT 
+                    v.file_path as file_path, 
+                    g.title as title, 
+                    g.message as message,
+                    g.video_id as video_id
                 FROM greetings g
-                JOIN videos v
-                    ON g.video_id = v.id
+                JOIN videos v ON g.video_id = v.id
                 WHERE g.id = @Id;
             ";
 
-            var data = await dbConnection.QueryFirstOrDefaultAsync<dynamic>(
-                query,
-                new { Id = id }
-            );
-
-            if (data == null)
-                return null;
-
-            return new
+            try 
             {
-                title = data.title,
-                message = data.message,
-                videoUrl = _r2Service.GetSignedUrl(
-                    (string)data.file_path
-                )
-            };
+                var data = await dbConnection.QueryFirstOrDefaultAsync<dynamic>(
+                    query,
+                    new { Id = id }
+                );
+
+                if (data == null) return null;
+
+                // Ensure we handle potential mapping issues by converting to a dictionary if needed, 
+                // or just access by property name as returned by Npgsql (usually lowercase)
+                var title = data.title?.ToString();
+                var message = data.message?.ToString();
+                var filePath = data.file_path?.ToString();
+                var videoIdStr = data.video_id?.ToString();
+
+                if (string.IsNullOrEmpty(filePath)) return null;
+
+                // --- QR Scan Tracking & Analytics Log ---
+                try
+                {
+                    var greetingIdString = id.ToString();
+                    
+                    // 1. Try to find the qr_codes record where watch_url contains the greeting id
+                    var qrId = await dbConnection.QueryFirstOrDefaultAsync<Guid?>(
+                        "SELECT id FROM qr_codes WHERE watch_url LIKE '%' || @GreetingIdString || '%' LIMIT 1",
+                        new { GreetingIdString = greetingIdString }
+                    );
+
+                    if (!qrId.HasValue)
+                    {
+                        // Auto-create/Self-heal QR code record if it does not exist
+                        var baseUrl = _config["App:FrontendUrl"];
+                        var qrUrl = $"{baseUrl}/g/{id}";
+                        var newQrId = Guid.NewGuid();
+                        Guid? parsedVideoId = null;
+                        if (videoIdStr != null)
+                        {
+                            if (Guid.TryParse(videoIdStr.ToString(), out Guid parsedId))
+                            {
+                                parsedVideoId = parsedId;
+                            }
+                        }
+
+                        await dbConnection.ExecuteAsync(@"
+                            INSERT INTO qr_codes (id, video_id, watch_url, scan_count)
+                            VALUES (@QrId, @VideoId, @WatchUrl, 1);
+                        ", new { QrId = newQrId, VideoId = parsedVideoId, WatchUrl = qrUrl });
+                        
+                        qrId = newQrId;
+
+                        // Insert into scan_logs for geographical telemetry
+                        await dbConnection.ExecuteAsync(@"
+                            INSERT INTO scan_logs (id, qr_id, scanned_at, country_code)
+                            VALUES (gen_random_uuid(), @QrId, NOW(), @CountryCode);
+                        ", new { QrId = qrId.Value, CountryCode = countryCode ?? "US" });
+                    }
+                    else
+                    {
+                        // Concurrency/Duplicate check: Ignore scans within 5 seconds for the same QR code
+                        // This prevents React 18 Strict Mode double-render or double-page mounts from skewing counts
+                        var recentScanExists = await dbConnection.ExecuteScalarAsync<bool>(@"
+                            SELECT EXISTS (
+                                SELECT 1 FROM scan_logs 
+                                WHERE qr_id = @QrId 
+                                AND scanned_at >= NOW() - INTERVAL '5 seconds'
+                            );
+                        ", new { QrId = qrId.Value });
+
+                        if (!recentScanExists)
+                        {
+                            // Increment scan count
+                            await dbConnection.ExecuteAsync(@"
+                                UPDATE qr_codes 
+                                SET scan_count = COALESCE(scan_count, 0) + 1 
+                                WHERE id = @QrId;
+                            ", new { QrId = qrId.Value });
+
+                            // Insert into scan_logs for geographical telemetry
+                            await dbConnection.ExecuteAsync(@"
+                                INSERT INTO scan_logs (id, qr_id, scanned_at, country_code)
+                                VALUES (gen_random_uuid(), @QrId, NOW(), @CountryCode);
+                            ", new { QrId = qrId.Value, CountryCode = countryCode ?? "US" });
+                        }
+                    }
+                }
+                catch (Exception qrEx)
+                {
+                    // Fail silently so telemetry issues never break core greeting view
+                    Console.WriteLine($"[Telemetry Warning] Failed to log scan telemetry: {qrEx.Message}");
+                }
+                // ----------------------------------------
+
+                return new
+                {
+                    title = title,
+                    message = message,
+                    videoUrl = _r2Service.GetSignedUrl(filePath)
+                };
+            }
+            catch (Exception ex)
+            {
+                // Log the precise error (simplified here for brevity)
+                Console.WriteLine($"[ERROR] GetGreeting failed for {id}: {ex.Message}");
+                throw; // Rethrow to let the controller handle it as 500
+            }
         }
 
         // =========================================
@@ -140,10 +250,12 @@ namespace Scandy.API.Services
                     g.created_at,
                     g.receiptant_name,
                     g.occassion,
-                    v.file_path
+                    v.file_path,
+                    COALESCE(qc.scan_count, 0) AS scan_count,
+                    COALESCE((SELECT status FROM reports WHERE greeting_id = g.id ORDER BY reported_at DESC LIMIT 1), 'Active') AS moderation_status
                 FROM greetings g
-                JOIN videos v
-                    ON g.video_id = v.id
+                JOIN videos v ON g.video_id = v.id
+                LEFT JOIN qr_codes qc ON g.video_id = qc.video_id
                 WHERE g.user_id = @UserId
                 ORDER BY g.created_at DESC;
             ";
@@ -171,7 +283,10 @@ namespace Scandy.API.Services
 
                 videoUrl = _r2Service.GetSignedUrl(
                     (string)g.file_path
-                )
+                ),
+
+                scanCount = g.scan_count,
+                status = g.moderation_status
             });
         }
 
@@ -215,6 +330,25 @@ namespace Scandy.API.Services
                 }
             );
 
+            // --- Clean Up associated QR Code record & scan logs ---
+            try
+            {
+                var greetingIdString = greetingId.ToString();
+                // Manually delete logs first to be completely foreign key compliant, regardless of cascade config
+                await dbConnection.ExecuteAsync(@"
+                    DELETE FROM scan_logs 
+                    WHERE qr_id IN (SELECT id FROM qr_codes WHERE watch_url LIKE '%' || @GreetingIdString || '%');
+                    
+                    DELETE FROM qr_codes 
+                    WHERE watch_url LIKE '%' || @GreetingIdString || '%';
+                ", new { GreetingIdString = greetingIdString });
+            }
+            catch (Exception qrEx)
+            {
+                Console.WriteLine($"[QR Delete Warning] Failed to delete QR record: {qrEx.Message}");
+            }
+            // ------------------------------------------
+
             // Check if video still used
             var usageCount = await dbConnection.ExecuteScalarAsync<int>(
                 @"
@@ -250,6 +384,131 @@ namespace Scandy.API.Services
             }
 
             return true;
+        }
+
+        // =========================================
+        // UPDATE GREETING
+        // =========================================
+
+        public async Task<bool> UpdateGreeting(Guid greetingId, Guid userId, UpdateGreetingRequest request)
+        {
+            using var dbConnection = _db.CreateConnection();
+
+            // Fetch the existing greeting to check ownership and get the old video_id
+            var existingGreeting = await dbConnection.QueryFirstOrDefaultAsync<dynamic>(
+                @"
+                SELECT video_id
+                FROM greetings
+                WHERE id = @GreetingId AND user_id = @UserId;
+                ",
+                new { GreetingId = greetingId, UserId = userId }
+            );
+
+            if (existingGreeting == null)
+            {
+                // Greeting not found or user doesn't own it
+                return false;
+            }
+
+            var oldVideoId = (Guid)existingGreeting.video_id;
+
+            // Update the greeting fields
+            var updateQuery = @"
+                UPDATE greetings
+                SET 
+                    title = @Title,
+                    message = @Message,
+                    receiptant_name = @ReceiptantName,
+                    occassion = @Occassion
+                    " + (request.VideoId.HasValue ? ", video_id = @NewVideoId " : " ") + @"
+                WHERE id = @GreetingId AND user_id = @UserId;
+            ";
+
+            await dbConnection.ExecuteAsync(updateQuery, new
+            {
+                Title = request.Title,
+                Message = request.Message,
+                ReceiptantName = request.ReceiptantName,
+                Occassion = request.Occassion,
+                NewVideoId = request.VideoId,
+                GreetingId = greetingId,
+                UserId = userId
+            });
+
+            // If video was replaced, clean up the old video
+            if (request.VideoId.HasValue && request.VideoId.Value != oldVideoId)
+            {
+                // Check if old video is still used by any other greeting
+                var usageCount = await dbConnection.ExecuteScalarAsync<int>(
+                    @"
+                    SELECT COUNT(*)
+                    FROM greetings
+                    WHERE video_id = @OldVideoId;
+                    ",
+                    new { OldVideoId = oldVideoId }
+                );
+
+                if (usageCount == 0)
+                {
+                    // Fetch the file path to delete from R2
+                    var filePath = await dbConnection.ExecuteScalarAsync<string>(
+                        @"
+                        SELECT file_path
+                        FROM videos
+                        WHERE id = @OldVideoId;
+                        ",
+                        new { OldVideoId = oldVideoId }
+                    );
+
+                    // Delete DB row
+                    await dbConnection.ExecuteAsync(
+                        @"
+                        DELETE FROM videos
+                        WHERE id = @OldVideoId;
+                        ",
+                        new { OldVideoId = oldVideoId }
+                    );
+
+                    // Delete from R2
+                    if (!string.IsNullOrEmpty(filePath))
+                    {
+                        await _r2Service.DeleteFile(filePath);
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        // =========================================
+        // REPORT GREETING
+        // =========================================
+
+        public async Task<bool> ReportGreeting(Guid greetingId, string reason, string? details)
+        {
+            using var dbConnection = _db.CreateConnection();
+
+            try
+            {
+                var sql = @"
+                    INSERT INTO reports (greeting_id, reason, details)
+                    VALUES (@GreetingId, @Reason, @Details);
+                ";
+
+                await dbConnection.ExecuteAsync(sql, new
+                {
+                    GreetingId = greetingId,
+                    Reason = reason,
+                    Details = details
+                });
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] ReportGreeting failed: {ex.Message}");
+                return false;
+            }
         }
     }
 }

@@ -25,10 +25,9 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className={styles.testimonialsSection} id="testimonials" aria-labelledby="testimonials-title">
-      <div className={styles.sectionInner}>
-        <div className="reveal">
-          <div className={styles.eyebrow}>Real stories</div>
+    <section className={styles.testimonials} id="testimonials" aria-labelledby="testimonials-title">
+      <div>
+        <div className={styles.header}>
           <h2 id="testimonials-title">
             Moments that <em>moved people</em>
           </h2>
@@ -37,16 +36,24 @@ export default function Testimonials() {
           </p>
         </div>
 
-        <div className={`${styles.testimonialsGrid} reveal reveal-delay-1`}>
+        <div className={styles.grid}>
           {testimonials.map((t, i) => (
-            <blockquote className={styles.testimonial} key={i}>
-              <div className={styles.testimonialStars} aria-label="5 stars">{t.stars}</div>
-              <p className={styles.testimonialText}>{t.text}</p>
-              <cite className={styles.testimonialAuthor}>{t.author}</cite>
-            </blockquote>
+            <div className={styles.item} key={i}>
+              <p className={styles.quote}>{t.text}</p>
+              <div className={styles.footer}>
+                <div className={styles.avatar}>
+                  {t.author.split('—')[1]?.trim()[0] || 'S'}
+                </div>
+                <div className={styles.info}>
+                  <h4>{t.author.split(',')[0]}</h4>
+                  <p>{t.author.split(',')[1]}</p>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       </div>
     </section>
+
   );
 }

@@ -1,17 +1,18 @@
 import { useState } from "react";
 import styles from "./LoginPage.module.css";
 
-import { loginUser } from "../api/authService";
+import { loginUser, sendPasswordReset, loginWithGoogle } from "../api/authService";
 import { useNavigate } from "react-router-dom";
 import { createProfile, getProfile } from "../api/UserService";
 
 export default function LoginPage() {
-  const [step, setStep] = useState("login"); // "login" | "setup"
+  const [step, setStep] = useState("login"); // "login" | "setup" | "forgot"
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [pendingUser, setPendingUser] = useState(null);
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -28,12 +29,8 @@ export default function LoginPage() {
       localStorage.setItem("token", data.session.access_token);
 
       const profile = await getProfile();
-      //console.log(profile.statusCode);
-      console.log(profile);
-      //console.log(profile.data);
-      
 
-     if (profile.statusCode === 1) {
+      if (profile.statusCode === 1) {
         navigate("/Home");
       } else {
         setPendingUser(data.user);
@@ -62,6 +59,36 @@ export default function LoginPage() {
       navigate("/Home");
     } catch (err) {
       setError(err.message || "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setError("Please enter your email address.");
+      return;
+    }
+    setError("");
+    setSuccessMessage("");
+    setLoading(true);
+    try {
+      await sendPasswordReset(email);
+      setSuccessMessage("Success! Check your email for a secure password reset link.");
+    } catch (err) {
+      setError(err.message || "Failed to send password recovery email.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      await loginWithGoogle();
+    } catch (err) {
+      setError(err.message || "Failed to initialize Google Sign In.");
     } finally {
       setLoading(false);
     }
@@ -142,7 +169,12 @@ export default function LoginPage() {
 
               {error && <div className={styles.errBox}>{error}</div>}
 
-              <button className={styles.gBtn} type="button">
+              <button 
+                className={styles.gBtn} 
+                type="button"
+                onClick={handleGoogleLogin}
+                disabled={loading}
+              >
                 <svg width="17" height="17" viewBox="0 0 18 18">
                   <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
                   <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/>
@@ -180,7 +212,11 @@ export default function LoginPage() {
               </div>
 
               <div className={styles.forgotRow}>
-                <button className={styles.forgot} type="button">
+                <button 
+                  className={styles.forgot} 
+                  type="button"
+                  onClick={() => { setStep("forgot"); setError(""); setSuccessMessage(""); }}
+                >
                   Forgot password?
                 </button>
               </div>
@@ -245,6 +281,59 @@ export default function LoginPage() {
               <button
                 className={styles.backBtn}
                 onClick={() => { setStep("login"); setError(""); }}
+                type="button"
+              >
+                ← Back to sign in
+              </button>
+            </>
+          )}
+
+          {/* ── FORGOT STEP ── */}
+          {step === "forgot" && (
+            <>
+              <div className={styles.cardLogo}>Scan<em>dy</em></div>
+              <div className={styles.cardHead}>Reset password</div>
+              <div className={styles.cardSub}>
+                Enter your email address and we&apos;ll send you a link to reset your password.
+              </div>
+
+              {error && <div className={styles.errBox}>{error}</div>}
+              {successMessage && <div className={styles.successBox} style={{
+                background: "rgba(52, 211, 153, 0.08)",
+                border: "1px solid rgba(52, 211, 153, 0.3)",
+                color: "var(--accent-teal)",
+                padding: "12px 16px",
+                borderRadius: "var(--radius-md)",
+                fontSize: "13px",
+                lineHeight: "1.5",
+                marginBottom: "20px"
+              }}>{successMessage}</div>}
+
+              <div className={styles.field}>
+                <label>Email Address</label>
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleForgotPassword()}
+                  autoFocus
+                />
+              </div>
+
+              <button
+                className={`${styles.submitBtn}${loading ? ` ${styles.loading}` : ""}`}
+                onClick={handleForgotPassword}
+                disabled={loading}
+                type="button"
+                style={{ marginTop: "12px" }}
+              >
+                {loading ? "Sending link…" : "Send Reset Link"}
+              </button>
+
+              <button
+                className={styles.backBtn}
+                onClick={() => { setStep("login"); setError(""); setSuccessMessage(""); }}
                 type="button"
               >
                 ← Back to sign in

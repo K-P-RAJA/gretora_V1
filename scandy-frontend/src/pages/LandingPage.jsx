@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
-import TrustBar from "../components/Trustbar";
+import TrustBar from "../components/TrustBar";
 import HowItWorks from "../components/HowItWorks";
 import WhyScandy from "../components/WhyScandy";
 import Occasions from "../components/Occasions";
@@ -16,7 +16,7 @@ export default function Home() {
       {/* NAVBAR */}
        <Navbar />
 
-        <main>
+        <main style={{ paddingTop: '120px' }}>
         <Hero />
         <TrustBar />
         <GreetingCards/>

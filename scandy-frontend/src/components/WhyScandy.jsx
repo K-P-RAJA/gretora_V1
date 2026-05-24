@@ -48,7 +48,7 @@ const features = [
       </svg>
     ),
     title: 'Completely free to start',
-    desc: 'Your first three video QR codes are completely free — no credit card, no trial period, no catch. Create your first Vizhiq in under 2 minutes.',
+    desc: 'Your first three video QR codes are completely free — no credit card, no trial period, no catch. Create your first Scandy in under 2 minutes.',
   },
   {
     icon: (
@@ -58,32 +58,31 @@ const features = [
       </svg>
     ),
     title: 'Print on anything',
-    desc: "Cards, gift tags, photo frames, wedding invitations, memory books, keychains — your QR code is just an image. If you can print on it, you can Vizhiq it.",
+    desc: "Cards, gift tags, photo frames, wedding invitations, memory books, keychains — your QR code is just an image. If you can print on it, you can Scandy it.",
   },
 ];
 
 export default function WhyScandy() {
   return (
-    <section className={styles.whySection} aria-labelledby="why-title">
-      <div className={styles.sectionInner}>
-        <div className="reveal">
+    <section className={styles.why} aria-labelledby="why-title">
+      <div className={styles.inner}>
+        <div>
           <div className={styles.eyebrow}>
-            <span className={styles.eyebrowLine}></span>
             Why Scandy
           </div>
-          <h2 id="why-title" className={styles.heading}>
+          <h2 id="why-title" className={styles.title}>
             The most personal gift<br />
             <em>you can give</em>
           </h2>
-          <p className={styles.sectionLead}>
-            A card says you remembered. A Vizhiq says you showed up in person — without being there.
+          <p className={styles.desc}>
+            A card says you remembered. A Scandy says you showed up in person — without being there.
           </p>
         </div>
 
-        <div className={`${styles.whyGrid} reveal reveal-delay-1`}>
+        <div className={styles.featureGrid}>
           {features.map((f, i) => (
-            <div className={styles.whyCard} key={i}>
-              <div className={styles.whyIcon}>{f.icon}</div>
+            <div className={styles.feature} key={i}>
+              <div className={styles.fIcon}>{f.icon}</div>
               <h3>{f.title}</h3>
               <p>{f.desc}</p>
             </div>
@@ -91,5 +90,6 @@ export default function WhyScandy() {
         </div>
       </div>
     </section>
+
   );
 }

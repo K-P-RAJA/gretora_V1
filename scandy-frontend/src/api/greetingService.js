@@ -21,3 +21,23 @@ export async function deleteGreeting(id) {
     method: "DELETE",
   });
 }
+
+export async function updateGreeting(id, payload) {
+  return await apiRequest(`/greetings/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
+
+export async function reportGreeting(id, reason, details) {
+  return await apiRequest(`/greetings/${id}/report`, {
+    method: "POST",
+    body: JSON.stringify({ reason, details }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}

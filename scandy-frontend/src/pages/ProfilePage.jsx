@@ -4,11 +4,13 @@ import AppNavbar from "../components/AppNavbar";
 import Footer from "../components/Footer";
 
 import { getProfileDashboard } from "../api/UserService";
+import { useAlert } from "../context/AlertContext";
 
 import styles from "./ProfilePage.module.css";
 
 export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
+  const { showAlert } = useAlert();
 
   const [profile, setProfile] = useState(null);
 
@@ -32,9 +34,10 @@ export default function ProfilePage() {
     } catch (err) {
       console.error(err);
 
-      alert(
+      await showAlert(
         err.message ||
-          "Failed to load profile"
+          "Failed to load profile",
+        "error"
       );
     } finally {
       setLoading(false);

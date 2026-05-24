@@ -31,7 +31,7 @@ export default function Hero() {
 
           <p className={styles.heroDesc}>
             Upload a video message — a birthday wish, wedding vow, or a heartfelt "I love you."
-            Vizhiq instantly generates a unique QR code. Print it on any card, frame, or gift tag.
+            Scandy instantly generates a unique QR code. Print it on any card, frame, or gift tag.
             Anyone who scans it watches your video, forever. No app needed.
           </p>
 
@@ -39,7 +39,7 @@ export default function Hero() {
             <button className={styles.btnPrimary} aria-label="Upload your free video now">
               Upload your video — it's free
             </button>
-            <button className={styles.btnOutline} aria-label="See how Vizhiq works">
+            <button className={styles.btnOutline} aria-label="See how Scandy works">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="12" cy="12" r="10" />
                 <polygon points="10,8 16,12 10,16" />
@@ -49,15 +49,15 @@ export default function Hero() {
           </div>
 
           <div className={styles.heroMetrics}>
-            <div>
+            <div className={styles.metricItem}>
               <div className={styles.metricVal}>3</div>
               <div className={styles.metricLabel}>Free videos</div>
             </div>
-            <div>
+            <div className={styles.metricItem}>
               <div className={styles.metricVal}>2 min</div>
               <div className={styles.metricLabel}>Max duration</div>
             </div>
-            <div>
+            <div className={styles.metricItem}>
               <div className={styles.metricVal}>∞</div>
               <div className={styles.metricLabel}>Scans forever</div>
             </div>
@@ -87,7 +87,7 @@ export default function Hero() {
             </div>
             <div className={styles.qrFloat}>
               <div className={styles.qrMiniGrid} ref={qrRef} />
-              <div className={styles.qrFloatLabel}>vizhiq</div>
+              <div className={styles.qrFloatLabel}>scandy</div>
             </div>
           </div>
         </div>

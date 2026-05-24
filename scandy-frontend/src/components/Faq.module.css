@@ -1,172 +1,81 @@
-/* ─── Scandy Design Tokens ─────────────────────────────────────────────────── */
-.faqSection {
-  --brand:        #6c47ff;
-  --brand-light:  #8b6bff;
-  --brand-dark:   #4f2fe8;
-  --surface:      #ffffff;
-  --bg:           #f4f3ff;
-  --text:         #1a1730;
-  --muted:        #7b7a99;
-  --border:       #e4e2f5;
-  --radius:       14px;
-  --card-radius:  22px;
-
+.faq {
+  padding: 120px 40px;
+  background: var(--bg-surface);
   position: relative;
-  background: var(--bg);
-  padding: 80px 56px;
   overflow: hidden;
-  font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-/* Ambient glow — top-left */
-.faqSection::before {
-  content: '';
-  position: absolute;
-  top: -120px;
-  left: -100px;
-  width: 480px;
-  height: 480px;
-  border-radius: 50%;
-  background: rgba(108, 71, 255, 0.1);
-  filter: blur(90px);
-  pointer-events: none;
-}
-
-/* Ambient glow — bottom-right */
-.faqSection::after {
-  content: '';
-  position: absolute;
-  bottom: -100px;
-  right: -80px;
-  width: 380px;
-  height: 380px;
-  border-radius: 50%;
-  background: rgba(108, 71, 255, 0.08);
-  filter: blur(80px);
-  pointer-events: none;
-}
-
-/* ─── Inner wrapper ─────────────────────────────────────────────────────────── */
-.sectionInner {
+.faqInner {
+  max-width: 800px;
+  margin: 0 auto;
   position: relative;
   z-index: 1;
-  max-width: 1120px;
-  margin: 0 auto;
 }
 
-/* ─── Eyebrow pill ──────────────────────────────────────────────────────────── */
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  padding: 5px 14px;
-  border-radius: 999px;
-  background: rgba(108, 71, 255, 0.08);
-  border: 1px solid rgba(108, 71, 255, 0.15);
-  color: var(--brand);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin-bottom: 20px;
+.header {
+  text-align: center;
+  margin-bottom: 64px;
 }
 
-/* ─── Heading ───────────────────────────────────────────────────────────────── */
-.sectionInner h2 {
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 700;
-  letter-spacing: -0.4px;
-  color: var(--text);
-  line-height: 1.15;
-  margin: 0 0 18px;
+.header h2 {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 900;
+  color: var(--text-main);
+  letter-spacing: -0.04em;
+  margin-bottom: 16px;
 }
 
-.sectionInner h2 em {
+.header h2 em {
   font-style: normal;
-  background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+  background: linear-gradient(135deg, var(--brand-light) 0%, var(--accent-pink) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* ─── Section lead ──────────────────────────────────────────────────────────── */
 .sectionLead {
-  font-size: 1.0625rem;
-  color: var(--muted);
-  margin: 0 0 48px;
-  line-height: 1.65;
-  max-width: 520px;
+  font-size: 16px;
+  color: var(--text-muted);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.7;
 }
 
-/* ─── FAQ grid ──────────────────────────────────────────────────────────────── */
 .faqGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-/* ─── FAQ card ──────────────────────────────────────────────────────────────── */
 .faqItem {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--card-radius);
-  padding: 36px 32px;
-  box-shadow:
-    0 2px 8px rgba(108, 71, 255, 0.06),
-    0 1px 2px rgba(26, 23, 48, 0.04);
-  transition:
-    transform 0.22s ease,
-    box-shadow 0.22s ease,
-    background 0.22s ease;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  padding: 24px 32px;
+  border-radius: var(--radius-md);
+  transition: all 0.25s ease;
 }
 
 .faqItem:hover {
-  transform: translateY(-2px);
-  background: #fafafe;
-  box-shadow:
-    0 8px 28px rgba(108, 71, 255, 0.12),
-    0 2px 6px rgba(26, 23, 48, 0.05);
+  border-color: var(--brand-border);
+  background: var(--bg-elevated);
 }
 
-/* ─── Question ──────────────────────────────────────────────────────────────── */
-.faqQ {
-  font-size: 1.0625rem;
+.question h3 {
+  font-size: 17px;
   font-weight: 700;
-  letter-spacing: -0.3px;
-  color: var(--text);
-  margin: 0 0 14px;
-  line-height: 1.35;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+  line-height: 1.4;
 }
 
-/* ─── Answer ────────────────────────────────────────────────────────────────── */
-.faqA {
-  font-size: 0.9375rem;
-  color: var(--muted);
+.answer {
+  margin-top: 12px;
+  color: var(--text-muted);
   line-height: 1.7;
-  margin: 0;
+  font-size: 14.5px;
 }
 
-/* ─── Responsive ────────────────────────────────────────────────────────────── */
-@media (max-width: 900px) {
-  .faqGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .faqSection {
-    padding: 64px 32px;
-  }
-}
-
-@media (max-width: 480px) {
-  .faqSection {
-    padding: 48px 20px;
-  }
-
-  .faqItem {
-    padding: 28px 24px;
-  }
-
-  .sectionInner h2 {
-    font-size: 1.75rem;
-  }
+@media (max-width: 768px) {
+  .faq { padding: 60px 20px; }
+  .header { margin-bottom: 40px; }
 }

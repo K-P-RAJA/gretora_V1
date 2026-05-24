@@ -1,13 +1,25 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import { logoutUser } from "../api/authService";
+import { checkAdmin } from "../api/adminService";
+import { useAlert } from "../context/AlertContext";
 
 import styles from "./AppNavbar.module.css";
 
 export default function AppNavbar() {
   const navigate = useNavigate();
-
   const location = useLocation();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const { showAlert } = useAlert();
+
+  useEffect(() => {
+    async function loadAdminStatus() {
+      const status = await checkAdmin();
+      setIsAdmin(status);
+    }
+    loadAdminStatus();
+  }, []);
 
   async function handleLogout() {
     try {
@@ -17,82 +29,87 @@ export default function AppNavbar() {
     } catch (err) {
       console.error(err);
 
-      alert("Logout failed");
+      await showAlert("Logout failed", "error");
     }
   }
 
   return (
     <header className={styles.navbar}>
-      {/* LEFT */}
-      <div
-        className={styles.logoWrap}
-        onClick={() => navigate("/home")}
-      >
-        <div className={styles.logoIcon}>
-          S
-        </div>
-
-        <div>
-          <h1 className={styles.logo}>
-            Scandy
-          </h1>
-
-          <p className={styles.logoSub}>
-            QR Video Greetings
-          </p>
-        </div>
-      </div>
-
-      {/* CENTER */}
-      <nav className={styles.navLinks}>
-        <button
-          className={
-            location.pathname === "/home"
-              ? styles.activeLink
-              : styles.navLink
-          }
+      <div className={styles.navContainer}>
+        {/* LEFT */}
+        <div
+          className={styles.logoWrap}
           onClick={() => navigate("/home")}
         >
-          Home
-        </button>
+          <div className={styles.logo}>
+            Scan<em>dy</em>
+          </div>
+        </div>
 
-        <button
-          className={
-            location.pathname ===
-            "/mygreetings"
-              ? styles.activeLink
-              : styles.navLink
-          }
-          onClick={() =>
-            navigate("/mygreetings")
-          }
-        >
-          My Greetings
-        </button>
+        {/* CENTER */}
+        <nav className={styles.navLinks}>
+          <button
+            className={
+              location.pathname === "/home"
+                ? styles.activeLink
+                : styles.navLink
+            }
+            onClick={() => navigate("/home")}
+          >
+            Home
+          </button>
 
-        <button
-          className={
-            location.pathname ===
-            "/profile"
-              ? styles.activeLink
-              : styles.navLink
-          }
-          onClick={() =>
-            navigate("/profile")
-          }
-        >
-          Profile
-        </button>
-      </nav>
+          <button
+            className={
+              location.pathname ===
+              "/mygreetings"
+                ? styles.activeLink
+                : styles.navLink
+            }
+            onClick={() =>
+              navigate("/mygreetings")
+            }
+          >
+            My Greetings
+          </button>
 
-      {/* RIGHT */}
-      <div className={styles.actions}>
-        <button
-          className={styles.logoutBtn}
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
+          <button
+            className={
+              location.pathname ===
+              "/profile"
+                ? styles.activeLink
+                : styles.navLink
+            }
+            onClick={() =>
+              navigate("/profile")
+            }
+          >
+            Profile
+          </button>
+
+          {isAdmin && (
+            <button
+              className={
+                location.pathname.startsWith("/admin")
+                  ? styles.activeLink
+                  : styles.navLink
+              }
+              onClick={() => navigate("/admin")}
+            >
+              Admin Panel
+            </button>
+          )}
+        </nav>
+
+        {/* RIGHT */}
+        <div className={styles.actions}>
+          <button
+            className={styles.logoutBtn}
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </header>
   );

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Scandy.API.Models;
 using Scandy.API.Request;
@@ -53,6 +53,8 @@ namespace Scandy.API.Controllers
         public async Task<GetUserProfileResponse> GetProfile()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var name = User.FindFirst("name")?.Value ?? User.FindFirst(ClaimTypes.Name)?.Value;
 
             if (userId == null)
             {
@@ -63,7 +65,7 @@ namespace Scandy.API.Controllers
                 };
             }
 
-            return await _loginService.GetProfile(Guid.Parse(userId));
+            return await _loginService.GetProfile(Guid.Parse(userId), name, email);
         }
 
 
@@ -104,6 +106,19 @@ namespace Scandy.API.Controllers
             return Ok(result);
         }
 
+        [Authorize]
+        [HttpPost("accept-policy")]
+        public async Task<IActionResult> AcceptPolicy()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized();
+
+            var result = await _loginService.AcceptPolicy(Guid.Parse(userId));
+
+            return Ok(result);
+        }
 
     }
 }

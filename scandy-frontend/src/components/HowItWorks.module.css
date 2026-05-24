@@ -1,199 +1,101 @@
-/* ── Scandy Design System tokens ───────────────────────────── */
-:root {
-  --brand:        #6c47ff;
-  --brand-light:  #8b6bff;
-  --brand-dark:   #4f2fe8;
-  --surface:      #ffffff;
-  --bg:           #f4f3ff;
-  --text:         #1a1730;
-  --muted:        #7b7a99;
-  --border:       #e4e2f5;
-  --radius:       14px;
-  --card-radius:  22px;
-}
-
-/* ── Section ────────────────────────────────────────────────── */
-.section {
-  background: var(--bg);
-  padding: 48px 56px;
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  color: var(--text);
+.howItWorks {
+  padding: 120px 40px;
+  background: var(--bg-surface);
   position: relative;
   overflow: hidden;
 }
 
-/* Ambient glow behind content */
-.section::before {
-  content: '';
-  position: absolute;
-  top: -120px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 560px;
-  height: 560px;
-  border-radius: 50%;
-  background: rgba(108, 71, 255, 0.08);
-  filter: blur(90px);
-  pointer-events: none;
-}
-
-/* ── Reveal animation ───────────────────────────────────────── */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.55s ease, transform 0.55s ease;
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.revealDelay1 {
-  transition-delay: 0.15s;
-}
-
-/* ── Header block ───────────────────────────────────────────── */
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--brand);
-  background: rgba(108, 71, 255, 0.08);
-  border: 1px solid rgba(108, 71, 255, 0.15);
-  border-radius: 100px;
-  padding: 5px 14px;
-  letter-spacing: 0.02em;
-  margin-bottom: 20px;
-}
-
-.section h2 {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  font-weight: 700;
-  letter-spacing: -0.4px;
-  line-height: 1.2;
-  color: var(--text);
-  margin: 0 0 16px;
-}
-
-.section h2 em {
-  font-style: italic;
-  background: linear-gradient(135deg, var(--brand), var(--brand-light));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.sectionLead {
-  font-size: 1.0625rem;
-  color: var(--muted);
-  line-height: 1.65;
-  max-width: 520px;
-  margin: 0 0 48px;
-}
-
-/* ── Steps grid ─────────────────────────────────────────────── */
-.steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
-}
-
-/* ── Step card ──────────────────────────────────────────────── */
-.step {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--card-radius);
-  padding: 36px 32px;
-  position: relative;
-  box-shadow: 0 4px 24px rgba(108, 71, 255, 0.07);
-  transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
-}
-
-.step:hover {
-  transform: translateY(-2px);
-  background: #fdfcff;
-  box-shadow: 0 8px 32px rgba(108, 71, 255, 0.13);
-}
-
-/* Step number */
-.stepNumber {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--brand);
-  background: rgba(108, 71, 255, 0.08);
-  border: 1px solid rgba(108, 71, 255, 0.15);
-  border-radius: 100px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3px 10px;
-  margin-bottom: 20px;
-}
-
-/* Icon wrapper */
-.stepIconWrap {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius);
-  background: linear-gradient(135deg, var(--brand), var(--brand-dark));
-  box-shadow: 0 4px 18px rgba(108, 71, 255, 0.28);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  margin-bottom: 20px;
-}
-
-/* Step heading */
-.step h3 {
-  font-size: 1.0625rem;
-  font-weight: 700;
-  letter-spacing: -0.3px;
-  color: var(--text);
-  margin: 0 0 10px;
-}
-
-/* Step body */
-.step p {
-  font-size: 0.9375rem;
-  color: var(--muted);
-  line-height: 1.65;
-  margin: 0;
-}
-
-/* ── Connector line between cards (decorative) ──────────────── */
-.steps::before {
+.howItWorks::before {
   content: '';
   position: absolute;
   top: 50%;
-  left: calc(33.33% + 11px);
-  right: calc(33.33% + 11px);
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(124, 110, 248, 0.06) 0%, transparent 65%);
   pointer-events: none;
 }
 
-/* ── Responsive ─────────────────────────────────────────────── */
-@media (max-width: 900px) {
-  .steps {
-    grid-template-columns: 1fr;
-  }
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
-@media (max-width: 480px) {
-  .section {
-    padding: 36px 20px;
-  }
+.header {
+  text-align: center;
+  margin-bottom: 80px;
+}
 
-  .step {
-    padding: 28px 22px;
-  }
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brand-light);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: block;
+}
 
-  .section h2 {
-    font-size: 1.5rem;
-  }
+.title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  color: var(--text-main);
+  letter-spacing: -0.04em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+}
+
+.step {
+  padding: 36px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.step:hover {
+  transform: translateY(-6px);
+  border-color: var(--brand-border);
+  box-shadow: var(--shadow-md);
+}
+
+.stepNum {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--brand-light);
+  background: var(--brand-soft);
+  border: 1px solid var(--brand-border);
+  padding: 5px 14px;
+  border-radius: 100px;
+  display: inline-block;
+  margin-bottom: 24px;
+  letter-spacing: 0.06em;
+}
+
+.stepTitle {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 14px;
+  letter-spacing: -0.03em;
+}
+
+.stepDesc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .howItWorks { padding: 60px 20px; }
+  .header { margin-bottom: 40px; }
 }

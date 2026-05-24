@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Scandy.API.Request;
 using Scandy.API.Services;
@@ -63,10 +63,25 @@ namespace Scandy.API.Controllers
         // PUBLIC GREETING VIEW
         // =========================================
 
-        [HttpGet("/g/{id}")]
+        [HttpGet("/api/g/{id}")]
         public async Task<IActionResult> GetGreeting(Guid id)
         {
-            var result = await _greetingService.GetGreeting(id);
+            // Extract country code from Cloudflare header or custom headers
+            string? countryCode = HttpContext.Request.Headers["CF-IPCountry"].ToString();
+            if (string.IsNullOrEmpty(countryCode))
+            {
+                countryCode = HttpContext.Request.Headers["X-Country-Code"].ToString();
+            }
+
+            // Failsafe/Local Dev Demo: if empty or XX, pick a random country from a curated list
+            if (string.IsNullOrEmpty(countryCode) || countryCode == "XX")
+            {
+                var countries = new[] { "US", "IN", "GB", "CA", "DE", "FR", "AU", "JP" };
+                var random = new Random();
+                countryCode = countries[random.Next(countries.Length)];
+            }
+
+            var result = await _greetingService.GetGreeting(id, countryCode);
 
             if (result == null)
                 return NotFound("Greeting not found");
@@ -99,6 +114,58 @@ namespace Scandy.API.Controllers
             {
                 statusCode = 1,
                 statusMessage = "Greeting deleted successfully"
+            });
+        }
+
+        // =========================================
+        // UPDATE GREETING
+        // =========================================
+
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateGreeting(Guid id, [FromBody] UpdateGreetingRequest request)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized();
+
+            var updated = await _greetingService.UpdateGreeting(
+                id,
+                Guid.Parse(userId),
+                request
+            );
+
+            if (!updated)
+                return NotFound("Greeting not found or unauthorized");
+
+            return Ok(new
+            {
+                statusCode = 1,
+                statusMessage = "Greeting updated successfully"
+            });
+        }
+
+        // =========================================
+        // REPORT GREETING
+        // =========================================
+
+        [HttpPost("{id}/report")]
+        public async Task<IActionResult> ReportGreeting(Guid id, [FromBody] ReportGreetingRequest request)
+        {
+            var result = await _greetingService.ReportGreeting(
+                id,
+                request.Reason,
+                request.Details
+            );
+
+            if (!result)
+                return StatusCode(500, new { statusMessage = "Failed to submit report" });
+
+            return Ok(new
+            {
+                statusCode = 1,
+                statusMessage = "Report submitted successfully. Our team will review it."
             });
         }
     }

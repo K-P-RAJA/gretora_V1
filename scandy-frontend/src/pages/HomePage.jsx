@@ -5,12 +5,14 @@ import styles from "./HomePage.module.css";
 
 import { uploadVideo } from "../api/videoService";
 import { createGreeting } from "../api/greetingService";
+import { useAlert } from "../context/AlertContext";
 
 import AppNavbar from "../components/AppNavbar";
 import Footer from "../components/Footer";
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const { showAlert } = useAlert();
 
   const fileInputRef = useRef(null);
 
@@ -22,18 +24,18 @@ export default function HomePage() {
 
   const [loading, setLoading] = useState(false);
 
-  const handleVideoUpload = (e) => {
+  const handleVideoUpload = async (e) => {
     const file = e.target.files[0];
 
     if (!file) return;
 
     if (!file.type.startsWith("video/")) {
-      alert("Please upload a valid video.");
+      await showAlert("Please upload a valid video.", "warning");
       return;
     }
 
     if (file.size > 100 * 1024 * 1024) {
-      alert("Video must be below 100MB.");
+      await showAlert("Video must be below 100MB.", "warning");
       return;
     }
 
@@ -48,7 +50,7 @@ export default function HomePage() {
         !message ||
         !videoFile
       ) {
-        alert("Please complete all fields.");
+        await showAlert("Please complete all fields.", "warning");
         return;
       }
 
@@ -74,7 +76,7 @@ export default function HomePage() {
       });
     } catch (err) {
       console.error(err);
-      alert(err.message || "Something went wrong.");
+      await showAlert(err.message || "Something went wrong.", "error");
     } finally {
       setLoading(false);
     }
@@ -322,6 +324,13 @@ export default function HomePage() {
                 ? "Generating Greeting..."
                 : "Generate QR Greeting"}
             </button>
+
+            <p className={styles.policyDisclaimer}>
+              By generating a greeting, you acknowledge that you are solely
+              responsible for the uploaded video content and agree to our{" "}
+              <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>.
+              Scandy accepts no liability for user-generated content.
+            </p>
           </div>
 
           {/* FEATURES */}

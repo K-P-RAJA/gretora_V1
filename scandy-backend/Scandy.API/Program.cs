@@ -17,6 +17,7 @@ builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<R2Service>();
 builder.Services.AddScoped<VideoService>();
 builder.Services.AddScoped<GreetingService>();
+builder.Services.AddScoped<AdminService>();
 
 // ✅ CORS
 builder.Services.AddCors(options =>

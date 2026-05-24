@@ -27,8 +27,6 @@ export async function apiRequest(path, options = {}) {
     data = null;
   }
 
-  console.log(data);
-
   if (!res.ok) {
     throw new Error(
       data?.statusMessage ||

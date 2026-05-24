@@ -1,4 +1,4 @@
-import styles from './FAQ.module.css';
+import styles from './Faq.module.css';
 
 const faqs = [
   {
@@ -29,10 +29,9 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <section className={styles.faqSection} id="faq" aria-labelledby="faq-title">
-      <div className={styles.sectionInner}>
-        <div className="reveal">
-          <div className={styles.eyebrow}>FAQ</div>
+    <section className={styles.faq} id="faq" aria-labelledby="faq-title">
+      <div className={styles.faqInner}>
+        <div className={styles.header}>
           <h2 id="faq-title">
             Everything you need<br /><em>to know</em>
           </h2>
@@ -41,15 +40,18 @@ export default function FAQ() {
           </p>
         </div>
 
-        <div className={`${styles.faqGrid} reveal reveal-delay-1`}>
+        <div className={styles.faqGrid}>
           {faqs.map((item, i) => (
             <div className={styles.faqItem} key={i}>
-              <h3 className={styles.faqQ}>{item.q}</h3>
-              <p className={styles.faqA}>{item.a}</p>
+              <div className={styles.question}>
+                <h3>{item.q}</h3>
+              </div>
+              <p className={styles.answer}>{item.a}</p>
             </div>
           ))}
         </div>
       </div>
     </section>
+
   );
 }

@@ -1,0 +1,29 @@
+.adminContainer {
+  min-height: 100vh;
+  background: var(--bg-deep);
+  display: flex;
+}
+
+.adminMain {
+  flex-grow: 1;
+  margin-left: 260px; /* offset sidebar width */
+  min-width: 0; /* prevents flex items from overflowing */
+  transition: margin-left 0.3s ease;
+}
+
+.contentWrapper {
+  padding: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+  .adminMain {
+    margin-left: 0;
+    padding-top: 70px; /* offset mobile header height */
+  }
+
+  .contentWrapper {
+    padding: 24px;
+  }
+}

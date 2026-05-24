@@ -22,7 +22,7 @@ const steps = [
       </svg>
     ),
     title: 'Receive your QR code',
-    desc: 'Vizhiq instantly generates a unique, secure QR code linked only to your video. Download it in high resolution — ready to print on cards, invitations, photo frames, stickers, or any surface you can imagine.',
+    desc: 'Scandy instantly generates a unique, secure QR code linked only to your video. Download it in high resolution — ready to print on cards, invitations, photo frames, stickers, or any surface you can imagine.',
   },
   {
     number: '03',
@@ -32,7 +32,7 @@ const steps = [
       </svg>
     ),
     title: 'Watch their face light up',
-    desc: 'They scan the code with any smartphone camera — no app, no account needed. Your video plays instantly in their browser. That moment of surprise, recognition, and pure joy? That\'s Vizhiq.',
+    desc: 'They scan the code with any smartphone camera — no app, no account needed. Your video plays instantly in their browser. That moment of surprise, recognition, and pure joy? That\'s Scandy.',
   },
 ];
 
@@ -56,11 +56,8 @@ export default function HowItWorks() {
   }, []);
 
   return (
-    <section className={styles.section} id="how-it-works" aria-labelledby="how-title">
-      <div
-        className={styles.reveal}
-        ref={(el) => (revealRefs.current[0] = el)}
-      >
+    <section className={styles.howItWorks} id="how-it-works" aria-labelledby="how-title">
+      <div className={styles.header}>
         <div className={styles.eyebrow}>Simple process</div>
         <h2 id="how-title">
           Three steps to a gift<br /><em>they'll never forget</em>
@@ -70,19 +67,17 @@ export default function HowItWorks() {
         </p>
       </div>
 
-      <div
-        className={`${styles.steps} ${styles.reveal} ${styles.revealDelay1}`}
-        ref={(el) => (revealRefs.current[1] = el)}
-      >
+      <div className={styles.grid}>
         {steps.map((step) => (
           <article key={step.number} className={styles.step}>
-            <div className={styles.stepNumber}>{step.number}</div>
-            <div className={styles.stepIconWrap}>{step.icon}</div>
+            <div className={styles.num}>{step.number}</div>
+            <div className={styles.icon}>{step.icon}</div>
             <h3>{step.title}</h3>
             <p>{step.desc}</p>
           </article>
         ))}
       </div>
     </section>
+
   );
 }

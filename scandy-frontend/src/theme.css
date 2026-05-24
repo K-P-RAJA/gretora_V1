@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,400&display=swap');
+
+/* ═══════════════════════════════════════════════════
+   SCANDY — PREMIUM DARK DESIGN SYSTEM
+   Deep Navy + Violet Brand
+═══════════════════════════════════════════════════ */
+
+:root {
+  /* ── BACKGROUND LAYERS ───────────────────── */
+  --bg-deep:        #06080F;   /* Deepest layer — page bg      */
+  --bg-surface:     #0C1022;   /* Section alternates            */
+  --bg-card:        #111728;   /* Cards, panels                 */
+  --bg-elevated:    #18203C;   /* Inputs, elevated cards        */
+  --bg-hover:       #1E2845;   /* Hover states                  */
+
+  /* ── BRAND (Rich Violet) ─────────────────── */
+  --brand:          #7C6EF8;   /* Primary brand colour          */
+  --brand-dark:     #5A4FCC;   /* Darker for pressed states     */
+  --brand-light:    #A49DF9;   /* Lighter for hover/gradients   */
+  --brand-glow:     rgba(124, 110, 248, 0.20);
+  --brand-soft:     rgba(124, 110, 248, 0.10);
+  --brand-border:   rgba(124, 110, 248, 0.28);
+
+  /* ── ACCENT COLOURS ──────────────────────── */
+  --accent:         #A49DF9;   /* Violet-light (gradients)      */
+  --accent-pink:    #F472B6;   /* Warm pink for emotion/gifting */
+  --accent-teal:    #34D399;   /* Success / positive states     */
+  --accent-amber:   #FBBF24;   /* Warning / highlight           */
+
+  /* ── TYPOGRAPHY ──────────────────────────── */
+  --text-main:      #EDF0FF;   /* Primary text — cool white     */
+  --text-muted:     #8892B0;   /* Secondary text — muted slate  */
+  --text-dim:       #4A5478;   /* Disabled / placeholder        */
+
+  /* ── GLASS / BORDERS ─────────────────────── */
+  --glass-border:   rgba(255, 255, 255, 0.07);
+  --glass-bg:       rgba(12, 16, 34, 0.88);
+  --border-light:   rgba(255, 255, 255, 0.04);
+  --border-brand:   rgba(124, 110, 248, 0.30);
+
+  /* ── GEOMETRY ────────────────────────────── */
+  --radius-sm:      8px;
+  --radius-md:      14px;
+  --radius-lg:      20px;
+  --radius-xl:      32px;
+  --gap:            24px;
+
+  /* ── SHADOWS ─────────────────────────────── */
+  --shadow-sm:      0 2px 10px rgba(0, 0, 0, 0.30);
+  --shadow-md:      0 8px 28px rgba(0, 0, 0, 0.40);
+  --shadow-lg:      0 20px 56px rgba(0, 0, 0, 0.55);
+  --shadow-brand:   0 8px 32px rgba(124, 110, 248, 0.28);
+  --shadow-glow:    0 0 48px  rgba(124, 110, 248, 0.12);
+}
+
+/* ── RESET ───────────────────────────────────── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-main);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── TYPOGRAPHY ──────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--text-main);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
+
+/* ── SCROLLBAR ───────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track  { background: var(--bg-surface); }
+::-webkit-scrollbar-thumb  {
+  background: var(--bg-elevated);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(124, 110, 248, 0.3); }
+
+/* ── SELECTION ───────────────────────────────── */
+::selection {
+  background: var(--brand-soft);
+  color: var(--brand-light);
+}
