@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Great+Vibes&display=swap');
+
 /* ═══════════════════════════════════════
    HOME PAGE — Create greeting
 ═══════════════════════════════════════ */
@@ -177,6 +179,7 @@
   padding: 28px;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
+  overflow: visible;
 }
 
 .previewTop {
@@ -217,101 +220,424 @@
 .previewGreeting {
   position: relative;
   border-radius: var(--radius-md);
-  overflow: hidden;
+  overflow: visible;
+  padding: 10px 0;
 }
 
-.previewRibbonVertical {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(180deg, var(--brand) 0%, var(--accent-pink) 100%);
-  opacity: 0.3;
+/* ── 3D Card Preview Styles ───────────────── */
+
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  overflow: visible;
 }
 
-.previewRibbonHorizontal {
+.cardStage {
+  width: 680px;
+  max-width: 100%;
+  perspective: 2000px;
+  overflow: visible;
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cardContainer {
+  width: 340px;
+  height: 460px;
+  position: relative;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  border-radius: 12px;
+}
+
+.cardContainer:hover:not(.opened) {
+  transform: scale(1.02) rotateY(-5deg);
+}
+
+.cardContainer.opened {
+  transform: none;
+}
+
+.cardContainer.opened:hover {
+  transform: none;
+}
+
+.cardBack {
   position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  height: 2px;
   width: 100%;
-  background: linear-gradient(90deg, var(--brand) 0%, var(--accent-pink) 100%);
-  opacity: 0.3;
+  height: 100%;
+  background: #fdfbf7;
+  border-radius: 12px;
+  box-shadow: inset -5px 0 20px rgba(0,0,0,0.05);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  overflow: hidden;
+  background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
 }
 
-.previewInner {
-  border-radius: var(--radius-md);
-  background: linear-gradient(160deg, #0F1428 0%, #08091A 100%);
-  padding: 36px 24px;
-  border: 1px solid var(--glass-border);
+.displayFrame {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 
+    0 10px 30px rgba(0,0,0,0.06),
+    inset 0 0 0 1px rgba(180, 140, 80, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 16px;
+}
+
+.displayFrame::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(180, 140, 80, 0.25);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.displayFrame::after {
+  content: '';
+  position: absolute;
+  inset: 11px;
+  border: 1px dashed rgba(180, 140, 80, 0.15);
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+.qrInteraction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.frameHeader {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #b48c50;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.qrGlass {
+  padding: 10px;
+  background: linear-gradient(135deg, #fff 0%, #faf8f5 100%);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(180, 140, 80, 0.15);
+  position: relative;
+}
+
+.qrWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qrCenterLogo {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  background: #fff;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b48c50;
+  font-size: 10px;
+  padding-left: 1px;
+}
+
+.playHint {
+  margin-top: 18px;
+  font-size: 9px;
+  font-weight: 600;
+  color: #8a735b;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   text-align: center;
 }
 
-.previewSmall {
-  font-size: 12px;
-  color: var(--text-dim);
-  font-weight: 500;
-  letter-spacing: 0.04em;
+.cardFront {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  border-radius: 12px;
+  z-index: 2;
+}
+
+.cardContainer.opened .cardFront {
+  transform: rotateY(-180deg);
+}
+
+.cardFrontInside {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #fdfbf7;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+  border-radius: 12px;
+  box-shadow: -15px 15px 40px rgba(0,0,0,0.35), inset 5px 0 20px rgba(0,0,0,0.05);
+  box-sizing: border-box;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-right: 1px solid rgba(0,0,0,0.05);
+  background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+.ornament {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(180, 140, 80, 0.25);
+  pointer-events: none;
+}
+.topLeft { top: 12px; left: 12px; border-right: none; border-bottom: none; border-top-left-radius: 8px; }
+.topRight { top: 12px; right: 12px; border-left: none; border-bottom: none; border-top-right-radius: 8px; }
+.bottomLeft { bottom: 12px; left: 12px; border-right: none; border-top: none; border-bottom-left-radius: 8px; }
+.bottomRight { bottom: 12px; right: 12px; border-left: none; border-top: none; border-bottom-right-radius: 8px; }
+
+.brandHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.brandLogo {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: #2a1610;
+  letter-spacing: 2px;
   text-transform: uppercase;
 }
 
-.previewInner h2 {
-  font-size: 28px;
-  font-weight: 900;
-  color: var(--text-main);
-  margin-top: 8px;
-  letter-spacing: -0.04em;
+.tag {
+  font-size: 7px;
+  font-weight: 600;
+  color: #8a735b;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 1px;
 }
 
-.previewDivider {
+.recipientBlock {
+  text-align: center;
+  margin-top: 6px;
+}
+
+.occasionText {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  color: #b48c50;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.smallLabel {
+  font-size: 8px;
+  font-weight: 700;
+  color: #8a735b;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.recipientName {
+  font-family: 'Cinzel', serif;
+  font-size: 15px;
+  color: #2a1610;
+  text-transform: uppercase;
+  letter-spacing: 0px;
+}
+
+.goldDivider {
+  width: 32px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #b48c50, transparent);
+  margin: 6px auto 0;
+}
+
+.messageBlock {
+  flex-grow: 1;
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 16px auto;
-  max-width: 200px;
+  justify-content: center;
+  text-align: center;
+  padding: 0 6px;
+  margin: 6px 0;
 }
 
-.previewDivider span {
-  width: 6px;
-  height: 6px;
+.messageText {
+  font-family: 'Great Vibes', cursive;
+  font-size: 16px;
+  line-height: 1.35;
+  color: #3d2b1f;
+  word-break: break-word;
+}
+
+.waxSeal {
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(circle at 30% 30%, #a42c2c, #7a1515);
   border-radius: 50%;
-  background: var(--brand);
-  opacity: 0.6;
-  flex-shrink: 0;
-}
-
-.previewDivider div {
-  flex: 1;
-  height: 1px;
-  background: var(--glass-border);
-}
-
-.previewMessage {
-  font-size: 14px;
-  line-height: 1.65;
-  color: var(--text-muted);
-  max-width: 360px;
   margin: 0 auto;
+  box-shadow: 
+    0 2px 5px rgba(0,0,0,0.3),
+    inset 0 0 4px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
-.previewQr {
-  width: 90px;
-  height: 90px;
-  background: #fff;
-  margin: 24px auto 12px;
-  border-radius: 10px;
-  padding: 8px;
+.waxSeal span {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #e5b6b6;
 }
 
-.previewScan {
+.signature {
+  font-family: 'Great Vibes', cursive;
+  font-size: 14px;
+  color: #2C2825;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.closeCardBtn {
+  display: block;
+  margin: 16px auto 0;
+  background: rgba(9, 9, 11, 0.85);
+  color: #b48c50;
+  border: 1px solid rgba(180, 140, 80, 0.4);
+  padding: 8px 20px;
+  border-radius: 20px;
   font-size: 11px;
-  color: var(--text-dim);
+  font-weight: 700;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-weight: 600;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  transition: all 0.25s ease;
+  animation: fadeInUp 0.3s ease;
+  position: relative;
+  z-index: 100;
+}
+
+.closeCardBtn:hover {
+  background: rgba(42, 22, 16, 0.98);
+  border-color: #b48c50;
+  color: #fdfbf7;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(180, 140, 80, 0.2);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cardFrontOutside {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/greetingcard/GreetingCard_FrontPage.webp');
+  background-size: cover;
+  background-position: center;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+}
+
+.cardFrontOutside::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(124, 110, 248, 0.1), rgba(9, 9, 11, 0.75));
+  border-radius: 12px;
+}
+
+.coverText {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 16px;
+}
+
+.coverText h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 24px;
+  color: #FFF;
+  line-height: 1.2;
+  text-shadow: 0 3px 8px rgba(0,0,0,0.6);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.tapPrompt {
+  position: absolute;
+  bottom: 24px;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  padding: 6px 14px;
+  border-radius: 100px;
+  color: #FFF;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  animation: pulse 2s infinite;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+@media (max-width: 968px) {
+  .cardContainer.opened {
+    transform: translateX(0); /* Center on mobile */
+  }
+  .cardContainer.opened .cardFront { transform: rotateY(-110deg); }
 }
 
 /* ── RIGHT PANEL ──────────────────────── */
@@ -581,9 +907,150 @@
 }
 
 /* ── Responsive ───────────────────────── */
+/* ── Responsive ───────────────────────── */
 @media (max-width: 1100px) {
   .heroSection { grid-template-columns: 1fr; }
   .rightPanel { max-width: 640px; margin: 0 auto; width: 100%; }
+}
+
+@media (max-width: 800px) {
+  /* Card Stage: no perspective, centers children as a column */
+  .cardStage {
+    perspective: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* Closed Container */
+  .cardContainer {
+    width: 290px;
+    height: 400px;
+    margin: 0 auto;
+  }
+
+  /* Opened Container: Stack vertically */
+  .cardContainer.opened {
+    transform: none;
+    transform-style: flat;
+    width: 290px;
+    height: auto;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: none;
+    cursor: default;
+    margin: 0 auto;
+  }
+
+  /* Cover dissolve exit */
+  .cardContainer.opened .cardFrontOutside {
+    position: absolute;
+    inset: 0;
+    animation: coverDissolve 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    pointer-events: none;
+    z-index: 100;
+    border-radius: 12px;
+  }
+
+  @keyframes coverDissolve {
+    0%   { opacity: 1; transform: scale(1); filter: blur(0px) brightness(1); }
+    40%  { opacity: 0.7; transform: scale(1.04); filter: blur(0px) brightness(1.6); }
+    100% { opacity: 0; transform: scale(0.88) translateY(-30px); filter: blur(12px) brightness(2); }
+  }
+
+  /* Gold shimmer flash on opening */
+  .cardContainer.opened::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 16px;
+    background: linear-gradient(135deg,
+      rgba(255,215,100,0.4) 0%,
+      rgba(180,140,80,0.1) 40%,
+      rgba(255,215,100,0.3) 60%,
+      transparent 100%
+    );
+    animation: shimmerFlash 1s ease-out forwards;
+    pointer-events: none;
+    z-index: 200;
+  }
+
+  @keyframes shimmerFlash {
+    0%   { opacity: 1; transform: scale(1.05); }
+    50%  { opacity: 0.6; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.98); }
+  }
+
+  /* Front flap becomes a normal flow element on top (Message on top) */
+  .cardContainer.opened .cardFront {
+    position: relative;
+    transform: none !important;
+    transform-style: flat;
+    width: 100%;
+    height: auto;
+    order: -1;
+    z-index: auto;
+    border-radius: 12px 12px 0 0;
+    animation: revealMessagePane 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) 0.3s both;
+  }
+
+  @keyframes revealMessagePane {
+    from { opacity: 0; transform: translateY(15px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Inside left (Message details): visible, no rotation */
+  .cardContainer.opened .cardFrontInside {
+    position: relative;
+    transform: none !important;
+    backface-visibility: visible;
+    width: 100%;
+    height: auto;
+    min-height: 300px;
+    background: #fdfbf7;
+    padding: 24px 20px;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+  }
+
+  /* Inside right (QR page): flows below message */
+  .cardContainer.opened .cardBack {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 260px;
+    padding: 20px;
+    border-radius: 0 0 12px 12px;
+    animation: revealQRPane 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) 0.5s both;
+    box-shadow:
+      0 20px 50px rgba(0,0,0,0.4),
+      0 0 0 1px rgba(180,140,80,0.12);
+  }
+
+  @keyframes revealQRPane {
+    from { opacity: 0; transform: translateY(15px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Close button: sit below the card nicely centered */
+  .closeCardBtn {
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin: 20px auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInUp 0.4s ease 0.8s both;
+  }
+  .closeCardBtn:hover {
+    transform: translateY(-1px) !important;
+  }
 }
 
 @media (max-width: 600px) {
@@ -596,4 +1063,31 @@
   .uploadLeft { flex-direction: column; text-align: center; gap: 8px; }
   .previewCard { padding: 24px 16px; }
   .previewInner { padding: 24px 16px; }
+}
+
+/* Smaller phone screen support */
+@media (max-width: 480px) {
+  .cardContainer {
+    width: 270px;
+    height: 380px;
+  }
+  .cardContainer.opened {
+    width: 270px;
+  }
+  .cardContainer.opened .cardFrontInside {
+    min-height: 280px;
+  }
+  .cardContainer.opened .cardBack {
+    min-height: 240px;
+  }
+}
+
+@media (max-width: 385px) {
+  .cardContainer {
+    width: 250px;
+    height: 350px;
+  }
+  .cardContainer.opened {
+    width: 250px;
+  }
 }

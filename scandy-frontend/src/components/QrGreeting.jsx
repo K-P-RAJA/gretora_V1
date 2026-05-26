@@ -14,6 +14,14 @@ export default function LuxeQrCard({ qrUrl, recipientName, occasion, message }) 
 
   const isPublicView = location.pathname.startsWith('/g/');
 
+  const handleBack = () => {
+    if (window.history.state && window.history.state.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate("/mygreetings");
+    }
+  };
+
   const handleWhatsAppShare = () => {
     // Relying on WhatsApp's built-in Link Previews (Open Graph) creates a perfect single-bubble message.
     const text = encodeURIComponent(`Hi ${recipientName || ''}! I've prepared a special digital greeting card just for you! 🎁✨\n\nTap the link below to open your card and reveal the surprise:\n${qrUrl}`);
@@ -127,7 +135,7 @@ export default function LuxeQrCard({ qrUrl, recipientName, occasion, message }) 
 
             <div className={styles.messageBlock}>
               <p className={styles.messageText}>
-                {message || "Wishing you an extraordinary experience filled with moments that matter."}
+                A warm, personal surprise awaits you. To view your video greeting and read the full message, please scan the QR code on the right with your mobile device.
               </p>
             </div>
 
@@ -151,13 +159,15 @@ export default function LuxeQrCard({ qrUrl, recipientName, occasion, message }) 
                         bgColor="transparent"
                         fgColor="#2a1610"
                         qrStyle="dots"
-                        eyeRadius={[10, 10, 10, 10]}
+                        eyeRadius={12}
                         eyeColor="#b48c50"
+                        logoImage="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2I0OGM1MCI+PHBhdGggZD0iTTEyIDIxLjM1bC0xLjQ1LTEuMzJDNS40IDE1LjM2IDIgMTIuMjggMiA4LjVDMiA1LjQyIDQuNDIgMyA3LjUgM2MxLjc0IDAgMy40MS44MSA0LjUgMi4wOUMxMy4wOSAzLjgxIDE0Ljc2IDMgMTYuNSAzbDMuMDggMGMzLjA4IDAgNS41IDIuNDIgNS41IDUuNSAwIDMuNzgtMy40IDYuODYtOC41NSAxMS41NEwxMiAyMS4zNXoiLz48L3N2Zz4="
+                        logoWidth={32}
+                        logoHeight={32}
+                        logoPadding={5}
+                        logoPaddingStyle="circle"
+                        removeQrCodeBehindLogo={true}
                       />
-                      {/* Center Logo on QR */}
-                      <div className={styles.qrCenterLogo}>
-                        ▶
-                      </div>
                     </div>
                   </div>
                   
@@ -186,7 +196,7 @@ export default function LuxeQrCard({ qrUrl, recipientName, occasion, message }) 
 
       <div className={styles.uiControls}>
         {!isPublicView && (
-          <button className={`${styles.shareBtn} ${styles.backBtn}`} onClick={() => navigate("/mygreetings")}>
+          <button className={`${styles.shareBtn} ${styles.backBtn}`} onClick={handleBack}>
             <ArrowLeft size={18} />
             Back to Greetings
           </button>

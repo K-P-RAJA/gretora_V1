@@ -1,16 +1,26 @@
+import React, { useState } from 'react';
 import styles from './GreetingCards.module.css';
-import { useState } from 'react';
+import { QRCode } from 'react-qrcode-logo';
 
 export default function GreetingCards() {
   const [opened, setOpened] = useState(false);
+
+  const mockQrUrl = "https://scandy.app/g/demo-greeting";
+
+  const handleCardClick = (e) => {
+    // If the card is closed, click opens the card.
+    if (!opened) {
+      setOpened(true);
+    }
+  };
 
   return (
     <section className={styles.section} id="greeting">
       <div className={styles.inner}>
 
-        {/* LEFT: copy */}
+        {/* LEFT: Copy content */}
         <div className={styles.left}>
-          <div className={styles.eyebrow}>Premium Experience</div>
+          <div className={styles.eyebrow}>Real Experience Preview</div>
           <h2 className={styles.title}>
             A digital card that<br />
             <em>feels truly real.</em>
@@ -18,50 +28,98 @@ export default function GreetingCards() {
           <p className={styles.sub}>
             We've combined the emotion of a physical greeting card with the magic of video. 
             No more boring links. Give them an experience they can open, watch, and keep forever.
+            Click on the card to open it and interact!
           </p>
 
           <div className={styles.pills}>
-            <span className={styles.pill}>✨ Beautiful designs</span>
-            <span className={styles.pill}>🎥 Embedded video</span>
-            <span className={styles.pill}>💖 Meaningful messages</span>
+            <span className={styles.pill}>✨ Warm Paper Textures</span>
+            <span className={styles.pill}>🎥 Surprising Video Scan</span>
+            <span className={styles.pill}>💖 Premium Gold Wax Seals</span>
           </div>
         </div>
 
-        {/* RIGHT: 3D Card Demo */}
+        {/* RIGHT: 3D Realistic Folding Card Demo */}
         <div className={styles.right}>
           <div 
             className={`${styles.cardContainer} ${opened ? styles.opened : ''}`} 
-            onClick={() => setOpened(!opened)}
+            onClick={handleCardClick}
           >
-            {/* BACK of the card (the inside right page) */}
+            {/* INSIDE RIGHT PAGE (Permanently fixed in background) */}
             <div className={styles.cardBack}>
-              <div className={styles.videoPlaceholder}>
-                <div className={styles.playBtn}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <polygon points="7,5 19,12 7,19" fill="currentColor" />
-                  </svg>
+              <div className={styles.displayFrame}>
+                <div className={styles.qrInteraction}>
+                  <div className={styles.frameHeader}>Scan to Reveal</div>
+                  
+                  <div className={styles.qrGlass}>
+                    <div className={styles.qrWrapper}>
+                      <QRCode
+                        value={mockQrUrl}
+                        size={130}
+                        bgColor="transparent"
+                        fgColor="#2a1610"
+                        qrStyle="dots"
+                        eyeRadius={[8, 8, 8, 8]}
+                        eyeColor="#b48c50"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className={styles.playHint}>
+                    Recipient scans to play video
+                  </div>
                 </div>
-              </div>
-              <div className={styles.cardMessage}>
-                <h3>Happy Birthday!</h3>
-                <p>Wishing you the most magical year ahead. You deserve all the happiness in the world. Enjoy your special day! 🎉</p>
-                <span className={styles.signature}>With love, Alex</span>
               </div>
             </div>
 
-            {/* FRONT of the card (folds open) */}
+            {/* FRONT FOLDING FLAP (folds open around left axis) */}
             <div className={styles.cardFront}>
-              {/* Inside of the front flap (left page when open) */}
+              {/* INSIDE LEFT PAGE (Back of the front cover - visible when card is open) */}
               <div className={styles.cardFrontInside}>
-                <div className={styles.insideQr}>
-                  <div className={styles.qrCode}>
-                    <div className={styles.qrInner}></div>
-                  </div>
-                  <p>Scan to keep</p>
+                {/* Decorative Corner Ornaments */}
+                <div className={`${styles.ornament} ${styles.topLeft}`}></div>
+                <div className={`${styles.ornament} ${styles.topRight}`}></div>
+                <div className={`${styles.ornament} ${styles.bottomLeft}`}></div>
+                <div className={`${styles.ornament} ${styles.bottomRight}`}></div>
+
+                <div className={styles.brandHeader}>
+                  <span className={styles.brandLogo}>Scandy</span>
+                  <span className={styles.tag}>Premium Greetings</span>
                 </div>
+
+                <div className={styles.recipientBlock}>
+                  <h2 className={styles.occasionText}>Happy Birthday!</h2>
+                  <p className={styles.smallLabel}>FOR</p>
+                  <h1 className={styles.recipientName}>Someone Special</h1>
+                  <div className={styles.goldDivider}></div>
+                </div>
+
+                <div className={styles.messageBlock}>
+                  <p className={styles.messageText}>
+                    Wishing you the most magical year ahead. You deserve all the happiness in the world. Enjoy your special day! 🎉
+                  </p>
+                </div>
+
+                <div className={styles.waxSeal}>
+                  <span>S</span>
+                </div>
+                
+                <span className={styles.signature}>With love, Alex</span>
+
+                {opened && (
+                  <button 
+                    className={styles.closeCardBtn} 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setOpened(false);
+                      setIsPlaying(false);
+                    }}
+                  >
+                    Close Card
+                  </button>
+                )}
               </div>
 
-              {/* Outside of the front flap (the cover) */}
+              {/* OUTSIDE COVER PAGE (Visible when closed) */}
               <div className={styles.cardFrontOutside}>
                 <div className={styles.coverText}>
                   <h2>For<br/>Someone<br/>Special</h2>

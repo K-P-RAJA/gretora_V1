@@ -7,7 +7,8 @@ import {
   ArrowLeft, 
   LogOut,
   Menu,
-  X
+  X,
+  Mail
 } from "lucide-react";
 import { useState } from "react";
 import { logoutUser } from "../api/authService";
@@ -38,6 +39,11 @@ export default function AdminSidebar() {
       name: "Greetings",
       path: "/admin/greetings",
       icon: <Gift size={20} />
+    },
+    {
+      name: "Support Tickets",
+      path: "/admin/support",
+      icon: <Mail size={20} />
     }
   ];
 

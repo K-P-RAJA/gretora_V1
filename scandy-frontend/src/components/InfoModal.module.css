@@ -1,0 +1,344 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 4, 8, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.modal {
+  background: linear-gradient(135deg, rgba(20, 20, 35, 0.9) 0%, rgba(10, 10, 20, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7), 
+              0 0 80px rgba(124, 110, 248, 0.08);
+  padding: 40px 32px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(20px) scale(0.96);
+  opacity: 0;
+  animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) 0.05s forwards;
+  max-height: 90vh;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  color: var(--text-dim, #a1a1aa);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.closeBtn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  transform: rotate(90deg);
+}
+
+.body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.body h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.goldDivider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--brand) 0%, var(--accent-pink) 100%);
+  margin: 16px 0 24px;
+  border-radius: 2px;
+}
+
+/* Scroll Content for Policies */
+.scrollContent {
+  overflow-y: auto;
+  padding-right: 8px;
+  max-height: 52vh;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.scrollContent p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.scrollContent em {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.scrollContent h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-top: 8px;
+}
+
+.scrollContent ul {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scrollContent li {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.scrollContent li strong {
+  color: var(--text-main);
+}
+
+/* Scrollbar customization */
+.scrollContent::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollContent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollContent::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.scrollContent::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-border);
+}
+
+/* Contact Support Form */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.formHint {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.formHint a {
+  color: var(--brand-light);
+  font-weight: 600;
+}
+
+.formHint a:hover {
+  text-decoration: underline;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formGroup label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.formGroup input,
+.formGroup textarea {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.formGroup textarea {
+  resize: none;
+}
+
+.formGroup input::placeholder,
+.formGroup textarea::placeholder {
+  color: var(--text-dim);
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+  border-color: var(--brand);
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 3px var(--brand-soft);
+}
+
+.errorBox {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--accent-pink) 100%);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: var(--shadow-brand);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.submitBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(124, 110, 248, 0.35);
+  filter: brightness(1.08);
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Success Screen */
+.successScreen {
+  text-align: center;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.successIcon {
+  color: var(--accent-teal);
+  filter: drop-shadow(0 0 12px rgba(52, 211, 153, 0.25));
+}
+
+.successScreen h3 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.successScreen p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  max-width: 320px;
+  margin-bottom: 12px;
+}
+
+.closeModalBtn {
+  width: 140px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.closeModalBtn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .overlay {
+    padding: 12px;
+  }
+  .modal {
+    padding: 28px 16px 20px;
+    border-radius: 16px;
+  }
+  .closeBtn {
+    top: 12px;
+    right: 12px;
+  }
+  .body h2 {
+    font-size: 20px;
+  }
+  .goldDivider {
+    margin: 12px 0 16px;
+  }
+  .scrollContent {
+    max-height: 60vh;
+    gap: 12px;
+  }
+  .scrollContent p, .scrollContent li {
+    font-size: 13px;
+  }
+  .form {
+    gap: 12px;
+  }
+  .formGroup {
+    gap: 6px;
+  }
+  .formGroup input, .formGroup textarea {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .submitBtn {
+    padding: 12px;
+    font-size: 13px;
+  }
+}

@@ -54,8 +54,8 @@ export default function Hero() {
               <div className={styles.metricLabel}>Free videos</div>
             </div>
             <div className={styles.metricItem}>
-              <div className={styles.metricVal}>2 min</div>
-              <div className={styles.metricLabel}>Max duration</div>
+              <div className={styles.metricVal}>50 MB</div>
+              <div className={styles.metricLabel}>Max video size</div>
             </div>
             <div className={styles.metricItem}>
               <div className={styles.metricVal}>∞</div>

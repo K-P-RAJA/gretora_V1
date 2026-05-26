@@ -10,7 +10,8 @@ import {
   XCircle,
   ArrowRight,
   QrCode,
-  Globe
+  Globe,
+  Mail
 } from "lucide-react";
 import { getDashboardStats } from "../../api/adminService";
 import { useNavigate } from "react-router-dom";
@@ -119,6 +120,15 @@ export default function AdminDashboard() {
       color: stats?.reports?.pending > 0 ? "red" : "gray",
       path: "/admin/reports",
       pulse: stats?.reports?.pending > 0
+    },
+    {
+      title: "Support Tickets",
+      value: stats?.tickets?.pending ?? 0,
+      sub: stats?.tickets?.pending > 0 ? `${stats.tickets.pending} unresolved requests` : "All caught up!",
+      icon: <Mail size={22} />,
+      color: stats?.tickets?.pending > 0 ? "pink" : "gray",
+      path: "/admin/support",
+      pulse: stats?.tickets?.pending > 0
     }
   ];
 

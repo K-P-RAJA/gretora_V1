@@ -140,7 +140,7 @@
 
 /* OK Button (Alert Mode) */
 .okBtn {
-  background: linear-gradient(135deg, #6c47ff 0%, #4f2fe8 100%);
+  background: linear-gradient(135deg, var(--brand) 0%, var(--accent-pink) 100%);
   color: #fff;
   box-shadow: 0 4px 18px rgba(108, 71, 255, 0.35);
 }
@@ -148,7 +148,7 @@
 .okBtn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(108, 71, 255, 0.5);
-  background: linear-gradient(135deg, #7c6ef8 0%, #6c47ff 100%);
+  filter: brightness(1.08);
 }
 
 .okBtn:active {
@@ -157,7 +157,7 @@
 
 /* Confirm Button (Confirm Mode) */
 .confirmBtn {
-  background: linear-gradient(135deg, #6c47ff 0%, #4f2fe8 100%);
+  background: linear-gradient(135deg, var(--brand) 0%, var(--accent-pink) 100%);
   color: #fff;
   box-shadow: 0 4px 18px rgba(108, 71, 255, 0.3);
 }
@@ -165,6 +165,7 @@
 .confirmBtn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(108, 71, 255, 0.45);
+  filter: brightness(1.08);
 }
 
 /* Cancel Button (Confirm Mode) */

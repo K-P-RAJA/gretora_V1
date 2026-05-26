@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@400;600&display=swap');
+
 .section {
   padding: 120px 56px;
   background: var(--bg-deep);
@@ -67,107 +69,204 @@
   border: 1px solid var(--glass-border);
 }
 
-/* 3D Greeting Card */
+/* 3D Realistic Horizontal Greeting Card */
 .right {
   display: flex;
   justify-content: center;
   align-items: center;
   perspective: 2000px;
+  padding: 40px 0;
 }
 
 .cardContainer {
-  width: 340px;
-  height: 480px;
+  width: 360px;
+  height: 500px;
   position: relative;
   cursor: pointer;
   transform-style: preserve-3d;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .cardContainer:hover {
-  transform: scale(1.02);
+  transform: scale(1.02) rotateY(-5deg);
 }
 
-/* The back cover (inside right page) */
+/* The static inside right page (card base) */
 .cardBack {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: #FAF8F5; /* warm paper white */
+  background: #fdfbf7;
   border-radius: 12px;
-  box-shadow: 20px 20px 50px rgba(0,0,0,0.4), inset -5px 0 20px rgba(0,0,0,0.05);
+  box-shadow: 15px 15px 40px rgba(0,0,0,0.4), inset -5px 0 20px rgba(0,0,0,0.05);
   padding: 30px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   box-sizing: border-box;
+  overflow: hidden;
+  background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
 }
 
-.videoPlaceholder {
+/* Inside display frame for QR / Video */
+.displayFrame {
   width: 100%;
-  height: 180px;
-  background: #111;
-  border-radius: 8px;
+  height: 100%;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 
+    0 10px 30px rgba(0,0,0,0.06),
+    inset 0 0 0 1px rgba(180, 140, 80, 0.15);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 24px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 20px;
 }
 
-.videoPlaceholder::before {
+.displayFrame::before {
   content: '';
   position: absolute;
-  inset: 0;
-  background: url('https://images.pexels.com/photos/1729931/pexels-photo-1729931.jpeg?auto=compress&cs=tinysrgb&w=600') center/cover;
-  opacity: 0.5;
-  filter: blur(2px);
+  inset: 8px;
+  border: 1px solid rgba(180, 140, 80, 0.25);
+  border-radius: 8px;
+  pointer-events: none;
 }
 
-.playBtn {
-  width: 50px;
-  height: 50px;
-  background: rgba(255,255,255,0.9);
-  border-radius: 50%;
+.displayFrame::after {
+  content: '';
+  position: absolute;
+  inset: 11px;
+  border: 1px dashed rgba(180, 140, 80, 0.15);
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+.qrInteraction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.frameHeader {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #b48c50;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.qrGlass {
+  padding: 12px;
+  background: linear-gradient(135deg, #fff 0%, #faf8f5 100%);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(180, 140, 80, 0.15);
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.qrGlass:hover {
+  transform: scale(1.03) translateY(-3px);
+}
+
+.qrWrapper {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #111;
-  z-index: 1;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-.cardMessage {
-  flex: 1;
+.qrCenterLogo {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background: #fff;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b48c50;
+  font-size: 11px;
+  padding-left: 1px;
+}
+
+.playHint {
+  margin-top: 24px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #8a735b;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Video playing mode in right page */
+.videoContainer {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 30;
   display: flex;
   flex-direction: column;
 }
 
-.cardMessage h3 {
-  font-family: 'Georgia', serif;
-  font-size: 24px;
-  color: #2C2825;
-  margin-bottom: 12px;
+.videoPlayer {
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
-.cardMessage p {
-  font-size: 14px;
-  color: #55514E;
-  line-height: 1.6;
-  font-family: 'Georgia', serif;
+.closeBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 40;
 }
 
-.signature {
-  margin-top: auto;
-  font-family: 'Brush Script MT', 'Lucida Handwriting', cursive, serif;
-  font-size: 26px;
-  color: #2C2825;
-  text-align: right;
-  opacity: 0.8;
+.closeBtn:hover {
+  background: #000;
 }
 
-/* Front flap container */
+/* Front Flap container (folds open) */
+.cardFront {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  border-radius: 12px;
+  z-index: 2;
+}
+
+.cardContainer.opened {
+  transform: translateX(180px);
+}
+
+.cardContainer.opened:hover {
+  transform: translateX(180px) scale(1.01);
+}
+
+/* Front Flap container (folds open) */
 .cardFront {
   position: absolute;
   width: 100%;
@@ -180,63 +279,157 @@
 }
 
 .cardContainer.opened .cardFront {
-  transform: rotateY(-140deg);
+  transform: rotateY(-180deg);
 }
 
-/* Inside left page (back of the cover) */
+/* Inside Left Page (visible when open) */
 .cardFrontInside {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: #F4F1ED;
+  background: #fdfbf7;
   backface-visibility: hidden;
   transform: rotateY(180deg);
   border-radius: 12px;
-  box-shadow: inset 5px 0 20px rgba(0,0,0,0.05);
+  box-shadow: -15px 15px 40px rgba(0,0,0,0.35), inset 5px 0 20px rgba(0,0,0,0.05);
+  box-sizing: border-box;
+  padding: 40px 24px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   border-right: 1px solid rgba(0,0,0,0.05);
+  background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
 }
 
-.insideQr {
-  text-align: center;
-  opacity: 0.6;
+/* Left Page Ornaments */
+.ornament {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(180, 140, 80, 0.3);
+  pointer-events: none;
 }
+.topLeft { top: 16px; left: 16px; border-right: none; border-bottom: none; border-top-left-radius: 10px; }
+.topRight { top: 16px; right: 16px; border-left: none; border-bottom: none; border-top-right-radius: 10px; }
+.bottomLeft { bottom: 16px; left: 16px; border-right: none; border-top: none; border-bottom-left-radius: 10px; }
+.bottomRight { bottom: 16px; right: 16px; border-left: none; border-top: none; border-bottom-right-radius: 10px; }
 
-.qrCode {
-  width: 80px;
-  height: 80px;
-  background: #FFF;
-  border: 4px solid #FFF;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  margin-bottom: 12px;
-  border-radius: 4px;
+.brandHeader {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  text-align: center;
 }
 
-.qrInner {
-  width: 100%;
-  height: 100%;
-  background: repeating-linear-gradient(45deg, #111, #111 5px, transparent 5px, transparent 10px);
-}
-
-.insideQr p {
-  font-family: 'Georgia', serif;
-  font-size: 12px;
-  color: #2C2825;
-  letter-spacing: 2px;
+.brandLogo {
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: #2a1610;
+  letter-spacing: 3px;
   text-transform: uppercase;
 }
 
-/* The actual cover */
+.tag {
+  font-size: 8px;
+  font-weight: 600;
+  color: #8a735b;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.recipientBlock {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.occasionText {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  color: #b48c50;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.smallLabel {
+  font-size: 9px;
+  font-weight: 700;
+  color: #8a735b;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.recipientName {
+  font-family: 'Cinzel', serif;
+  font-size: 20px;
+  color: #2a1610;
+  text-transform: uppercase;
+  letter-spacing: 0px;
+}
+
+.goldDivider {
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #b48c50, transparent);
+  margin: 10px auto 0;
+}
+
+.messageBlock {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 10px;
+  margin: 10px 0;
+}
+
+.messageText {
+  font-family: 'Great Vibes', cursive;
+  font-size: 20px;
+  line-height: 1.4;
+  color: #3d2b1f;
+}
+
+.waxSeal {
+  width: 36px;
+  height: 36px;
+  background: radial-gradient(circle at 30% 30%, #a42c2c, #7a1515);
+  border-radius: 50%;
+  margin: 0 auto;
+  box-shadow: 
+    0 2px 6px rgba(0,0,0,0.3),
+    inset 0 0 5px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.waxSeal span {
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #e5b6b6;
+}
+
+.signature {
+  font-family: 'Great Vibes', cursive;
+  font-size: 16px;
+  color: #2C2825;
+  text-align: center;
+  margin-top: 6px;
+}
+
+/* Outside cover (Visible when closed) */
 .cardFrontOutside {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-image: url('https://images.pexels.com/photos/1729931/pexels-photo-1729931.jpeg?auto=compress&cs=tinysrgb&w=600');
+  background-image: url('/images/greetingcard/GreetingCard_FrontPage.webp');
   background-size: cover;
   background-position: center;
   backface-visibility: hidden;
@@ -252,7 +445,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.7));
+  background: linear-gradient(to bottom, rgba(124, 110, 248, 0.1), rgba(9, 9, 11, 0.7));
   border-radius: 12px;
 }
 
@@ -264,30 +457,58 @@
 }
 
 .coverText h2 {
-  font-family: 'Georgia', serif;
-  font-size: 38px;
+  font-family: 'Cinzel', serif;
+  font-size: 32px;
   color: #FFF;
-  line-height: 1.2;
+  line-height: 1.25;
   text-shadow: 0 4px 12px rgba(0,0,0,0.5);
-  font-style: italic;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .tapPrompt {
   position: absolute;
   bottom: 30px;
   z-index: 1;
-  background: rgba(255,255,255,0.25);
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(8px);
   padding: 8px 20px;
   border-radius: 100px;
   color: #FFF;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
   animation: pulse 2s infinite;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.closeCardBtn {
+  position: relative;
+  margin-top: 14px;
+  z-index: 10;
+  background: rgba(42, 22, 16, 0.95);
+  color: #b48c50;
+  border: 1px solid rgba(180, 140, 80, 0.4);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+}
+
+.closeCardBtn:hover {
+  background: #2a1610;
+  border-color: #b48c50;
+  color: #fdfbf7;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
 }
 
 @keyframes pulse {
@@ -296,6 +517,181 @@
 }
 
 @media (max-width: 968px) {
-  .inner { grid-template-columns: 1fr; gap: 60px; }
-  .cardContainer.opened .cardFront { transform: rotateY(-110deg); }
+  .inner { grid-template-columns: 1fr; gap: 60px; text-align: center; }
+  .left { align-items: center; }
+  .pills { justify-content: center; }
+}
+
+@media (max-width: 800px) {
+  /* Stage / Right Container: no perspective, centered */
+  .right {
+    perspective: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px 0;
+  }
+
+  /* Closed Card */
+  .cardContainer {
+    width: 290px;
+    height: 400px;
+    margin: 0 auto;
+  }
+
+  /* Opened Card: Stack vertically */
+  .cardContainer.opened {
+    transform: none !important;
+    transform-style: flat;
+    width: 290px;
+    height: auto;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: none;
+    cursor: default;
+    margin: 0 auto;
+  }
+  .cardContainer.opened:hover {
+    transform: none !important;
+  }
+
+  /* Cover dissolve exit */
+  .cardContainer.opened .cardFrontOutside {
+    position: absolute;
+    inset: 0;
+    animation: coverDissolve 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    pointer-events: none;
+    z-index: 100;
+    border-radius: 12px;
+  }
+
+  @keyframes coverDissolve {
+    0%   { opacity: 1; transform: scale(1); filter: blur(0px) brightness(1); }
+    40%  { opacity: 0.7; transform: scale(1.04); filter: blur(0px) brightness(1.6); }
+    100% { opacity: 0; transform: scale(0.88) translateY(-30px); filter: blur(12px) brightness(2); }
+  }
+
+  /* Gold shimmer flash overlay on opening */
+  .cardContainer.opened::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 16px;
+    background: linear-gradient(135deg,
+      rgba(255,215,100,0.4) 0%,
+      rgba(180,140,80,0.1) 40%,
+      rgba(255,215,100,0.3) 60%,
+      transparent 100%
+    );
+    animation: shimmerFlash 1s ease-out forwards;
+    pointer-events: none;
+    z-index: 200;
+  }
+
+  @keyframes shimmerFlash {
+    0%   { opacity: 1; transform: scale(1.05); }
+    50%  { opacity: 0.6; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.98); }
+  }
+
+  /* Front flap becomes a normal flow element on top (Message on top) */
+  .cardContainer.opened .cardFront {
+    position: relative;
+    transform: none !important;
+    transform-style: flat;
+    width: 100%;
+    height: auto;
+    order: -1;
+    z-index: auto;
+    border-radius: 12px 12px 0 0;
+    animation: revealMessagePane 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) 0.3s both;
+  }
+
+  @keyframes revealMessagePane {
+    from { opacity: 0; transform: translateY(15px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Inside left (Message details): visible, no rotation */
+  .cardContainer.opened .cardFrontInside {
+    position: relative;
+    transform: none !important;
+    backface-visibility: visible;
+    width: 100%;
+    height: auto;
+    min-height: 300px;
+    background: #fdfbf7;
+    padding: 24px 20px;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+  }
+
+  /* Inside right (QR/Video page): flows below message */
+  .cardContainer.opened .cardBack {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 260px;
+    padding: 20px;
+    border-radius: 0 0 12px 12px;
+    animation: revealQRPane 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) 0.5s both;
+    box-shadow:
+      0 20px 50px rgba(0,0,0,0.4),
+      0 0 0 1px rgba(180,140,80,0.12);
+  }
+
+  @keyframes revealQRPane {
+    from { opacity: 0; transform: translateY(15px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Close button: sits elegantly below stacked card */
+  .closeCardBtn {
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin: 20px auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInUp 0.4s ease 0.8s both;
+  }
+  .closeCardBtn:hover {
+    transform: translateY(-1px) !important;
+  }
+}
+
+/* Smaller phone screen support */
+@media (max-width: 480px) {
+  .section { padding: 60px 16px; }
+  .title { font-size: 32px; letter-spacing: -1px; }
+  .sub { font-size: 16px; }
+  .cardContainer {
+    width: 270px;
+    height: 380px;
+  }
+  .cardContainer.opened {
+    width: 270px;
+  }
+  .cardContainer.opened .cardFrontInside {
+    min-height: 280px;
+  }
+  .cardContainer.opened .cardBack {
+    min-height: 240px;
+  }
+}
+
+@media (max-width: 385px) {
+  .cardContainer {
+    width: 250px;
+    height: 350px;
+  }
+  .cardContainer.opened {
+    width: 250px;
+  }
 }

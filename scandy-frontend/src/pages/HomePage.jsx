@@ -1,18 +1,22 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { QRCode } from "react-qrcode-logo";
+import { getProfile } from "../api/UserService";
 
 import styles from "./HomePage.module.css";
 
 import { uploadVideo } from "../api/videoService";
-import { createGreeting } from "../api/greetingService";
+import { createGreeting, getMyGreetings } from "../api/greetingService";
 import { useAlert } from "../context/AlertContext";
 
 import AppNavbar from "../components/AppNavbar";
 import Footer from "../components/Footer";
+import InfoModal from "../components/InfoModal";
 
 export default function HomePage() {
   const navigate = useNavigate();
   const { showAlert } = useAlert();
+  const [showTermsModal, setShowTermsModal] = useState(false);
 
   const fileInputRef = useRef(null);
 
@@ -23,6 +27,25 @@ export default function HomePage() {
   const [videoFile, setVideoFile] = useState(null);
 
   const [loading, setLoading] = useState(false);
+  
+  const [profile, setProfile] = useState(null);
+  const [cardOpened, setCardOpened] = useState(false);
+  const [greetingsCount, setGreetingsCount] = useState(0);
+
+  useEffect(() => {
+    async function loadProfileAndGreetings() {
+      try {
+        const p = await getProfile();
+        setProfile(p);
+        
+        const greetings = await getMyGreetings();
+        setGreetingsCount(greetings.length);
+      } catch (err) {
+        console.error("Failed to load user profile or greetings count:", err);
+      }
+    }
+    loadProfileAndGreetings();
+  }, []);
 
   const handleVideoUpload = async (e) => {
     const file = e.target.files[0];
@@ -34,8 +57,8 @@ export default function HomePage() {
       return;
     }
 
-    if (file.size > 100 * 1024 * 1024) {
-      await showAlert("Video must be below 100MB.", "warning");
+    if (file.size > 50 * 1024 * 1024) {
+      await showAlert("Video size must be below 50MB.", "warning");
       return;
     }
 
@@ -44,6 +67,11 @@ export default function HomePage() {
 
   const handleGenerateGreeting = async () => {
     try {
+      if (greetingsCount >= 3) {
+        await showAlert("You have already used your free quota of 3 greetings. You can delete an older greeting card from your dashboard or upgrade to a subscription.", "warning");
+        return;
+      }
+
       if (
         !recipientName ||
         !occasion ||
@@ -51,6 +79,11 @@ export default function HomePage() {
         !videoFile
       ) {
         await showAlert("Please complete all fields.", "warning");
+        return;
+      }
+
+      if (message.length > 300) {
+        await showAlert("Greeting message cannot exceed 300 characters.", "warning");
         return;
       }
 
@@ -149,54 +182,101 @@ export default function HomePage() {
             </div>
 
             <div className={styles.previewGreeting}>
-              <div
-                className={
-                  styles.previewRibbonVertical
-                }
-              ></div>
+              <div className={styles.right}>
+                <div className={styles.cardStage}>
+                  <div 
+                    className={`${styles.cardContainer} ${cardOpened ? styles.opened : ''}`} 
+                    onClick={() => { if (!cardOpened) setCardOpened(true); }}
+                  >
+                    {/* INSIDE RIGHT PAGE (Permanently fixed in background) */}
+                    <div className={styles.cardBack}>
+                      <div className={styles.displayFrame}>
+                        <div className={styles.qrInteraction}>
+                          <div className={styles.frameHeader}>Scan to Reveal</div>
+                          
+                          <div className={styles.qrGlass}>
+                            <div className={styles.qrWrapper}>
+                               <QRCode
+                                 value="https://scandy.app/g/demo"
+                                 size={120}
+                                 bgColor="transparent"
+                                 fgColor="#2a1610"
+                                 qrStyle="dots"
+                                 eyeRadius={8}
+                                 eyeColor="#b48c50"
+                                 logoImage="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2I0OGM1MCI+PHBhdGggZD0iTTEyIDIxLjM1bC0xLjQ1LTEuMzJDNS40IDE1LjM2IDIgMTIuMjggMiA4LjVDMiA1LjQyIDQuNDIgMyA3LjUgM2MxLjc0IDAgMy40MS44MSA0LjUgMi4wOUMxMy4wOSAzLjgxIDE0Ljc2IDMgMTYuNSAzbDMuMDggMGMzLjA4IDAgNS41IDIuNDIgNS41IDUuNSAwIDMuNzgtMy40IDYuODYtOC41NSAxMS41NEwxMiAyMS4zNXoiLz48L3N2Zz4="
+                                 logoWidth={24}
+                                 logoHeight={24}
+                                 logoPadding={3}
+                                 logoPaddingStyle="circle"
+                                 removeQrCodeBehindLogo={true}
+                               />
+                            </div>
+                          </div>
+                          
+                          <div className={styles.playHint}>
+                            Recipient scans to play video
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-              <div
-                className={
-                  styles.previewRibbonHorizontal
-                }
-              ></div>
+                    {/* FRONT FOLDING FLAP (folds open around left axis) */}
+                    <div className={styles.cardFront}>
+                      {/* INSIDE LEFT PAGE (Back of the front cover - visible when card is open) */}
+                      <div className={styles.cardFrontInside}>
+                        {/* Decorative Corner Ornaments */}
+                        <div className={`${styles.ornament} ${styles.topLeft}`}></div>
+                        <div className={`${styles.ornament} ${styles.topRight}`}></div>
+                        <div className={`${styles.ornament} ${styles.bottomLeft}`}></div>
+                        <div className={`${styles.ornament} ${styles.bottomRight}`}></div>
 
-              <div className={styles.previewInner}>
-                <p className={styles.previewSmall}>
-                  A special greeting for
-                </p>
+                        <div className={styles.brandHeader}>
+                          <span className={styles.brandLogo}>Scandy</span>
+                          <span className={styles.tag}>Premium Greetings</span>
+                        </div>
 
-                <h2>
-                  {recipientName ||
-                    "Someone Special"}
-                </h2>
+                        <div className={styles.recipientBlock}>
+                          <h2 className={styles.occasionText}>{occasion || "Birthday Surprise"}</h2>
+                          <p className={styles.smallLabel}>FOR</p>
+                          <h1 className={styles.recipientName}>{recipientName || "Someone Special"}</h1>
+                          <div className={styles.goldDivider}></div>
+                        </div>
 
-                <div
-                  className={
-                    styles.previewDivider
-                  }
-                >
-                  <span></span>
-                  <div></div>
-                  <span></span>
+                        <div className={styles.messageBlock}>
+                          <p className={styles.messageText}>
+                            {message || "Your heartfelt message will appear beautifully here for your loved one."}
+                          </p>
+                        </div>
+
+                        <div className={styles.waxSeal}>
+                          <span>S</span>
+                        </div>
+                        
+                        <span className={styles.signature}>With love, {profile?.name || "Sender"}</span>
+                      </div>
+
+                      {/* OUTSIDE COVER PAGE (Visible when closed) */}
+                      <div className={styles.cardFrontOutside}>
+                        <div className={styles.coverText}>
+                          <h2>For<br/>{recipientName || "Someone\nSpecial"}</h2>
+                        </div>
+                        {!cardOpened && <div className={styles.tapPrompt}>Tap to fold open</div>}
+                      </div>
+                    </div>
+                    
+                  </div>
                 </div>
 
-                <p
-                  className={
-                    styles.previewMessage
-                  }
-                >
-                  {message ||
-                    "Your heartfelt message will appear beautifully here for your loved one."}
-                </p>
-
-                <div
-                  className={styles.previewQr}
-                ></div>
-
-                <p className={styles.previewScan}>
-                  Scan to unwrap your surprise
-                </p>
+                {/* Close button outside 3D context so pointer-events always work */}
+                {cardOpened && (
+                  <button
+                    className={styles.closeCardBtn}
+                    onClick={() => setCardOpened(false)}
+                  >
+                    ✕ Close Card
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -255,19 +335,24 @@ export default function HomePage() {
 
             {/* MESSAGE */}
             <div className={styles.formGroup}>
-              <label>
-                Greeting Message
-              </label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <label style={{ margin: 0 }}>Greeting Message</label>
+                <span style={{ 
+                  fontSize: '11px', 
+                  fontFamily: "'Lato', sans-serif",
+                  color: message.length >= 270 ? '#ef4444' : '#a1a1aa',
+                  fontWeight: '600'
+                }}>
+                  {message.length} / 300 characters
+                </span>
+              </div>
 
               <textarea
                 rows="5"
                 placeholder="Write your heartfelt message..."
                 value={message}
-                onChange={(e) =>
-                  setMessage(
-                    e.target.value
-                  )
-                }
+                maxLength={300}
+                onChange={(e) => setMessage(e.target.value)}
               ></textarea>
             </div>
 
@@ -328,7 +413,7 @@ export default function HomePage() {
             <p className={styles.policyDisclaimer}>
               By generating a greeting, you acknowledge that you are solely
               responsible for the uploaded video content and agree to our{" "}
-              <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>.
+              <a href="#terms" onClick={(e) => { e.preventDefault(); setShowTermsModal(true); }}>Terms of Service</a>.
               Scandy accepts no liability for user-generated content.
             </p>
           </div>
@@ -388,6 +473,9 @@ export default function HomePage() {
         </section>
       </main>
       <Footer />
+      {showTermsModal && (
+        <InfoModal type="terms" onClose={() => setShowTermsModal(false)} />
+      )}
     </div>
   );
 }

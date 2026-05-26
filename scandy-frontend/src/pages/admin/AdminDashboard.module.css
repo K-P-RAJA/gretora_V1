@@ -79,7 +79,7 @@
 }
 
 .retryBtn {
-  background: var(--brand);
+  background: linear-gradient(135deg, var(--brand) 0%, var(--accent-pink) 100%);
   color: var(--text-main);
   border: none;
   border-radius: var(--radius-md);
@@ -89,9 +89,9 @@
 }
 
 .retryBtn:hover {
-  background: var(--brand-light);
   transform: translateY(-2px);
   box-shadow: var(--shadow-brand);
+  filter: brightness(1.08);
 }
 
 /* Stats Grid */
@@ -357,7 +357,7 @@
 .actionBtn {
   width: 100%;
   padding: 14px;
-  background: var(--brand);
+  background: linear-gradient(135deg, var(--brand) 0%, var(--accent-pink) 100%);
   color: var(--text-main);
   border: none;
   border-radius: var(--radius-md);
@@ -368,9 +368,9 @@
 }
 
 .actionBtn:hover {
-  background: var(--brand-light);
   transform: translateY(-1px);
   box-shadow: var(--shadow-brand);
+  filter: brightness(1.08);
 }
 
 /* System Integrity List */

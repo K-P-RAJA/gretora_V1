@@ -110,6 +110,12 @@ export default function MyGreetingsPage() {
   const handleEditSave = async () => {
     try {
       setIsSaving(true);
+
+      if (editFormData.message && editFormData.message.length > 300) {
+        await showAlert("Greeting message cannot exceed 300 characters.", "warning");
+        setIsSaving(false);
+        return;
+      }
       
       let videoId = null;
       if (newVideoFile) {
@@ -314,8 +320,22 @@ export default function MyGreetingsPage() {
             </div>
 
             <div className={styles.formGroup}>
-              <label>Message</label>
-              <textarea rows="4" value={editFormData.message} onChange={e => setEditFormData({...editFormData, message: e.target.value})}></textarea>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <label style={{ margin: 0 }}>Message</label>
+                <span style={{ 
+                  fontSize: '11px', 
+                  color: (editFormData.message || '').length >= 270 ? '#ef4444' : '#a1a1aa',
+                  fontWeight: '600'
+                }}>
+                  {(editFormData.message || '').length} / 300 characters
+                </span>
+              </div>
+              <textarea 
+                rows="4" 
+                value={editFormData.message || ''} 
+                maxLength={300}
+                onChange={e => setEditFormData({...editFormData, message: e.target.value})}
+              ></textarea>
             </div>
 
             <div className={styles.videoReplaceSection}>

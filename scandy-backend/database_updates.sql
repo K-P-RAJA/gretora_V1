@@ -55,4 +55,18 @@ CREATE TABLE IF NOT EXISTS public.scan_logs (
   constraint scan_logs_qr_id_fkey foreign KEY (qr_id) references public.qr_codes (id) ON DELETE CASCADE
 );
 
+-- Support Tickets Table
+CREATE TABLE IF NOT EXISTS public.support_tickets (
+  id UUID NOT NULL DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  subject TEXT NULL,
+  message TEXT NOT NULL,
+  status VARCHAR(50) NOT NULL DEFAULT 'Pending',
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+  CONSTRAINT support_tickets_pkey PRIMARY KEY (id),
+  CONSTRAINT chk_ticket_status CHECK (status IN ('Pending', 'Resolved'))
+);
+
+
 

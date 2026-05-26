@@ -6,6 +6,7 @@ import WhyScandy from "../components/WhyScandy";
 import Occasions from "../components/Occasions";
 import Testimonials from "../components/Testimonials";
 import FAQ from "../components/Faq";
+import PricingSection from "../components/PricingSection";
 import CTASection from "../components/CTASection";
 import Footer from "../components/Footer";
 import GreetingCards from "../components/GreetingCard";
@@ -25,6 +26,7 @@ export default function Home() {
         <Occasions/>
         <Testimonials/>
         <FAQ/>
+        <PricingSection/>
         <CTASection/>
         
         {/* next sections go here */}

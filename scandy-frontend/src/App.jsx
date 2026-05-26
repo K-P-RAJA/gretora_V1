@@ -18,6 +18,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminReports from "./pages/admin/AdminReports";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminGreetings from "./pages/admin/AdminGreetings";
+import AdminSupport from "./pages/admin/AdminSupport";
 import SuspendedPage from "./pages/SuspendedPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 
@@ -32,11 +33,7 @@ function App() {
         {/* PUBLIC-ONLY — redirect to /home if already logged in */}
         <Route
           path="/"
-          element={
-            <PublicRoute>
-              <LandingPage />
-            </PublicRoute>
-          }
+          element={<LandingPage />}
         />
 
         <Route
@@ -110,6 +107,7 @@ function App() {
           <Route path="reports" element={<AdminReports />} />
           <Route path="users" element={<AdminUsers />} />
           <Route path="greetings" element={<AdminGreetings />} />
+          <Route path="support" element={<AdminSupport />} />
         </Route>
 
         {/* CATCH-ALL */}

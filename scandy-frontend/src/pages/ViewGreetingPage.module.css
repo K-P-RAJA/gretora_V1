@@ -1,25 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Lato:wght@300;400;700&display=swap');
+
+/* ═══════════════════════════════════════
+   PAGE BASE
+═══════════════════════════════════════ */
 .page {
   min-height: 100vh;
   background: var(--bg-deep);
   color: #fff;
-  padding: 120px 24px;
+  padding: 100px 24px 60px;
   position: relative;
 }
 
 .container {
-  max-width: 900px;
+  max-width: 960px;
   margin: 0 auto;
   position: relative;
   z-index: 10;
 }
 
+/* Ambient glow blobs */
+.glowOne {
+  position: fixed; top: -120px; left: -120px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(124,110,248,0.18) 0%, transparent 70%);
+  border-radius: 50%; pointer-events: none; z-index: 0;
+}
+.glowTwo {
+  position: fixed; bottom: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(236,72,153,0.12) 0%, transparent 70%);
+  border-radius: 50%; pointer-events: none; z-index: 0;
+}
+.glowThree {
+  position: fixed; top: 40%; left: 50%;
+  width: 600px; height: 200px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(180,140,80,0.05) 0%, transparent 70%);
+  border-radius: 50%; pointer-events: none; z-index: 0;
+}
+
+.loadingPage {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-deep);
+}
+
+.loader {
+  width: 40px; height: 40px;
+  border: 3px solid rgba(255,255,255,0.1);
+  border-top-color: #b48c50;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Branding Bar ───────────────────── */
 .brandBar {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-bottom: 64px;
-  opacity: 0.8;
+  margin-bottom: 48px;
+  opacity: 0.85;
+}
+
+.brandBar h4 {
+  font-family: 'Cinzel', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.brandBar p {
+  font-family: 'Lato', sans-serif;
+  font-size: 11px;
+  color: #a1a1aa;
+  margin: 0;
+  letter-spacing: 1px;
 }
 
 .logo {
@@ -32,95 +93,464 @@
   justify-content: center;
   font-weight: 800;
   font-size: 18px;
+  font-family: 'Cinzel', serif;
 }
 
-.heroCard {
-  background: var(--bg-surface);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
-  padding: 80px 60px;
-  box-shadow: var(--shadow-lg);
-  text-align: center;
-  animation: slideUp 0.8s ease-out;
-}
-
-.badge {
-  display: inline-block;
-  padding: 6px 14px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--glass-border);
-  border-radius: 6px;
-  color: var(--brand);
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 32px;
-}
-
-.title {
-  font-size: clamp(2rem, 5vw, 3.2rem);
-  font-weight: 800;
-  letter-spacing: -2px;
-  line-height: 1.1;
+/* ═══════════════════════════════════════
+   CARD STAGE & 3D FLIP CONTAINER
+═══════════════════════════════════════ */
+.cardSection {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px 0 40px;
+  overflow: visible;
   margin-bottom: 24px;
 }
 
-.message {
-  font-size: 18px;
-  line-height: 1.7;
-  color: var(--text-muted);
-  max-width: 540px;
-  margin: 0 auto 56px;
+/* Stage shifts from single-card width to double-card width when opened */
+.cardStage {
+  position: relative;
+  perspective: 2200px;
+  overflow: visible;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.videoFrame {
-  width: 100%;
-  aspect-ratio: 16/9;
-  background: #000;
-  border-radius: var(--radius-md);
+/* Single card: 360×500 */
+.cardContainer {
+  width: 360px;
+  height: 500px;
+  position: relative;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.cardContainer:hover:not(.opened) {
+  transform: scale(1.02) rotateY(-5deg);
+}
+
+/* When opened, flap rotates away — inner card slides in */
+.cardContainer.opened {
+  transform: translateX(180px);
+  pointer-events: auto;
+}
+
+/* Inside right page when open */
+.cardBack {
+  position: absolute;
+  width: 100%; height: 100%;
+  background-image: url('/images/greetingcard/GreetingCardInnerPage.png');
+  background-size: 200% 100%;
+  background-position: right center;
+  background-repeat: no-repeat;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 40px 80px rgba(0,0,0,0.4);
+  padding: 28px 28px 20px 20px;
 }
 
-.video {
+.qrInteraction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.frameHeader {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #b48c50;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.playHint {
+  font-family: 'Lato', sans-serif;
+  font-size: 11px;
+  color: #8a735b;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Folding flap */
+.cardFront {
+  position: absolute;
+  width: 100%; height: 100%;
+  transform-origin: left center;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  border-radius: 12px;
+  z-index: 2;
+}
+
+.cardContainer.opened .cardFront {
+  transform: rotateY(-180deg);
+}
+
+/* Inside left page when open (visible on left) */
+.cardFrontInside {
+  position: absolute;
+  width: 100%; height: 100%;
+  background-image: url('/images/greetingcard/GreetingCardInnerPage.png');
+  background-size: 200% 100%;
+  background-position: left center;
+  background-repeat: no-repeat;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+  border-radius: 12px;
+  box-shadow: inset 5px 0 20px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 28px 20px 20px 28px;
+}
+
+/* Outside cover face */
+.cardFrontOutside {
+  position: absolute;
+  width: 100%; height: 100%;
+  background-image: url('/images/greetingcard/GreetingCard_FrontPage.webp');
+  background-size: cover;
+  background-position: center;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 5px 0 20px rgba(0,0,0,0.35);
+}
+
+.cardFrontOutside::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(30,20,50,0.2), rgba(9,9,11,0.72));
+  border-radius: 12px;
+}
+
+.coverText {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 30px;
+}
+
+.coverText h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 30px;
+  color: #fff;
+  line-height: 1.3;
+  text-shadow: 0 4px 14px rgba(0,0,0,0.6);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.tapPrompt {
+  position: absolute;
+  bottom: 28px;
+  z-index: 1;
+  background: rgba(255,255,255,0.13);
+  backdrop-filter: blur(8px);
+  padding: 8px 22px;
+  border-radius: 100px;
+  color: #fff;
+  font-family: 'Lato', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  animation: pulseRecipient 2s infinite;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+@keyframes pulseRecipient {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* ═══════════════════════════════════════
+   INNER CARD — double-page opened layout
+   Uses GreetingCardInnerPage.png as bg
+═══════════════════════════════════════ */
+.innerCard {
+  position: relative;
+  width: 760px;
+  max-width: 95vw;
+  height: 500px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow:
+    -20px 20px 60px rgba(0,0,0,0.55),
+    0 8px 32px rgba(0,0,0,0.4),
+    inset 0 0 0 1px rgba(180,140,80,0.15);
+  animation: cardReveal 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+
+  /* The inner page image covers the full double-page spread */
+  background-image: url('/images/greetingcard/GreetingCardInnerPage.png');
+  background-size: cover;
+  background-position: center;
+
+  display: flex;
+  flex-direction: row;
+}
+
+@keyframes cardReveal {
+  from { opacity: 0; transform: scale(0.94) translateY(16px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Spine divider between pages */
+.spine {
+  width: 2px;
+  height: 100%;
+  flex-shrink: 0;
+  background: linear-gradient(to bottom,
+    transparent 0%,
+    rgba(180,140,80,0.3) 20%,
+    rgba(180,140,80,0.6) 50%,
+    rgba(180,140,80,0.3) 80%,
+    transparent 100%
+  );
+  box-shadow: 1px 0 8px rgba(0,0,0,0.12), -1px 0 8px rgba(0,0,0,0.12);
+}
+
+/* ── Left Half: Video ──────────────── */
+.innerLeft {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 20px 20px 28px;
+  gap: 12px;
+}
+
+.videoWrapper {
+  width: 100%;
+  height: 280px;
+  flex: none;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000;
+  box-shadow:
+    0 8px 30px rgba(0,0,0,0.35),
+    0 0 0 1px rgba(180,140,80,0.25);
+  position: relative;
+}
+
+.videoPlayer {
   width: 100%;
   height: 100%;
+  display: block;
+  object-fit: cover;
   border: none;
 }
 
-.bottomSection {
-  margin-top: 80px;
+.videoCaption {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: #8a735b;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+/* ── Right Half: Greeting Content ──── */
+.innerRight {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 28px 20px 20px;
+  position: relative;
+}
+
+.innerRightContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
   text-align: center;
+  gap: 12px;
 }
 
-.ctaButton {
-  display: inline-block;
-  background: #fff;
-  color: #000;
-  padding: 18px 48px;
-  border-radius: 8px;
+.occasionPill {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
   font-weight: 700;
-  text-decoration: none;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #b48c50;
+  background: rgba(180,140,80,0.08);
+  border: 1px solid rgba(180,140,80,0.3);
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-top: 28px; /* Pulled down slightly to clear top-right floral corner art */
+}
+
+.recipientSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.forLabel {
+  font-family: 'Lato', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #8a735b;
+  margin: 0;
+}
+
+.recipientNameLarge {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #2a1610;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.goldDivider {
+  width: 50px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #b48c50, transparent);
+  margin: 6px auto 0;
+}
+
+.messageSection {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+.messageText {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  line-height: 1.7;
+  color: #3d2b1f;
+  word-break: break-word;
+  margin: 0;
+}
+
+.senderSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.waxSeal {
+  width: 38px; height: 38px;
+  background: radial-gradient(circle at 30% 30%, #a42c2c, #7a1515);
+  border-radius: 50%;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3), inset 0 0 6px rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.waxSeal span {
+  font-family: 'Cinzel', serif;
   font-size: 16px;
-  transition: transform 0.2s;
+  font-weight: 700;
+  color: #e5b6b6;
 }
 
-.ctaButton:hover {
-  transform: translateY(-2px);
-  background: #fafafa;
+.signature {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: #5a4033;
 }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes fadeInButton {
+  from { opacity: 0; transform: translateX(-50%) scale(0.9); }
+  to   { opacity: 1; transform: translateX(-50%) scale(1); }
 }
 
-/* Report Section */
+/* Close / fold button — absolutely positioned under the left video player (outside 3D container) */
+.closeFlapBtn {
+  position: absolute;
+  bottom: 24px;
+  left: calc(50% - 180px); /* Center under left page */
+  transform: translateX(-50%);
+  
+  /* Start hidden, fade in after card open animation completes */
+  opacity: 0;
+  animation: fadeInButton 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0.6s;
+  
+  background: rgba(42,22,16,0.92);
+  color: #b48c50;
+  border: 1px solid rgba(180,140,80,0.5);
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-family: 'Lato', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  z-index: 150;
+}
+
+.closeFlapBtn:hover {
+  background: #2a1610;
+  border-color: #b48c50;
+  color: #fdfbf7;
+  transform: translateX(-50%) translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+
+.innerLeftContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  gap: 8px;
+}
+
+/* ═══════════════════════════════════════
+   BELOW-CARD SECTIONS
+═══════════════════════════════════════ */
 .reportSection {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   margin-top: 24px;
 }
 
@@ -145,7 +575,76 @@
   background: rgba(239,68,68,0.05);
 }
 
-/* Report Modal */
+.bottomSection {
+  margin-top: 60px;
+  text-align: center;
+}
+
+.marketingCard {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 48px 40px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.marketingBadge {
+  display: inline-block;
+  background: rgba(180,140,80,0.1);
+  border: 1px solid rgba(180,140,80,0.3);
+  color: #b48c50;
+  padding: 4px 14px;
+  border-radius: 100px;
+  font-family: 'Lato', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.marketingCard h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.4;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.marketingCard p {
+  color: #a1a1aa;
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+.ctaButton {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--brand, #6c47ff) 0%, var(--accent-pink, #ec4899) 100%);
+  color: #fff;
+  padding: 14px 40px;
+  border-radius: 10px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 15px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 24px rgba(108,71,255,0.3);
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 40px rgba(108,71,255,0.45);
+  filter: brightness(1.08);
+}
+
+/* ═══════════════════════════════════════
+   REPORT MODAL
+═══════════════════════════════════════ */
 .modalOverlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -162,6 +661,11 @@
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .reportModal {
@@ -238,8 +742,7 @@
 
 .reasonOption input[type="radio"] {
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 18px; height: 18px;
   border: 2px solid #52525b;
   border-radius: 50%;
   position: relative;
@@ -247,9 +750,7 @@
   transition: all 0.2s;
 }
 
-.reasonOption input[type="radio"]:checked {
-  border-color: #ef4444;
-}
+.reasonOption input[type="radio"]:checked { border-color: #ef4444; }
 
 .reasonOption input[type="radio"]:checked::after {
   content: '';
@@ -281,9 +782,7 @@
   box-sizing: border-box;
 }
 
-.reportTextarea:focus {
-  border-color: rgba(255,255,255,0.2);
-}
+.reportTextarea:focus { border-color: rgba(255,255,255,0.2); }
 
 .reportSubmitBtn {
   width: 100%;
@@ -303,19 +802,12 @@
   transform: translateY(-1px);
 }
 
-.reportSubmitBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+.reportSubmitBtn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-.reportSuccess {
-  text-align: center;
-  padding: 20px 0;
-}
+.reportSuccess { text-align: center; padding: 20px 0; }
 
 .successIcon {
-  width: 56px;
-  height: 56px;
+  width: 56px; height: 56px;
   background: rgba(34,197,94,0.15);
   border: 2px solid #22c55e;
   border-radius: 50%;
@@ -327,18 +819,8 @@
   margin: 0 auto 20px;
 }
 
-.reportSuccess h3 {
-  color: #fff;
-  font-size: 20px;
-  margin-bottom: 12px;
-}
-
-.reportSuccess p {
-  color: #a1a1aa;
-  font-size: 14px;
-  line-height: 1.6;
-  margin-bottom: 24px;
-}
+.reportSuccess h3 { color: #fff; font-size: 20px; margin-bottom: 12px; }
+.reportSuccess p { color: #a1a1aa; font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
 
 .reportCloseBtn {
   padding: 12px 32px;
@@ -352,12 +834,217 @@
   transition: all 0.2s;
 }
 
-.reportCloseBtn:hover {
-  background: rgba(255,255,255,0.15);
+.reportCloseBtn:hover { background: rgba(255,255,255,0.15); }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media (max-width: 800px) {
+
+  /* ── Stage: centered column, no perspective ── */
+  .cardStage {
+    perspective: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .cardStage.stageOpened {
+    transform: none;
+  }
+
+  /* ── Closed card: portrait size, centered ── */
+  .cardContainer {
+    width: 290px;
+    height: 400px;
+    margin: 0 auto;
+  }
+
+  /* ── Opened card: flat vertical column ── */
+  .cardContainer.opened {
+    transform: none;
+    transform-style: flat;
+    width: 290px;
+    height: auto;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: none;
+    cursor: default;
+    margin: 0 auto;
+  }
+
+  /* ── Cover: golden dissolve exit ── */
+  .cardContainer.opened .cardFrontOutside {
+    position: absolute;
+    inset: 0;
+    animation: coverDissolve 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    pointer-events: none;
+    z-index: 100;
+    border-radius: 12px;
+  }
+
+  @keyframes coverDissolve {
+    0%   { opacity: 1; transform: scale(1); filter: blur(0px) brightness(1); }
+    40%  { opacity: 0.7; transform: scale(1.04); filter: blur(0px) brightness(1.6); }
+    100% { opacity: 0; transform: scale(0.88) translateY(-30px); filter: blur(12px) brightness(2); }
+  }
+
+  /* ── Gold shimmer flash overlay on opening ── */
+  .cardContainer.opened::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 16px;
+    background: linear-gradient(135deg,
+      rgba(255,215,100,0.4) 0%,
+      rgba(180,140,80,0.1) 40%,
+      rgba(255,215,100,0.3) 60%,
+      transparent 100%
+    );
+    animation: shimmerFlash 1s ease-out forwards;
+    pointer-events: none;
+    z-index: 200;
+  }
+
+  @keyframes shimmerFlash {
+    0%   { opacity: 1; transform: scale(1.05); }
+    50%  { opacity: 0.6; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.98); }
+  }
+
+  /* ── Front flap: normal flow, video section on top ── */
+  .cardContainer.opened .cardFront {
+    position: relative;
+    transform: none !important;
+    transform-style: flat;
+    width: 100%;
+    height: auto;
+    order: -1;
+    z-index: auto;
+    border-radius: 12px 12px 0 0;
+    animation: revealVideoPane 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) 0.3s both;
+  }
+
+  @keyframes revealVideoPane {
+    from { opacity: 0; transform: translateY(15px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ── Inside (video page): visible, zero rotation ── */
+  .cardContainer.opened .cardFrontInside {
+    position: relative;
+    transform: none !important;
+    backface-visibility: visible;
+    width: 100%;
+    height: auto;
+    min-height: 260px;
+    background-image: url('/images/greetingcard/GreetingCardInnerPage.png');
+    background-size: 200% 200%;
+    background-position: left top;
+    padding: 20px;
+    border-radius: 12px 12px 0 0;
+  }
+
+  /* ── Message page: flows below video ── */
+  .cardContainer.opened .cardBack {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 280px;
+    background-size: 200% 200%;
+    background-position: right bottom;
+    padding: 24px 20px;
+    border-radius: 0 0 12px 12px;
+    animation: revealMessagePane 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) 0.5s both;
+    box-shadow:
+      0 20px 50px rgba(0,0,0,0.4),
+      0 0 0 1px rgba(180,140,80,0.12);
+  }
+
+  @keyframes revealMessagePane {
+    from { opacity: 0; transform: translateY(15px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .videoWrapper {
+    height: 190px;
+  }
+  .occasionPill {
+    margin-top: 12px;
+  }
+  .recipientNameLarge {
+    font-size: 18px;
+  }
+  .messageText {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── Close button: below card, properly centered, no overlap ── */
+  .closeFlapBtn {
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin: 20px auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInButton 0.4s ease 0.8s both;
+  }
+  .closeFlapBtn:hover {
+    transform: translateY(-1px) !important;
+  }
+
+  /* ── Report button: normal flow ── */
+  .reportSection {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+    transition: margin-top 0.4s ease;
+  }
+  .reportOpened {
+    margin-top: 16px;
+  }
+
+  .reportModal { padding: 24px 20px; }
+  .reportModal h3 { font-size: 18px; }
+  .reasonOption { padding: 10px 12px; font-size: 13px; gap: 8px; }
 }
 
-@media (max-width: 600px) {
-  .heroCard { padding: 40px 24px; }
-  .title { font-size: 2.2rem; }
-  .reportModal { padding: 24px 20px; }
+/* ── Smaller phones ── */
+@media (max-width: 480px) {
+  .cardContainer {
+    width: 270px;
+    height: 380px;
+  }
+  .cardContainer.opened {
+    width: 270px;
+  }
+  .reportModal {
+    padding: 16px 14px;
+  }
+  .reportDesc {
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+  .reportTextarea {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 385px) {
+  .cardContainer {
+    width: 250px;
+    height: 350px;
+  }
+  .cardContainer.opened {
+    width: 250px;
+  }
+  .videoWrapper {
+    height: 160px;
+  }
 }

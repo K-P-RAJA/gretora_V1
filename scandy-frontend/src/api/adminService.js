@@ -58,3 +58,23 @@ export async function deleteGreetingAdmin(id) {
     method: "DELETE",
   });
 }
+
+export async function getSupportTickets() {
+  return await apiRequest("/admin/support", {
+    method: "GET",
+  });
+}
+
+export async function updateSupportTicket(id, status) {
+  return await apiRequest(`/admin/support/${id}`, {
+    method: "PUT",
+    body: JSON.stringify({ status }),
+  });
+}
+
+export async function deleteSupportTicket(id) {
+  return await apiRequest(`/admin/support/${id}`, {
+    method: "DELETE",
+  });
+}
+

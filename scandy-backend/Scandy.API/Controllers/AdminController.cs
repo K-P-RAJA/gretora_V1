@@ -161,5 +161,61 @@ namespace Scandy.API.Controllers
 
             return Ok(new { StatusCode = 1, StatusMessage = "Greeting and associated media removed successfully" });
         }
+
+        // =========================================
+        // ENDPOINT: GET ALL SUPPORT TICKETS
+        // =========================================
+        [Authorize]
+        [HttpGet("support")]
+        public async Task<IActionResult> GetSupportTickets()
+        {
+            if (!await CheckIfAdmin())
+                return Forbid();
+
+            var tickets = await _adminService.GetSupportTickets();
+            return Ok(tickets);
+        }
+
+        // =========================================
+        // ENDPOINT: UPDATE SUPPORT TICKET STATUS
+        // =========================================
+        public class UpdateTicketRequest
+        {
+            public string Status { get; set; } = string.Empty;
+        }
+
+        [Authorize]
+        [HttpPut("support/{id}")]
+        public async Task<IActionResult> UpdateTicket(Guid id, [FromBody] UpdateTicketRequest request)
+        {
+            if (!await CheckIfAdmin())
+                return Forbid();
+
+            if (string.IsNullOrEmpty(request.Status) || (request.Status != "Pending" && request.Status != "Resolved"))
+                return BadRequest("Invalid ticket status. Must be 'Pending' or 'Resolved'.");
+
+            var success = await _adminService.UpdateTicketStatus(id, request.Status);
+            if (!success)
+                return NotFound("Support ticket not found");
+
+            return Ok(new { StatusCode = 1, StatusMessage = $"Ticket status updated to {request.Status} successfully" });
+        }
+
+        // =========================================
+        // ENDPOINT: DELETE SUPPORT TICKET
+        // =========================================
+        [Authorize]
+        [HttpDelete("support/{id}")]
+        public async Task<IActionResult> DeleteTicket(Guid id)
+        {
+            if (!await CheckIfAdmin())
+                return Forbid();
+
+            var success = await _adminService.DeleteTicketAdmin(id);
+            if (!success)
+                return NotFound("Support ticket not found");
+
+            return Ok(new { StatusCode = 1, StatusMessage = "Support ticket deleted successfully" });
+        }
     }
 }

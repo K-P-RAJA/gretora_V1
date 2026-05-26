@@ -7,7 +7,7 @@ const faqs = [
   },
   {
     q: 'Is Scandy really free?',
-    a: "Yes — completely. Your first 3 video QR codes are free forever. No credit card required, no trial period, no hidden charges. Each video can be up to 2 minutes long. We generate revenue through non-intrusive ads on the upload and dashboard pages — never on the watch page, so your recipient's experience is always uninterrupted.",
+    a: "Yes — completely. Your first 3 video QR codes are free forever. No credit card required, no trial period, no hidden charges. Each video can be up to 50MB in file size. We generate revenue through non-intrusive ads on the upload and dashboard pages — never on the watch page, so your recipient's experience is always uninterrupted.",
   },
   {
     q: 'Does the person scanning need an app?',

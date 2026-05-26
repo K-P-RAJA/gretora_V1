@@ -116,7 +116,7 @@
 .acceptBtn {
   width: 100%;
   padding: 16px;
-  background: linear-gradient(135deg, #6c47ff, #5533dd);
+  background: linear-gradient(135deg, var(--brand) 0%, var(--accent-pink) 100%);
   color: #fff;
   border: none;
   border-radius: 12px;
@@ -134,6 +134,7 @@
 .acceptBtn:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 12px 32px rgba(108, 71, 255, 0.45);
+  filter: brightness(1.08);
 }
 
 .acceptBtn:disabled {

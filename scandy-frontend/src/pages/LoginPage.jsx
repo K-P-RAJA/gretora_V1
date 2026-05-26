@@ -4,6 +4,7 @@ import styles from "./LoginPage.module.css";
 import { loginUser, sendPasswordReset, loginWithGoogle } from "../api/authService";
 import { useNavigate } from "react-router-dom";
 import { createProfile, getProfile } from "../api/UserService";
+import InfoModal from "../components/InfoModal";
 
 export default function LoginPage() {
   const [step, setStep] = useState("login"); // "login" | "setup" | "forgot"
@@ -12,6 +13,7 @@ export default function LoginPage() {
   const [name, setName] = useState("");
   const [pendingUser, setPendingUser] = useState(null);
   const [error, setError] = useState("");
+  const [activeModal, setActiveModal] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -31,7 +33,7 @@ export default function LoginPage() {
       const profile = await getProfile();
 
       if (profile.statusCode === 1) {
-        navigate("/Home");
+        navigate("/home");
       } else {
         setPendingUser(data.user);
         setStep("setup");
@@ -56,7 +58,7 @@ export default function LoginPage() {
         name: name.trim(),
         email: pendingUser.email,
       });
-      navigate("/Home");
+      navigate("/home");
     } catch (err) {
       setError(err.message || "Something went wrong.");
     } finally {
@@ -237,7 +239,7 @@ export default function LoginPage() {
 
               <div className={styles.legal}>
                 By continuing you agree to our{" "}
-                <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+                <a href="#terms" onClick={(e) => { e.preventDefault(); setActiveModal("terms"); }}>Terms of Service</a> and <a href="#privacy" onClick={(e) => { e.preventDefault(); setActiveModal("privacy"); }}>Privacy Policy</a>.
               </div>
             </>
           )}
@@ -342,6 +344,9 @@ export default function LoginPage() {
           )}
         </div>
       </div>
+      {activeModal && (
+        <InfoModal type={activeModal} onClose={() => setActiveModal(null)} />
+      )}
     </div>
   );
 }

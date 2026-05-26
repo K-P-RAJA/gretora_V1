@@ -120,5 +120,18 @@ namespace Scandy.API.Controllers
             return Ok(result);
         }
 
+        [Authorize]
+        [HttpPost("delete-account")]
+        public async Task<IActionResult> DeleteAccount()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(email))
+                return Unauthorized();
+
+            var result = await _loginService.PermanentlyDeleteAccount(Guid.Parse(userId), email);
+            return Ok(result);
+        }
     }
 }

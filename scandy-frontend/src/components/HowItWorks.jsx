@@ -10,7 +10,7 @@ const steps = [
       </svg>
     ),
     title: 'Upload your video',
-    desc: 'Record or upload any video message up to 2 minutes long. A birthday message, a wedding vow, a heartfelt "I love you from 3,000 miles away" — anything worth saying once and remembering forever.',
+    desc: 'Record or upload any video message up to 50MB. A birthday message, a wedding vow, a heartfelt "I love you from 3,000 miles away" — anything worth saying once and remembering forever.',
   },
   {
     number: '02',

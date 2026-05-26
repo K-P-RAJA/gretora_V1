@@ -60,6 +60,20 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+// ✅ Initialize Database
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var dbService = scope.ServiceProvider.GetRequiredService<DatabaseService>();
+        dbService.InitializeDatabase();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[Startup] Failed to initialize database: {ex.Message}");
+    }
+}
+
 // ✅ Swagger middleware
 if (app.Environment.IsDevelopment())
 {

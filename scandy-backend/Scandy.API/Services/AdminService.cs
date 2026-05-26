@@ -85,6 +85,19 @@ namespace Scandy.API.Services
                 Console.WriteLine($"[Dashboard API warning] qr_codes or scan_logs tables not ready: {ex.Message}");
             }
 
+            // Support Tickets analytics (failsafe)
+            int pendingTickets = 0;
+            int totalTickets = 0;
+            try
+            {
+                pendingTickets = await dbConnection.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM support_tickets WHERE status = 'Pending'");
+                totalTickets = await dbConnection.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM support_tickets");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Dashboard API warning] support_tickets table not ready: {ex.Message}");
+            }
+
             return new
             {
                 TotalUsers = totalUsers,
@@ -102,6 +115,11 @@ namespace Scandy.API.Services
                     Rejected = rejectedReports,
                     Removed = removedReports,
                     Total = pendingReports + reviewedReports + rejectedReports + removedReports
+                },
+                Tickets = new
+                {
+                    Pending = pendingTickets,
+                    Total = totalTickets
                 }
             };
         }
@@ -361,6 +379,43 @@ namespace Scandy.API.Services
             }
 
             return true;
+        }
+
+        // =========================================
+        // SUPPORT TICKETS MANAGEMENT
+        // =========================================
+        public async Task<IEnumerable<dynamic>> GetSupportTickets()
+        {
+            using var dbConnection = _db.CreateConnection();
+            var sql = @"
+                SELECT 
+                    id AS Id,
+                    name AS Name,
+                    email AS Email,
+                    subject AS Subject,
+                    message AS Message,
+                    status AS Status,
+                    created_at AS CreatedAt
+                FROM support_tickets
+                ORDER BY created_at DESC;
+            ";
+            return await dbConnection.QueryAsync<dynamic>(sql);
+        }
+
+        public async Task<bool> UpdateTicketStatus(Guid ticketId, string status)
+        {
+            using var dbConnection = _db.CreateConnection();
+            var sql = "UPDATE support_tickets SET status = @Status WHERE id = @TicketId";
+            var rows = await dbConnection.ExecuteAsync(sql, new { TicketId = ticketId, Status = status });
+            return rows > 0;
+        }
+
+        public async Task<bool> DeleteTicketAdmin(Guid ticketId)
+        {
+            using var dbConnection = _db.CreateConnection();
+            var sql = "DELETE FROM support_tickets WHERE id = @TicketId";
+            var rows = await dbConnection.ExecuteAsync(sql, new { TicketId = ticketId });
+            return rows > 0;
         }
     }
 }

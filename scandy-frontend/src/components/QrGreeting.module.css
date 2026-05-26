@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@400;600&display=swap');
 
 .pageWrapper {
   min-height: 100vh;
@@ -162,9 +162,10 @@
 }
 
 .messageText {
-  font-family: 'Great Vibes', cursive;
-  font-size: 32px;
-  line-height: 1.5;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.6;
   color: #3d2b1f;
   text-shadow: 0 1px 1px rgba(255,255,255,0.5);
 }
@@ -427,6 +428,22 @@
   .cardInner::after { display: none; }
   .leftPage, .rightPage { padding: 40px 24px; }
   .leftPage { border-bottom: 1px solid rgba(180, 140, 80, 0.2); }
+  
+  .uiControls {
+    flex-direction: column;
+    width: 100%;
+    max-width: 340px;
+    gap: 12px;
+    margin-top: 32px;
+    padding: 0 16px;
+  }
+  
+  .shareBtn, .printBtn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 24px;
+    font-size: 13px;
+  }
 }
 
 @media print {

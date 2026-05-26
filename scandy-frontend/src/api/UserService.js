@@ -26,3 +26,10 @@ export async function updateProfile(name) {
 export async function getProfileDashboard() {
   return await apiRequest("/Login/profile/dashboard");
 }
+
+// 🗑️ PERMANENTLY DELETE ACCOUNT
+export async function deleteAccount() {
+  return await apiRequest("/Login/delete-account", {
+    method: "POST"
+  });
+}

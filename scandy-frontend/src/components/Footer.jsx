@@ -1,6 +1,15 @@
-import styles from './Footer.module.css';
+import React, { useState } from "react";
+import styles from "./Footer.module.css";
+import InfoModal from "./InfoModal";
 
 export default function Footer() {
+  const [activeModal, setActiveModal] = useState(null);
+
+  const handleOpenModal = (e, type) => {
+    e.preventDefault();
+    setActiveModal(type);
+  };
+
   return (
     <footer className={styles.footer} aria-label="Site footer">
       <div className={styles.footerTop}>
@@ -18,33 +27,43 @@ export default function Footer() {
         <div>
           <div className={styles.footerColTitle}>Product</div>
           <ul className={styles.footerLinks}>
-            <li><a href="#how-it-works">How it works</a></li>
-            <li><a href="#occasions">Occasions</a></li>
-            <li><a href="#faq">FAQ</a></li>
-            <li><a href="/pricing">Pricing</a></li>
-            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/#how-it-works">How it works</a></li>
+            <li><a href="/#occasions">Occasions</a></li>
+            <li><a href="/#faq">FAQ</a></li>
+            <li><a href="/#pricing">Pricing</a></li>
+            <li><a href="/mygreetings">Dashboard</a></li>
           </ul>
         </div>
 
         <div>
-          <div className={styles.footerColTitle}>Use cases</div>
+          <div className={styles.footerColTitle}>Use Cases</div>
           <ul className={styles.footerLinks}>
-            <li><a href="/birthday-video-qr">Birthday QR gift</a></li>
-            <li><a href="/wedding-video-qr">Wedding QR code</a></li>
-            <li><a href="/graduation-gift">Graduation gift</a></li>
-            <li><a href="/long-distance-gift">Long distance gift</a></li>
-            <li><a href="/memorial-qr">Memorial QR code</a></li>
+            <li><a href="/#occasions">Birthday QR gift</a></li>
+            <li><a href="/#occasions">Wedding QR code</a></li>
+            <li><a href="/#occasions">Graduation gift</a></li>
+            <li><a href="/#occasions">Long distance gift</a></li>
+            <li><a href="/#occasions">Memorial QR code</a></li>
           </ul>
         </div>
 
         <div>
           <div className={styles.footerColTitle}>Company</div>
           <ul className={styles.footerLinks}>
-            <li><a href="/about">About Scandy</a></li>
-            <li><a href="/blog">Blog</a></li>
-            <li><a href="/contact">Contact</a></li>
-            <li><a href="/privacy">Privacy policy</a></li>
-            <li><a href="/terms">Terms of service</a></li>
+            <li>
+              <a href="#contact" onClick={(e) => handleOpenModal(e, "contact")}>
+                Contact Support
+              </a>
+            </li>
+            <li>
+              <a href="#privacy" onClick={(e) => handleOpenModal(e, "privacy")}>
+                Privacy Policy
+              </a>
+            </li>
+            <li>
+              <a href="#terms" onClick={(e) => handleOpenModal(e, "terms")}>
+                Terms of Service
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -54,11 +73,22 @@ export default function Footer() {
           © 2026 Scandy. All rights reserved. Made with love in India. 🇮🇳
         </p>
         <div className={styles.footerLegal}>
-          <a href="/privacy">Privacy</a>
-          <a href="/terms">Terms</a>
-          <a href="/contact">Contact</a>
+          <a href="#privacy" onClick={(e) => handleOpenModal(e, "privacy")}>
+            Privacy
+          </a>
+          <a href="#terms" onClick={(e) => handleOpenModal(e, "terms")}>
+            Terms
+          </a>
+          <a href="#contact" onClick={(e) => handleOpenModal(e, "contact")}>
+            Contact
+          </a>
         </div>
       </div>
+
+      {/* Glassmorphic Info Overlay Modals */}
+      {activeModal && (
+        <InfoModal type={activeModal} onClose={() => setActiveModal(null)} />
+      )}
     </footer>
   );
 }

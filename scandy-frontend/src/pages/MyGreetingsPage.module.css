@@ -186,7 +186,9 @@
 .previewBox {
   width: 100%;
   aspect-ratio: 16/9;
-  background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-card) 100%);
+  background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('/images/greetingcard/GreetingCard_FrontPage.webp');
+  background-size: cover;
+  background-position: center;
   border-radius: var(--radius-md);
   border: 1px solid var(--glass-border);
   display: flex;
@@ -201,7 +203,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(124,110,248,0.08) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 50%, rgba(180,140,80,0.15) 0%, transparent 70%);
 }
 
 .previewOverlay {
@@ -532,6 +534,20 @@
   .hero { flex-direction: column; align-items: flex-start; gap: 24px; }
   .grid { grid-template-columns: 1fr; }
   .page { padding: 90px 20px 100px; }
+}
+
+@media (max-width: 500px) {
+  .page { padding: 80px 12px 80px; }
+  .card { padding: 18px; gap: 14px; }
+  .grid { gap: 20px; }
+  .footer { flex-direction: column; gap: 8px; }
+  .viewBtn, .editBtn, .deleteBtn { width: 100%; text-align: center; }
+  .modalContent { padding: 20px 16px; }
+  .modalContent h2 { font-size: 20px; margin-bottom: 16px; }
+}
+
+@media (max-width: 385px) {
+  .telemetryBar { flex-direction: column; gap: 8px; align-items: flex-start; }
 }
 
 /* ── Telemetry & Status ────────────────── */
