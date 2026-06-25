@@ -17,7 +17,7 @@ export default function Navbar() {
   return (
     <nav className={styles.nav}>
       <div className={styles.navContainer}>
-        <Link to="/" className={styles.navLogo}>Scan<em>dy</em></Link>
+        <Link to="/" className={styles.navLogo}><span className="brandName">Gretora</span></Link>
 
         <ul className={styles.navLinks}>
           <li><a href="/#how-it-works">How it works</a></li>
@@ -40,3 +40,4 @@ export default function Navbar() {
     </nav>
   );
 }
+

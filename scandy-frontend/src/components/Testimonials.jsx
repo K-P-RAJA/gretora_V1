@@ -8,7 +8,7 @@ const testimonials = [
   },
   {
     stars: '★★★★★',
-    text: '"Used Scandy for my dad\'s retirement gift. Collected videos from 14 colleagues and linked them all. He still scans it every few weeks. Says it\'s the best gift he\'s ever received."',
+    text: '"Used Gretora for my dad\'s retirement gift. Collected videos from 14 colleagues and linked them all. He still scans it every few weeks. Says it\'s the best gift he\'s ever received."',
     author: '— Karthik S., Hyderabad',
   },
   {
@@ -18,7 +18,7 @@ const testimonials = [
   },
   {
     stars: '★★★★★',
-    text: '"My son is studying in Canada. I sent him a Diwali card with a Scandy QR. He called me immediately after scanning. He was sobbing. So was I."',
+    text: '"My son is studying in Canada. I sent him a Diwali card with a Gretora QR. He called me immediately after scanning. He was sobbing. So was I."',
     author: '— Sunita M., Mumbai',
   },
 ];
@@ -32,7 +32,7 @@ export default function Testimonials() {
             Moments that <em>moved people</em>
           </h2>
           <p className={styles.sectionLead}>
-            These aren't marketing lines. They're what people actually said after sending their first Scandy.
+            These aren't marketing lines. They're what people actually said after sending their first Gretora.
           </p>
         </div>
 
@@ -57,3 +57,4 @@ export default function Testimonials() {
 
   );
 }
+

@@ -8,7 +8,8 @@ import {
   LogOut,
   Menu,
   X,
-  Mail
+  Mail,
+  Terminal
 } from "lucide-react";
 import { useState } from "react";
 import { logoutUser } from "../api/authService";
@@ -44,6 +45,11 @@ export default function AdminSidebar() {
       name: "Support Tickets",
       path: "/admin/support",
       icon: <Mail size={20} />
+    },
+    {
+      name: "System Logs",
+      path: "/admin/logs",
+      icon: <Terminal size={20} />
     }
   ];
 
@@ -63,7 +69,7 @@ export default function AdminSidebar() {
       {/* Mobile Header */}
       <div className={styles.mobileHeader}>
         <div className={styles.mobileLogo} onClick={() => navigate("/home")}>
-          Scan<em>dy</em> <span className={styles.adminBadge}>Admin</span>
+          <span className="brandName">Gretora</span> <span className={styles.adminBadge}>Admin</span>
         </div>
         <button className={styles.hamburger} onClick={toggleSidebar}>
           {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -77,9 +83,7 @@ export default function AdminSidebar() {
       <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ""}`}>
         {/* Brand / Logo */}
         <div className={styles.logoArea} onClick={() => navigate("/home")}>
-          <div className={styles.logo}>
-            Scan<em>dy</em>
-          </div>
+            <span className="brandName">Gretora</span>
           <span className={styles.adminTag}>Admin Panel</span>
         </div>
 
@@ -125,3 +129,5 @@ export default function AdminSidebar() {
     </>
   );
 }
+
+

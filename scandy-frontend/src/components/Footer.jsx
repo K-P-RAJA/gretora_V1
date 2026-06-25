@@ -15,11 +15,11 @@ export default function Footer() {
       <div className={styles.footerTop}>
         <div>
           <div className={styles.footerBrandName}>
-            Scan<em>dy</em>
+            <span className="brandName">Gretora</span>
           </div>
           <div className={styles.footerTagline}>Your words. Their smile. One scan.</div>
           <p className={styles.footerDesc}>
-            Scandy turns any video message into a scannable QR code gift — for every occasion
+            Gretora turns any video message into a scannable QR code gift — for every occasion
             worth celebrating. Free to start, forever to keep.
           </p>
         </div>
@@ -70,7 +70,7 @@ export default function Footer() {
 
       <div className={styles.footerBottom}>
         <p className={styles.footerCopy}>
-          © 2026 Scandy. All rights reserved. Made with love in India. 🇮🇳
+          © 2026 Gretora. All rights reserved. Made with love in India. 🇮🇳
         </p>
         <div className={styles.footerLegal}>
           <a href="#privacy" onClick={(e) => handleOpenModal(e, "privacy")}>
@@ -92,3 +92,4 @@ export default function Footer() {
     </footer>
   );
 }
+

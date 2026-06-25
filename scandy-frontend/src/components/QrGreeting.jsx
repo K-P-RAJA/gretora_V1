@@ -44,7 +44,7 @@ export default function LuxeQrCard({ qrUrl, recipientName, occasion, message }) 
       });
       
       const link = document.createElement('a');
-      link.download = `Scandy_Gift_${recipientName || 'Greeting'}.png`;
+      link.download = `Gretora_Gift_${recipientName || 'Greeting'}.png`;
       link.href = dataUrl;
       link.click();
     } catch (err) {
@@ -87,7 +87,7 @@ export default function LuxeQrCard({ qrUrl, recipientName, occasion, message }) 
       // Add a clickable link overlay on the entire card
       pdf.link(0, 0, pdfW, pdfH, { url: qrUrl });
 
-      pdf.save(`Scandy_Greeting_${recipientName || 'Card'}.pdf`);
+      pdf.save(`Gretora_Greeting_${recipientName || 'Card'}.pdf`);
     } catch (err) {
       console.error("PDF generation failed", err);
     }
@@ -122,7 +122,7 @@ export default function LuxeQrCard({ qrUrl, recipientName, occasion, message }) 
             <div className={`${styles.ornament} ${styles.bottomRight}`}></div>
 
             <div className={styles.brandHeader}>
-              <span className={styles.brandLogo}>Scandy</span>
+              <span className={styles.brandLogo}>Gretora</span>
               <span className={styles.tag}>Premium Greetings</span>
             </div>
 
@@ -217,3 +217,4 @@ export default function LuxeQrCard({ qrUrl, recipientName, occasion, message }) 
     </div>
   );
 }
+

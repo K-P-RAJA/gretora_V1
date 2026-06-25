@@ -11,6 +11,7 @@ import { uploadVideo } from "../api/videoService";
 import { useAlert } from "../context/AlertContext";
 
 import AppNavbar from "../components/AppNavbar";
+import LoadingScreen from "../components/LoadingScreen";
 
 import styles from "./MyGreetingsPage.module.css";
 
@@ -142,6 +143,10 @@ export default function MyGreetingsPage() {
     }
   };
 
+  if (loading) {
+    return <LoadingScreen message="Loading your greetings..." />;
+  }
+
   return (
     <div className={styles.page}>
       <div className={styles.bgGlowOne}></div>
@@ -176,12 +181,8 @@ export default function MyGreetingsPage() {
         </button>
       </header>
 
-      {/* LOADING */}
-      {loading ? (
-        <div className={styles.loadingCard}>
-          Loading greetings...
-        </div>
-      ) : greetings.length === 0 ? (
+      {/* GREETINGS GRID OR EMPTY STATE */}
+      {greetings.length === 0 ? (
         <div className={styles.emptyCard}>
           <h2>No greetings yet</h2>
 
@@ -372,3 +373,4 @@ export default function MyGreetingsPage() {
     
   );
 }
+

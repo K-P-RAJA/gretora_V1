@@ -22,7 +22,7 @@ const steps = [
       </svg>
     ),
     title: 'Receive your QR code',
-    desc: 'Scandy instantly generates a unique, secure QR code linked only to your video. Download it in high resolution — ready to print on cards, invitations, photo frames, stickers, or any surface you can imagine.',
+    desc: 'Gretora instantly generates a unique, secure QR code linked only to your video. Download it in high resolution — ready to print on cards, invitations, photo frames, stickers, or any surface you can imagine.',
   },
   {
     number: '03',
@@ -32,7 +32,7 @@ const steps = [
       </svg>
     ),
     title: 'Watch their face light up',
-    desc: 'They scan the code with any smartphone camera — no app, no account needed. Your video plays instantly in their browser. That moment of surprise, recognition, and pure joy? That\'s Scandy.',
+    desc: 'They scan the code with any smartphone camera — no app, no account needed. Your video plays instantly in their browser. That moment of surprise, recognition, and pure joy? That\'s Gretora.',
   },
 ];
 
@@ -81,3 +81,4 @@ export default function HowItWorks() {
 
   );
 }
+

@@ -2,7 +2,7 @@ import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import TrustBar from "../components/TrustBar";
 import HowItWorks from "../components/HowItWorks";
-import WhyScandy from "../components/WhyScandy";
+import WhyGretora from "../components/WhyGretora";
 import Occasions from "../components/Occasions";
 import Testimonials from "../components/Testimonials";
 import FAQ from "../components/Faq";
@@ -22,7 +22,7 @@ export default function Home() {
         <TrustBar />
         <GreetingCards/>
         <HowItWorks/>
-        <WhyScandy/>
+        <WhyGretora/>
         <Occasions/>
         <Testimonials/>
         <FAQ/>
@@ -35,3 +35,4 @@ export default function Home() {
     </>
   );
 }
+

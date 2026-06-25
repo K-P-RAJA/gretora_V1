@@ -42,7 +42,7 @@ export default function AppNavbar() {
           onClick={() => navigate("/home")}
         >
           <div className={styles.logo}>
-            Scan<em>dy</em>
+            <span className="brandName">Gretora</span>
           </div>
         </div>
 
@@ -114,3 +114,4 @@ export default function AppNavbar() {
     </header>
   );
 }
+

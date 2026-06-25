@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&display=swap');
 
 /* ═══════════════════════════════════════════════════
-   SCANDY — PREMIUM DARK DESIGN SYSTEM
+   GRETORA — PREMIUM DARK DESIGN SYSTEM
    Deep Navy + Violet Brand
 ═══════════════════════════════════════════════════ */
 
@@ -109,3 +110,31 @@ input, textarea, select {
   background: var(--brand-soft);
   color: var(--brand-light);
 }
+
+/* ── BRAND NAME GLOBAL STYLE ─────────────────── */
+
+.brandName {
+  font-family: 'Cinzel', 'Inter', serif;
+  font-weight: 900;
+  font-style: normal;
+  letter-spacing: 0.04em;
+  background: linear-gradient(
+    135deg,
+    var(--brand-light) 0%,
+    var(--brand) 40%,
+    var(--accent-pink) 100%
+  );
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 10px rgba(124, 110, 248, 0.35));
+  transition: background-position 0.5s ease, filter 0.3s ease;
+}
+
+.brandName:hover {
+  background-position: 100% 50%;
+  filter: drop-shadow(0 0 18px rgba(244, 114, 182, 0.45));
+}
+

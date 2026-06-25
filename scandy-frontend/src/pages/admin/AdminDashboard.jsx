@@ -137,7 +137,7 @@ export default function AdminDashboard() {
       <header className={styles.header}>
         <div>
           <h1 className={styles.title}>Dashboard Overview</h1>
-          <p className={styles.subtitle}>Welcome to the Scandy admin administration terminal.</p>
+          <p className={styles.subtitle}>Welcome to the Gretora admin administration terminal.</p>
         </div>
       </header>
 
@@ -326,3 +326,5 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
+

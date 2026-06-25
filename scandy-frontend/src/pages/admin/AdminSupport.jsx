@@ -376,7 +376,7 @@ export default function AdminSupport() {
               <div className={styles.detailGroup}>
                 <label>Customer Email</label>
                 <div className={styles.valueRow}>
-                  <a href={`mailto:${selectedTicket.email}?subject=Re: ${encodeURIComponent(selectedTicket.subject || "Scandy Support inquiry")}`} className={styles.emailLink}>
+                  <a href={`mailto:${selectedTicket.email}?subject=Re: ${encodeURIComponent(selectedTicket.subject || "Gretora Support inquiry")}`} className={styles.emailLink}>
                     {selectedTicket.email}
                     <ExternalLink size={12} style={{ marginLeft: 4 }} />
                   </a>
@@ -389,7 +389,7 @@ export default function AdminSupport() {
                       <Copy size={12} />
                     </button>
                     <a 
-                      href={`mailto:${selectedTicket.email}?subject=Re: ${encodeURIComponent(selectedTicket.subject || "Scandy Support inquiry")}`}
+                      href={`mailto:${selectedTicket.email}?subject=Re: ${encodeURIComponent(selectedTicket.subject || "Gretora Support inquiry")}`}
                       className={styles.replyEmailBtn}
                       title="Send response email"
                     >
@@ -454,3 +454,5 @@ export default function AdminSupport() {
     </div>
   );
 }
+
+

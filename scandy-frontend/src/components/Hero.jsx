@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './Hero.module.css';
 
 export default function Hero() {
   const qrRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!qrRef.current) return;
@@ -31,15 +33,23 @@ export default function Hero() {
 
           <p className={styles.heroDesc}>
             Upload a video message — a birthday wish, wedding vow, or a heartfelt "I love you."
-            Scandy instantly generates a unique QR code. Print it on any card, frame, or gift tag.
+            Gretora instantly generates a unique QR code. Print it on any card, frame, or gift tag.
             Anyone who scans it watches your video, forever. No app needed.
           </p>
 
           <div className={styles.heroActions}>
-            <button className={styles.btnPrimary} aria-label="Upload your free video now">
+            <button 
+              className={styles.btnPrimary} 
+              aria-label="Upload your free video now"
+              onClick={() => navigate('/login')}
+            >
               Upload your video — it's free
             </button>
-            <button className={styles.btnOutline} aria-label="See how Scandy works">
+            <button 
+              className={styles.btnOutline} 
+              aria-label="See how Gretora works"
+              onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+            >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="12" cy="12" r="10" />
                 <polygon points="10,8 16,12 10,16" />
@@ -87,7 +97,7 @@ export default function Hero() {
             </div>
             <div className={styles.qrFloat}>
               <div className={styles.qrMiniGrid} ref={qrRef} />
-              <div className={styles.qrFloatLabel}>scandy</div>
+              <div className={styles.qrFloatLabel}>Gretora</div>
             </div>
           </div>
         </div>
@@ -96,3 +106,4 @@ export default function Hero() {
     </section>
   );
 }
+

@@ -5,7 +5,7 @@ import { QRCode } from 'react-qrcode-logo';
 export default function GreetingCards() {
   const [opened, setOpened] = useState(false);
 
-  const mockQrUrl = "https://scandy.app/g/demo-greeting";
+  const mockQrUrl = "https://Gretora.com/g/demo-greeting";
 
   const handleCardClick = (e) => {
     // If the card is closed, click opens the card.
@@ -82,7 +82,7 @@ export default function GreetingCards() {
                 <div className={`${styles.ornament} ${styles.bottomRight}`}></div>
 
                 <div className={styles.brandHeader}>
-                  <span className={styles.brandLogo}>Scandy</span>
+                  <span className={styles.brandLogo}>Gretora</span>
                   <span className={styles.tag}>Premium Greetings</span>
                 </div>
 
@@ -105,18 +105,7 @@ export default function GreetingCards() {
                 
                 <span className={styles.signature}>With love, Alex</span>
 
-                {opened && (
-                  <button 
-                    className={styles.closeCardBtn} 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setOpened(false);
-                      setIsPlaying(false);
-                    }}
-                  >
-                    Close Card
-                  </button>
-                )}
+
               </div>
 
               {/* OUTSIDE COVER PAGE (Visible when closed) */}
@@ -129,8 +118,20 @@ export default function GreetingCards() {
             </div>
             
           </div>
+          {opened && (
+            <button 
+              className={styles.closeCardBtn} 
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpened(false);
+              }}
+            >
+              ✕ Close Card
+            </button>
+          )}
         </div>
       </div>
     </section>
   );
 }
+

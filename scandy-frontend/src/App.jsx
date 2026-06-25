@@ -19,6 +19,7 @@ import AdminReports from "./pages/admin/AdminReports";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminGreetings from "./pages/admin/AdminGreetings";
 import AdminSupport from "./pages/admin/AdminSupport";
+import AdminLogs from "./pages/admin/AdminLogs";
 import SuspendedPage from "./pages/SuspendedPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 
@@ -108,6 +109,7 @@ function App() {
           <Route path="users" element={<AdminUsers />} />
           <Route path="greetings" element={<AdminGreetings />} />
           <Route path="support" element={<AdminSupport />} />
+          <Route path="logs" element={<AdminLogs />} />
         </Route>
 
         {/* CATCH-ALL */}
@@ -124,3 +126,4 @@ function App() {
 }
 
 export default App;
+

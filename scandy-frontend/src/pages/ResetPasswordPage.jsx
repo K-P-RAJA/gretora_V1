@@ -91,10 +91,10 @@ export default function ResetPasswordPage() {
         <div className={styles.card}>
           <div className={styles.cardGlow} />
           
-          <div className={styles.cardLogo}>Scan<em>dy</em></div>
+          <div className={styles.cardLogo}><span className="brandName">Gretora</span></div>
           <h2 className={styles.cardHead}>Create new password</h2>
           <p className={styles.cardSub}>
-            Set a secure password for your Scandy account to restore access.
+            Set a secure password for your Gretora account to restore access.
           </p>
 
           {error && <div className={styles.errBox}>{error}</div>}
@@ -159,3 +159,5 @@ export default function ResetPasswordPage() {
     </div>
   );
 }
+
+

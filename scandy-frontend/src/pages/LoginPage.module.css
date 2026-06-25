@@ -54,20 +54,10 @@
 .brandName {
   font-size: 32px;
   font-weight: 900;
-  letter-spacing: -1.5px;
-  color: var(--text-main);
   display: flex;
   align-items: center;
-  gap: 4px;
 }
 
-.brandName em {
-  font-style: normal;
-  background: linear-gradient(135deg, var(--brand) 0%, var(--accent-pink) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
 
 .brandTag {
   font-size: 12px;
@@ -245,18 +235,10 @@
 .cardLogo {
   font-size: 22px;
   font-weight: 900;
-  letter-spacing: -1px;
   margin-bottom: 28px;
   display: inline-flex;
 }
 
-.cardLogo em {
-  font-style: normal;
-  background: linear-gradient(135deg, var(--brand) 0%, var(--accent-pink) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
 
 .cardHead {
   font-size: 26px;

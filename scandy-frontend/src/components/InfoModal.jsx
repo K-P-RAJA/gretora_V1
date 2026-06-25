@@ -49,7 +49,7 @@ export default function InfoModal({ type, onClose }) {
             <div className={styles.goldDivider}></div>
             <div className={styles.scrollContent}>
               <p><em>Last Updated: May 2026</em></p>
-              <p>Welcome to Scandy. We value your privacy and are committed to protecting your personal data and uploaded video files.</p>
+              <p>Welcome to Gretora. We value your privacy and are committed to protecting your personal data and uploaded video files.</p>
               
               <h4>1. Information We Collect</h4>
               <p>We collect minimal information to provide our services:</p>
@@ -78,7 +78,7 @@ export default function InfoModal({ type, onClose }) {
             <div className={styles.goldDivider}></div>
             <div className={styles.scrollContent}>
               <p><em>Last Updated: May 2026</em></p>
-              <p>By using Scandy, you agree to comply with and be bound by the following terms of service.</p>
+              <p>By using Gretora, you agree to comply with and be bound by the following terms of service.</p>
               
               <h4>1. Eligibility & Registration</h4>
               <p>You must create an account to generate greeting cards. You agree to provide accurate registration details and maintain the security of your authentication sessions.</p>
@@ -92,10 +92,10 @@ export default function InfoModal({ type, onClose }) {
               </ul>
 
               <h4>3. Content Review & Safety Banning</h4>
-              <p>Scandy operates on a strict content-safety policy. If a recipient reports a greeting for violating guidelines, our administration team reserves the right to review the flagged video, block the content, and permanently suspend/ban the creator account without warning.</p>
+              <p>Gretora operates on a strict content-safety policy. If a recipient reports a greeting for violating guidelines, our administration team reserves the right to review the flagged video, block the content, and permanently suspend/ban the creator account without warning.</p>
 
               <h4>4. Disclaimer of Liability</h4>
-              <p>Scandy does not endorse or take responsibility for user-generated videos. By using our site, you agree that Scandy is not liable for any content shared, and you use the service at your own discretion.</p>
+              <p>Gretora does not endorse or take responsibility for user-generated videos. By using our site, you agree that Gretora is not liable for any content shared, and you use the service at your own discretion.</p>
             </div>
           </>
         );
@@ -110,7 +110,7 @@ export default function InfoModal({ type, onClose }) {
               <div className={styles.successScreen}>
                 <CheckCircle2 size={56} className={styles.successIcon} />
                 <h3>Message Sent Successfully!</h3>
-                <p>Thank you for reaching out. A Scandy support representative will review your query and respond via email within 24 hours.</p>
+                <p>Thank you for reaching out. A Gretora support representative will review your query and respond via email within 24 hours.</p>
                 <button className={styles.closeModalBtn} onClick={onClose}>
                   Done
                 </button>
@@ -119,7 +119,7 @@ export default function InfoModal({ type, onClose }) {
               <div className={styles.scrollContent}>
                 <form onSubmit={handleFormSubmit} className={styles.form} style={{ paddingBottom: "10px" }}>
                   <p className={styles.formHint}>
-                    Have a question or need help with your greetings? Drop us a message below or email directly to <a href="mailto:support@scandy.app">support@scandy.app</a>.
+                    Have a question or need help with your greetings? Drop us a message below or email directly to <a href="mailto:support@Gretora.com">support@Gretora.com</a>.
                   </p>
 
                   {error && <div className={styles.errorBox}>{error}</div>}
@@ -207,3 +207,5 @@ export default function InfoModal({ type, onClose }) {
     </div>
   );
 }
+
+

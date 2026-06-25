@@ -24,6 +24,10 @@ export default function LoginPage() {
       setError("Please enter your email and password.");
       return;
     }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address (e.g., name@example.com).");
+      return;
+    }
     setError("");
     setLoading(true);
     try {
@@ -69,6 +73,10 @@ export default function LoginPage() {
   const handleForgotPassword = async () => {
     if (!email) {
       setError("Please enter your email address.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address (e.g., name@example.com).");
       return;
     }
     setError("");
@@ -117,7 +125,7 @@ export default function LoginPage() {
         <div className={styles.glow2} />
 
         <div className={styles.brand}>
-          <div className={styles.brandName}>Scan<em>dy</em></div>
+          <div className={styles.brandName}><span className="brandName">Gretora</span></div>
           <div className={styles.brandTag}>Video gifting platform</div>
         </div>
 
@@ -157,7 +165,7 @@ export default function LoginPage() {
           {/* ── LOGIN STEP ── */}
           {step === "login" && (
             <>
-              <div className={styles.cardLogo}>Scan<em>dy</em></div>
+              <div className={styles.cardLogo}><span className="brandName">Gretora</span></div>
               <div className={styles.cardHead}>Welcome back</div>
               <div className={styles.cardSub}>
                 Sign in to create or manage your video gifts.
@@ -233,7 +241,7 @@ export default function LoginPage() {
               </button>
 
               <div className={styles.footerLink}>
-                New to Scandy?{" "}
+                New to Gretora?{" "}
                 <button type="button">Create your first gift</button>
               </div>
 
@@ -293,7 +301,7 @@ export default function LoginPage() {
           {/* ── FORGOT STEP ── */}
           {step === "forgot" && (
             <>
-              <div className={styles.cardLogo}>Scan<em>dy</em></div>
+              <div className={styles.cardLogo}><span className="brandName">Gretora</span></div>
               <div className={styles.cardHead}>Reset password</div>
               <div className={styles.cardSub}>
                 Enter your email address and we&apos;ll send you a link to reset your password.
@@ -350,3 +358,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

@@ -99,9 +99,12 @@ export default function HomePage() {
         ReceiptantName: recipientName,
       });
 
-      navigate(`/greeting/${greetingRes.greetingId}`, {
+      const greetingId = greetingRes.greetingId || greetingRes.greetingid;
+      const qrUrl = greetingRes.qrUrl || greetingRes.qrurl;
+
+      navigate(`/greeting/${greetingId}`, {
         state: {
-          qrUrl: greetingRes.qrUrl,
+          qrUrl: qrUrl,
           recipientName,
           occasion,
           message,
@@ -197,7 +200,7 @@ export default function HomePage() {
                           <div className={styles.qrGlass}>
                             <div className={styles.qrWrapper}>
                                <QRCode
-                                 value="https://scandy.app/g/demo"
+                                 value="https://Gretora.com/g/demo"
                                  size={120}
                                  bgColor="transparent"
                                  fgColor="#2a1610"
@@ -232,7 +235,7 @@ export default function HomePage() {
                         <div className={`${styles.ornament} ${styles.bottomRight}`}></div>
 
                         <div className={styles.brandHeader}>
-                          <span className={styles.brandLogo}>Scandy</span>
+                          <span className={styles.brandLogo}>Gretora</span>
                           <span className={styles.tag}>Premium Greetings</span>
                         </div>
 
@@ -414,7 +417,7 @@ export default function HomePage() {
               By generating a greeting, you acknowledge that you are solely
               responsible for the uploaded video content and agree to our{" "}
               <a href="#terms" onClick={(e) => { e.preventDefault(); setShowTermsModal(true); }}>Terms of Service</a>.
-              Scandy accepts no liability for user-generated content.
+              Gretora accepts no liability for user-generated content.
             </p>
           </div>
 
@@ -479,3 +482,4 @@ export default function HomePage() {
     </div>
   );
 }
+

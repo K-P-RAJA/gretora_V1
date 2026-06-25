@@ -87,3 +87,5 @@ export default function CustomAlert({ title, message, type, isConfirm, onClose, 
     </div>
   );
 }
+
+

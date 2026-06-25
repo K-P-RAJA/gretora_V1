@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════
-   SCANDY — ADMIN SIDEBAR CSS
+   GRETORA — ADMIN SIDEBAR CSS
 ═══════════════════════════════════════════════════ */
 
 .sidebar {
@@ -27,14 +27,8 @@
   font-size: 26px;
   font-weight: 800;
   letter-spacing: -0.04em;
-  color: var(--text-main);
 }
 
-.logo em {
-  font-style: normal;
-  color: var(--brand);
-  text-shadow: 0 0 20px rgba(124, 110, 248, 0.4);
-}
 
 .adminTag {
   font-size: 11px;
@@ -177,13 +171,7 @@
     font-size: 20px;
     font-weight: 800;
     letter-spacing: -0.04em;
-    color: var(--text-main);
     cursor: pointer;
-  }
-
-  .mobileLogo em {
-    font-style: normal;
-    color: var(--brand);
   }
 
   .adminBadge {
@@ -220,3 +208,4 @@
     z-index: 98;
   }
 }
+

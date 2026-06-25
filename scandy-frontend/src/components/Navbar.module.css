@@ -24,23 +24,15 @@
 }
 
 .navLogo {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 900;
-  color: var(--text-main);
   text-decoration: none;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
   display: flex;
   align-items: center;
-  gap: 4px;
 }
 
-.navLogo em {
-  font-style: normal;
-  background: linear-gradient(135deg, var(--brand) 0%, var(--accent-pink) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+
 
 .navLinks {
   display: flex;

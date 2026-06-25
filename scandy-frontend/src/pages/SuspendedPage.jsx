@@ -34,13 +34,13 @@ export default function SuspendedPage() {
           <div className={styles.divider}></div>
           
           <p className={styles.message}>
-            Access to this Scandy account has been permanently suspended due to violation of our community standards, policy terms, or safety guidelines.
+            Access to this Gretora account has been permanently suspended due to violation of our community standards, policy terms, or safety guidelines.
           </p>
 
           <div className={styles.infoBlock}>
             <Mail size={16} className={styles.mailIcon} />
             <span>Need assistance? Contact support at: </span>
-            <a href="mailto:support@scandy.app" className={styles.supportLink}>support@scandy.app</a>
+            <a href="mailto:support@Gretora.com" className={styles.supportLink}>support@Gretora.com</a>
           </div>
 
           <div className={styles.actions}>
@@ -54,3 +54,5 @@ export default function SuspendedPage() {
     </div>
   );
 }
+
+

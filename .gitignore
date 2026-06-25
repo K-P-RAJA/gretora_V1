@@ -2,12 +2,13 @@
 node_modules/
 dist/
 .vite/
-.env
+.env*
+!.env.production
 
 # Backend
 bin/
 obj/
-scandy-backend/Scandy.API/appsettings.json
+gretora-backend/Gretora.API/appsettings.Development.json
 
 # Visual Studio
 .vs/

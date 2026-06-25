@@ -7,7 +7,7 @@ const occasions = [
     label: 'Birthdays',
     title: 'Birthday gifts',
     desc: 'A birthday card that actually sings in your voice. Stick the QR on any gift — they scan it, and there you are.',
-    img: '/images/occasions/scandy-birthday.jpg',
+    img: '/images/occasions/gretora-birthday.jpg',
     alt: 'Birthday celebration with candles',
     span: 'wide',
   },
@@ -16,7 +16,7 @@ const occasions = [
     label: 'Weddings',
     title: 'Weddings',
     desc: 'Embed your vows or love story inside the invitation itself. A gift before the gift.',
-    img: '/images/occasions/scandy-wedding.jpg',
+    img: '/images/occasions/gretora-wedding.jpg',
     alt: 'Wedding couple hands with rings',
     span: 'tall',
   },
@@ -25,7 +25,7 @@ const occasions = [
     label: 'Graduations',
     title: 'Graduations',
     desc: 'Stick a QR on the back of their frame. 20 years later, they hear your proud voice.',
-    img: '/images/occasions/scandy-graduation.jpg',
+    img: '/images/occasions/gretora-graduation.jpg',
     alt: 'Graduation cap toss celebration',
     span: 'normal',
   },
@@ -34,7 +34,7 @@ const occasions = [
     label: 'Long distance',
     title: 'Long distance love',
     desc: 'Send a card across continents. They scan it — suddenly you\'re right there.',
-    img: '/images/occasions/scandy-longdistance.jpg',
+    img: '/images/occasions/gretora-longdistance.jpg',
     alt: 'Airplane view from window seat',
     span: 'normal',
   },
@@ -43,7 +43,7 @@ const occasions = [
     label: 'Baby showers',
     title: 'Baby showers & newborns',
     desc: 'A memory linked forever to a birth announcement card. Beyond any hard drive.',
-    img: '/images/occasions/scandy-babyshower.jpg',
+    img: '/images/occasions/gretora-babyshower.jpg',
     alt: 'Newborn baby sleeping peacefully',
     span: 'normal',
   },
@@ -52,7 +52,7 @@ const occasions = [
     label: 'Memorials',
     title: 'Memorials & tributes',
     desc: 'A voice that lives on. A laugh you never want to forget. Scan. Hear them speak again.',
-    img: '/images/occasions/scandy-celebration.jpg',
+    img: '/images/occasions/gretora-celebration.jpg',
     alt: 'Candles lit in memorial',
     span: 'wide',
   },
@@ -87,10 +87,10 @@ export default function Occasions() {
         <div className={styles.header}>
           <div className={styles.tag}>Every celebration</div>
           <h2 id="occasions-title" className={styles.h2}>
-            Where <em>Scandy</em> belongs
+            Where <em>Gretora</em> belongs
           </h2>
           <p className={styles.cardDesc}>
-            Video messages belong everywhere love is shared — not just on screens. Here are the moments Scandy was made for.
+            Video messages belong everywhere love is shared — not just on screens. Here are the moments Gretora was made for.
           </p>
         </div>
 
@@ -110,3 +110,4 @@ export default function Occasions() {
     </section>
   );
 }
+

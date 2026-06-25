@@ -186,16 +186,13 @@ export default function AdminReports() {
                     </td>
 
                     <td className={styles.detailsCell}>
-                      {report.details ? (
-                        <button 
-                          className={styles.viewDetailsBtn}
-                          onClick={() => setSelectedReport(report)}
-                        >
-                          View Snippet
-                        </button>
-                      ) : (
-                        <span className={styles.noDetails}>None</span>
-                      )}
+                      <button 
+                        className={styles.viewDetailsBtn}
+                        onClick={() => setSelectedReport(report)}
+                        title="Open report to view video and details"
+                      >
+                        {report.details ? "View Details" : "View Report"}
+                      </button>
                     </td>
 
                     <td className={styles.dateCell}>
@@ -267,49 +264,47 @@ export default function AdminReports() {
             </div>
             
             <div className={styles.modalBody}>
-              <div className={styles.metaRow}>
-                <strong>Greeting Title:</strong>
-                <span>{selectedReport.greetingTitle || "Deleted"}</span>
-              </div>
-              <div className={styles.metaRow}>
-                <strong>Category:</strong>
-                <span className={styles.reasonText}>{selectedReport.reason}</span>
-              </div>
-              <div className={styles.metaRow}>
-                <strong>Creator Profile:</strong>
-                <span>{selectedReport.creatorName || "N/A"} ({selectedReport.creatorEmail || "N/A"})</span>
-              </div>
-              <div className={styles.metaRow}>
-                <strong>Flagged On:</strong>
-                <span>{new Date(selectedReport.reportedAt).toLocaleString()}</span>
+              <div className={styles.modalInfo}>
+                <div className={styles.metaRow}>
+                  <strong>Greeting Title:</strong>
+                  <span>{selectedReport.greetingTitle || "Deleted"}</span>
+                </div>
+                <div className={styles.metaRow}>
+                  <strong>Category:</strong>
+                  <span className={styles.reasonText}>{selectedReport.reason}</span>
+                </div>
+                <div className={styles.metaRow}>
+                  <strong>Creator:</strong>
+                  <span>{selectedReport.creatorName || "N/A"} ({selectedReport.creatorEmail || "N/A"})</span>
+                </div>
+                <div className={styles.metaRow}>
+                  <strong>Flagged On:</strong>
+                  <span>{new Date(selectedReport.reportedAt).toLocaleString()}</span>
+                </div>
+
+                <div className={styles.detailsBlock}>
+                  <strong>Reporter Details:</strong>
+                  {selectedReport.details ? (
+                    <p>{selectedReport.details}</p>
+                  ) : (
+                    <p className={styles.noDetailsText}>No additional context provided by reporter.</p>
+                  )}
+                </div>
               </div>
 
-              <div className={styles.detailsBlock}>
-                <strong>Details provided by reporter:</strong>
-                <p>{selectedReport.details}</p>
-              </div>
-
-              {selectedReport.videoUrl && (
-                <div style={{ marginTop: "20px" }}>
-                  <strong style={{ display: "block", marginBottom: "8px", fontSize: "13px", color: "var(--text-muted)" }}>
-                    Reported Video Preview:
-                  </strong>
-                  <div style={{
-                    position: "relative",
-                    width: "100%",
-                    aspectRatio: "16/9",
-                    borderRadius: "var(--radius-md)",
-                    overflow: "hidden",
-                    background: "#000",
-                    border: "1px solid var(--glass-border)",
-                    boxShadow: "var(--shadow-brand)"
-                  }}>
+              {selectedReport.videoUrl ? (
+                <div className={styles.modalMedia}>
+                  <strong className={styles.mediaLabel}>Reported Video Preview:</strong>
+                  <div className={styles.videoWrapper}>
                     <video 
                       controls 
                       src={selectedReport.videoUrl} 
-                      style={{ width: "100%", height: "100%", objectFit: "contain" }}
                     />
                   </div>
+                </div>
+              ) : (
+                <div className={styles.modalMediaEmpty}>
+                  <p>No video available to preview.</p>
                 </div>
               )}
             </div>
@@ -347,3 +342,5 @@ export default function AdminReports() {
     </div>
   );
 }
+
+

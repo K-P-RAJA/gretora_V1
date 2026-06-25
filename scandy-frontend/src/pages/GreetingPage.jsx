@@ -54,7 +54,7 @@ export default function GreetingPage() {
             onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
             onMouseLeave={e => e.currentTarget.style.opacity = "1"}
           >
-            Go to Scandy →
+            Go to Gretora →
           </button>
         </div>
       </div>
@@ -70,3 +70,4 @@ export default function GreetingPage() {
     />
   );
 }
+

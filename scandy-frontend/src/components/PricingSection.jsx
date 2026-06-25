@@ -27,7 +27,7 @@ export default function PricingSection() {
           <article className={styles.card}>
             <div className={styles.cardHeader}>
               <div className={styles.planBadge}>early backer access</div>
-              <h3>Scandy Beta</h3>
+              <h3>Gretora Beta</h3>
               <p className={styles.planDesc}>Perfect to try out the magic of video greeting cards.</p>
               <div className={styles.priceWrap}>
                 <span className={styles.currency}>$</span>
@@ -69,7 +69,7 @@ export default function PricingSection() {
             <div className={styles.premiumBorderGlow}></div>
             <div className={styles.cardHeader}>
               <div className={`${styles.planBadge} ${styles.comingSoonBadge}`}>coming soon</div>
-              <h3>Scandy Premium</h3>
+              <h3>Gretora Premium</h3>
               <p className={styles.planDesc}>Unlocks ultimate creativity and personalization.</p>
               <div className={styles.priceWrap}>
                 <span className={styles.currency}>$</span>
@@ -114,3 +114,5 @@ export default function PricingSection() {
     </section>
   );
 }
+
+

@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import styles from "./ViewGreetingPage.module.css";
 import { reportGreeting } from "../api/greetingService";
 import { useAlert } from "../context/AlertContext";
+import LoadingScreen from "../components/LoadingScreen";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -82,7 +83,7 @@ export default function ViewGreetingPage() {
             fontSize: 15, fontWeight: 700,
             boxShadow: "0 4px 18px rgba(108,71,255,0.35)",
           }}>
-            Go to Scandy →
+            Go to Gretora →
           </a>
         </div>
       </div>
@@ -90,11 +91,7 @@ export default function ViewGreetingPage() {
   }
 
   if (!greeting) {
-    return (
-      <div className={styles.loadingPage}>
-        <div className={styles.loader}></div>
-      </div>
-    );
+    return <LoadingScreen message="Opening your surprise..." />;
   }
 
   let occasion = "Birthday Surprise";
@@ -119,9 +116,9 @@ export default function ViewGreetingPage() {
       <div className={styles.container}>
         {/* Small Branding */}
         <div className={styles.brandBar}>
-          <div className={styles.logo}>S</div>
+          <div className={styles.logo}>R</div>
           <div>
-            <h4>Scandy</h4>
+            <h4>Gretora</h4>
             <p>Premium Video Greetings</p>
           </div>
         </div>
@@ -223,7 +220,7 @@ export default function ViewGreetingPage() {
         {/* Marketing CTA */}
         <div className={styles.bottomSection}>
           <div className={styles.marketingCard}>
-            <div className={styles.marketingBadge}>Made with Scandy</div>
+            <div className={styles.marketingBadge}>Made with Gretora</div>
             <h3>Turn memories into unforgettable gift experiences.</h3>
             <p>
               Create personalized QR video greetings for birthdays,
@@ -244,7 +241,7 @@ export default function ViewGreetingPage() {
               <div className={styles.reportSuccess}>
                 <div className={styles.successIcon}>✓</div>
                 <h3>Report Submitted</h3>
-                <p>Thank you for helping us keep Scandy safe. Our team will review this content and take appropriate action.</p>
+                <p>Thank you for helping us keep Gretora safe. Our team will review this content and take appropriate action.</p>
                 <button className={styles.reportCloseBtn} onClick={() => { setShowReportModal(false); setReportSubmitted(false); }}>
                   Close
                 </button>
@@ -256,7 +253,7 @@ export default function ViewGreetingPage() {
                   <button className={styles.reportModalClose} onClick={() => setShowReportModal(false)}>✕</button>
                 </div>
                 <p className={styles.reportDesc}>
-                  Help us keep Scandy safe. Select a reason for reporting this content.
+                  Help us keep Gretora safe. Select a reason for reporting this content.
                 </p>
                 <div className={styles.reportReasons}>
                   {["Inappropriate content", "Harassment or bullying", "Spam or misleading", "Harmful or dangerous", "Other"].map((reason) => (
@@ -294,3 +291,4 @@ export default function ViewGreetingPage() {
     </div>
   );
 }
+

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import AppNavbar from "../components/AppNavbar";
 import Footer from "../components/Footer";
+import LoadingScreen from "../components/LoadingScreen";
 
 import { getProfileDashboard, deleteAccount } from "../api/UserService";
 import { logoutUser } from "../api/authService";
@@ -110,7 +111,7 @@ export default function ProfilePage() {
 
       if (res.statusCode === 1) {
         setShowDeleteConfirm(false);
-        await showAlert("Your Scandy account and all associated video greetings have been permanently deleted.", "success");
+        await showAlert("Your Gretora account and all associated video greetings have been permanently deleted.", "success");
         await logoutUser();
         navigate("/");
       } else {
@@ -125,11 +126,7 @@ export default function ProfilePage() {
   };
 
   if (loading) {
-    return (
-      <div className={styles.loadingPage}>
-        Loading profile...
-      </div>
-    );
+    return <LoadingScreen message="Loading profile..." />;
   }
 
   return (
@@ -150,11 +147,11 @@ export default function ProfilePage() {
 
           <div>
             <p className={styles.profileMini}>
-              SCANDY CREATOR
+              Gretora CREATOR
             </p>
 
             <h1>
-              {profile?.name || "Scandy User"}
+              {profile?.name || "Gretora User"}
             </h1>
 
             <p className={styles.email}>
@@ -377,3 +374,4 @@ export default function ProfilePage() {
     </div>
   );
 }
+

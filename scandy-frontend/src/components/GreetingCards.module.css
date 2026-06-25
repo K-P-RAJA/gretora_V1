@@ -72,6 +72,7 @@
 /* 3D Realistic Horizontal Greeting Card */
 .right {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   perspective: 2000px;
@@ -259,11 +260,11 @@
 }
 
 .cardContainer.opened {
-  transform: translateX(180px);
+  transform: translateX(220px);
 }
 
 .cardContainer.opened:hover {
-  transform: translateX(180px) scale(1.01);
+  transform: translateX(220px) scale(1.01);
 }
 
 /* Front Flap container (folds open) */
@@ -486,7 +487,7 @@
 
 .closeCardBtn {
   position: relative;
-  margin-top: 14px;
+  margin-top: 30px;
   z-index: 10;
   background: rgba(42, 22, 16, 0.95);
   color: #b48c50;

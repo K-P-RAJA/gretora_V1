@@ -78,3 +78,16 @@ export async function deleteSupportTicket(id) {
   });
 }
 
+export async function getSystemLogs(page = 1, pageSize = 50, level = "", source = "", search = "") {
+  const params = new URLSearchParams({
+    page: page.toString(),
+    pageSize: pageSize.toString(),
+    level,
+    source,
+    search
+  });
+  return await apiRequest(`/Admin/logs?${params.toString()}`, {
+    method: "GET",
+  });
+}
+

@@ -1,8 +1,10 @@
 import styles from './CTASection.module.css';
 import { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function CTASection() {
   const revealRefs = useRef([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -37,12 +39,14 @@ export default function CTASection() {
         </p>
         <button
           className={styles.btn}
-          aria-label="Create your first free Scandy"
+          aria-label="Create your first free Gretora"
+          onClick={() => navigate('/login')}
         >
-          Create your first Scandy
+          Create your first Gretora
         </button>
       </div>
     </section>
 
   );
 }
+

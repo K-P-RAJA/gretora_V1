@@ -355,8 +355,11 @@
   background: var(--bg-card);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  width: 100%;
-  max-width: 580px;
+  width: 95%;
+  max-width: 850px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
   box-shadow: var(--shadow-lg);
   overflow: hidden;
   animation: slideUp 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -398,9 +401,72 @@
 
 .modalBody {
   padding: 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  overflow-y: auto;
+}
+
+.modalInfo {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
+}
+
+.modalMedia {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modalMediaEmpty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-surface);
+  border: 1px dashed var(--glass-border);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 14px;
+  min-height: 200px;
+}
+
+.mediaLabel {
+  display: block;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.videoWrapper {
+  width: 100%;
+  background: #000;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-brand);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.videoWrapper video {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+}
+
+.noDetailsText {
+  font-style: italic;
+  color: var(--text-dim) !important;
+}
+
+@media (max-width: 768px) {
+  .modalBody {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 20px;
+  }
 }
 
 .metaRow {
@@ -492,3 +558,4 @@
 .modalBtnRemove:hover {
   background: rgba(239, 68, 68, 0.2);
 }
+

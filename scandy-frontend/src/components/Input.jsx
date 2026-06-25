@@ -15,3 +15,4 @@ function Input({ label, type, placeholder, onChange }) {
 }
 
 export default Input;
+

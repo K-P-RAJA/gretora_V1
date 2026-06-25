@@ -37,13 +37,13 @@ export default function PolicyConsentModal({ onAccept }) {
           <h4>📋 User Content Policy</h4>
           <ul>
             <li>
-              <strong>Your Responsibility:</strong> You are solely responsible for any video, image, or text content you upload or share through Scandy.
+              <strong>Your Responsibility:</strong> You are solely responsible for any video, image, or text content you upload or share through Gretora.
             </li>
             <li>
               <strong>Prohibited Content:</strong> Content that is illegal, obscene, harassing, threatening, defamatory, or violates the rights of others is strictly prohibited.
             </li>
             <li>
-              <strong>No Liability:</strong> Scandy does not monitor, endorse, or take responsibility for user-generated content. By using our platform, you agree that Scandy shall not be held liable for any content uploaded by users.
+              <strong>No Liability:</strong> Gretora does not monitor, endorse, or take responsibility for user-generated content. By using our platform, you agree that Gretora shall not be held liable for any content uploaded by users.
             </li>
             <li>
               <strong>Content Removal:</strong> We reserve the right to remove any content that violates this policy and to terminate accounts of repeat offenders without prior notice.
@@ -76,3 +76,5 @@ export default function PolicyConsentModal({ onAccept }) {
     </div>
   );
 }
+
+
