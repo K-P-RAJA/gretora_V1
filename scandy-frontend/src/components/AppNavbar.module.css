@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 72px;
+  height: 72px; /* Revert to standard */
   background: var(--glass-bg);
   backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid var(--glass-border);
@@ -17,7 +17,7 @@
 .navContainer {
   width: 100%;
   max-width: 1200px;
-  padding: 0 40px;
+  padding: 0 40px; /* Revert to standard */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -76,6 +76,10 @@
   font-weight: 600;
 }
 
+.navIcon {
+  display: none;
+}
+
 .actions {
   display: flex;
   align-items: center;
@@ -101,27 +105,53 @@
 }
 
 @media (max-width: 768px) {
-  .navContainer { padding: 0 20px; }
-  .logo { font-size: 20px; }
-  .logoutBtn { padding: 6px 12px; font-size: 12px; }
+  .navbar {
+    height: 64px;
+  }
+  .navContainer { 
+    padding: 0 16px; 
+  }
+  .logo { 
+    font-size: 18px; 
+  }
+  .logoutBtn { 
+    padding: 6px 12px; 
+    font-size: 12px; 
+    border-radius: 6px;
+  }
   
   .navLinks {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px) saturate(180%);
-    border-top: 1px solid var(--glass-border);
+    background: #090b14e6;
+    backdrop-filter: blur(24px) saturate(180%);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     justify-content: space-around;
-    padding: 12px 10px;
+    padding: 16px 4px 12px; /* Increased top padding from 10px to 16px for breathing room under the border line */
     z-index: 1000;
   }
   
   .navLink, .activeLink { 
-    font-size: 13px; 
-    padding: 8px 4px; 
+    font-size: 11px; 
+    padding: 6px 2px; 
     flex: 1; 
+    flex-direction: column;
+    gap: 6px; /* Space between icon and label */
     justify-content: center;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+  }
+
+  .activeLink {
+    color: var(--brand-light);
+    font-weight: 700;
+  }
+
+  .navIcon {
+    display: block;
+    color: inherit;
   }
 }

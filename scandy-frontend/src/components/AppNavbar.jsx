@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Home, Gift, User, Shield, LogOut } from "lucide-react";
 
 import { logoutUser } from "../api/authService";
 import { checkAdmin } from "../api/adminService";
@@ -56,7 +57,8 @@ export default function AppNavbar() {
             }
             onClick={() => navigate("/home")}
           >
-            Home
+            <Home size={18} className={styles.navIcon} />
+            <span>Home</span>
           </button>
 
           <button
@@ -70,7 +72,8 @@ export default function AppNavbar() {
               navigate("/mygreetings")
             }
           >
-            My Greetings
+            <Gift size={18} className={styles.navIcon} />
+            <span>My Greetings</span>
           </button>
 
           <button
@@ -84,7 +87,8 @@ export default function AppNavbar() {
               navigate("/profile")
             }
           >
-            Profile
+            <User size={18} className={styles.navIcon} />
+            <span>Profile</span>
           </button>
 
           {isAdmin && (
@@ -96,7 +100,8 @@ export default function AppNavbar() {
               }
               onClick={() => navigate("/admin")}
             >
-              Admin Panel
+              <Shield size={18} className={styles.navIcon} />
+              <span>Admin Panel</span>
             </button>
           )}
         </nav>

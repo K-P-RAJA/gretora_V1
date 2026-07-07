@@ -29,7 +29,8 @@ builder.Services.AddCors(options =>
         policy
             .WithOrigins(
                 "http://localhost:5173",
-                "https://vizhiq.vercel.app"
+                "https://gretora.com",
+                "https://www.gretora.com"
             )
             .AllowAnyHeader()
             .AllowAnyMethod()

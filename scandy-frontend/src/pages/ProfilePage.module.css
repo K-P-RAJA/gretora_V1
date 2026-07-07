@@ -308,7 +308,7 @@
   .profileCard { flex-direction: column; text-align: center; padding: 36px 24px; gap: 20px; }
   .statsGrid { grid-template-columns: 1fr; }
   .recentGrid { grid-template-columns: 1fr; }
-  .page { padding: 90px 20px 100px; }
+  .page { padding: 112px 20px 100px; } /* Maintained 112px top padding instead of 90px to prevent hiding behind navbar */
   .modalContent { padding: 24px 16px; }
   .otpInput { font-size: 20px; letter-spacing: 4px; padding: 12px; }
 }
