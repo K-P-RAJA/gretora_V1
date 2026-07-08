@@ -145,7 +145,7 @@ export default function ProfilePage() {
               ?.toUpperCase() || "S"}
           </div>
 
-          <div className={styles.profileDetails}>
+          <div>
             <p className={styles.profileMini}>
               Gretora CREATOR
             </p>
@@ -164,40 +164,6 @@ export default function ProfilePage() {
                 profile?.createdAt
               )}
             </p>
-          </div>
-
-          <div className={styles.profileActions}>
-            {!isGoogleUser && (
-              <button 
-                className={styles.changePasswordBtn}
-                onClick={async () => {
-                  try {
-                    const { error } = await supabase.auth.resetPasswordForEmail(profile.email, {
-                      redirectTo: `${window.location.origin}/reset-password`
-                    });
-                    if (error) throw error;
-                    await showAlert("Password reset link sent to your email!", "success");
-                  } catch (err) {
-                    await showAlert(err.message || "Failed to trigger password change", "error");
-                  }
-                }}
-              >
-                Change Password
-              </button>
-            )}
-            <button 
-              className={styles.logoutBtn}
-              onClick={async () => {
-                try {
-                  await logoutUser();
-                  navigate("/login");
-                } catch (err) {
-                  await showAlert("Failed to log out", "error");
-                }
-              }}
-            >
-              Log Out
-            </button>
           </div>
         </div>
       </section>

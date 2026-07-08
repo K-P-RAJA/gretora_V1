@@ -88,7 +88,7 @@ export default function Hero() {
                     </svg>
                   </div>
                 </div>
-                <div className={styles.phoneLabel}>Happy Birthday, Ashwini</div>
+                <div className={styles.phoneLabel}>Happy Birthday, Priya</div>
                 <div className={styles.phoneSublabel}>0:45 · tap to play</div>
                 <div className={styles.phoneBar}>
                   <div className={styles.phoneBarFill} />
