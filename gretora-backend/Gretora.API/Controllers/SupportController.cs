@@ -12,10 +12,12 @@ namespace Gretora.API.Controllers
     public class SupportController : ControllerBase
     {
         private readonly DatabaseService _db;
+        private readonly LogService _logService;
 
-        public SupportController(DatabaseService db)
+        public SupportController(DatabaseService db, LogService logService)
         {
             _db = db;
+            _logService = logService;
         }
 
         public class SubmitTicketRequest
@@ -66,6 +68,19 @@ namespace Gretora.API.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"[Support Error] Failed to submit ticket: {ex.Message}");
+                
+                // Write to Admin Log system so we can view it in the dashboard
+                try 
+                {
+                    await _logService.LogAsync(
+                        "ERROR", 
+                        "Backend", 
+                        $"Failed to submit support ticket from email: {request.Email}", 
+                        ex.ToString()
+                    );
+                }
+                catch {}
+
                 return StatusCode(500, "An error occurred while saving your support request. Please try again later.");
             }
         }
