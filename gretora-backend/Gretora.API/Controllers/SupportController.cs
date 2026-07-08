@@ -43,8 +43,8 @@ namespace Gretora.API.Controllers
 
             using var connection = _db.CreateConnection();
             var sql = @"
-                INSERT INTO public.support_tickets (name, email, subject, message, status, created_at)
-                VALUES (@Name, @Email, @Subject, @Message, 'Pending', NOW())
+                INSERT INTO public.support_tickets (name, email, subject, message, status)
+                VALUES (@Name, @Email, @Subject, @Message, 'Pending')
                 RETURNING id;
             ";
 
