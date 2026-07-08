@@ -14,7 +14,7 @@ const testimonials = [
   {
     stars: '★★★★★',
     text: '"We embedded a QR on our wedding invites — it played a 60 second video of us telling our story. Guests were in tears before they even arrived."',
-    author: '— Arjun & Priya, Chennai',
+    author: '— Arjun & Ashwini, Chennai',
   },
   {
     stars: '★★★★★',

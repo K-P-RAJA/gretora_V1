@@ -23,8 +23,12 @@ export default function LuxeQrCard({ qrUrl, recipientName, occasion, message }) 
   };
 
   const handleWhatsAppShare = () => {
-    // Relying on WhatsApp's built-in Link Previews (Open Graph) creates a perfect single-bubble message.
-    const text = encodeURIComponent(`Hi ${recipientName || ''}! I've prepared a special digital greeting card just for you! 🎁✨\n\nTap the link below to open your card and reveal the surprise:\n${qrUrl}`);
+    // Extract greeting ID from the watch URL to build the card preview link
+    const greetingId = qrUrl ? qrUrl.split('/g/').pop() : '';
+    const cardPreviewUrl = greetingId
+      ? `https://www.gretora.com/api/card/${greetingId}`
+      : qrUrl;
+    const text = encodeURIComponent(`Hi ${recipientName || ''}! I've prepared a special digital greeting card just for you! 🎁✨\n\nTap the link below to open your card and reveal the surprise:\n${cardPreviewUrl}`);
     window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
   };
 
