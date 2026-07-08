@@ -1,0 +1,75 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #060814 0%, #0b112c 50%, #050716 100%);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 60px;
+}
+
+.contentCard {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 40px 50px;
+  max-width: 800px;
+  width: 90%;
+  margin: 40px auto 60px auto;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.contentCard h2 {
+  font-size: 32px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 15px;
+}
+
+.goldDivider {
+  height: 2px;
+  background: linear-gradient(90deg, #7c6ef8, transparent);
+  margin-bottom: 30px;
+}
+
+.scrollContent {
+  font-size: 16px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.scrollContent p {
+  margin-bottom: 20px;
+}
+
+.scrollContent h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #a5b4fc;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.scrollContent ul {
+  margin-left: 20px;
+  margin-bottom: 25px;
+}
+
+.scrollContent li {
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .contentCard {
+    padding: 30px 20px;
+    margin: 20px auto 40px auto;
+  }
+  
+  .contentCard h2 {
+    font-size: 26px;
+  }
+}

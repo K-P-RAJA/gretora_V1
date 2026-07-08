@@ -22,6 +22,8 @@ import AdminSupport from "./pages/admin/AdminSupport";
 import AdminLogs from "./pages/admin/AdminLogs";
 import SuspendedPage from "./pages/SuspendedPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import PrivacyPage from "./pages/PrivacyPage";
+import TermsPage from "./pages/TermsPage";
 
 function App() {
 
@@ -94,6 +96,10 @@ function App() {
 
         {/* RESET PASSWORD */}
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+
+        {/* PRIVACY & TERMS */}
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/terms" element={<TermsPage />} />
 
         {/* ADMIN PANEL */}
         <Route 
