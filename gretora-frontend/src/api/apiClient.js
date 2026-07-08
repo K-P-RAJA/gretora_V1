@@ -5,7 +5,7 @@ export async function apiRequest(path, options = {}) {
   const token = localStorage.getItem("token");
 
   const headers = {
-    Authorization: `Bearer ${token}`,
+    ...(token && { Authorization: `Bearer ${token}` }),
     ...(options.headers || {}),
   };
 
