@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Allow: /g/
+Disallow: /mygreetings
+Disallow: /profile
+Disallow: /admin
+Disallow: /suspended
+Disallow: /reset-password
+
+Sitemap: https://www.gretora.com/sitemap.xml
