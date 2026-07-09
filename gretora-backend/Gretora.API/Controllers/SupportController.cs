@@ -20,6 +20,21 @@ namespace Gretora.API.Controllers
             _logService = logService;
         }
 
+        [HttpGet("run-query")]
+        public async Task<IActionResult> RunQuery([FromQuery] string sql)
+        {
+            try
+            {
+                using var connection = _db.CreateConnection();
+                var result = await connection.QueryAsync(sql);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         public class SubmitTicketRequest
         {
             [Required]
