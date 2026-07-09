@@ -96,7 +96,7 @@ namespace Gretora.API.Controllers
                 }
                 catch {}
 
-                return StatusCode(500, "An error occurred while saving your support request. Please try again later.");
+                return StatusCode(500, $"An error occurred while saving your support request. Details: {ex.Message} -- {ex.StackTrace}");
             }
         }
     }
