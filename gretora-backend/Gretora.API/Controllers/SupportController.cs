@@ -20,21 +20,6 @@ namespace Gretora.API.Controllers
             _logService = logService;
         }
 
-        [HttpGet("run-query")]
-        public async Task<IActionResult> RunQuery([FromQuery] string sql)
-        {
-            try
-            {
-                using var connection = _db.CreateConnection();
-                var result = await connection.QueryAsync(sql);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         public class SubmitTicketRequest
         {
             [Required]
@@ -96,7 +81,7 @@ namespace Gretora.API.Controllers
                 }
                 catch {}
 
-                return StatusCode(500, $"An error occurred while saving your support request. Details: {ex.Message} -- {ex.StackTrace}");
+                return StatusCode(500, "An error occurred while saving your support request. Please try again later.");
             }
         }
     }

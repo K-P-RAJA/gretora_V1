@@ -40,6 +40,7 @@ namespace Gretora.API.Services
                     ALTER TABLE public.support_tickets ADD COLUMN IF NOT EXISTS subject TEXT NULL;
                     ALTER TABLE public.support_tickets ADD COLUMN IF NOT EXISTS status VARCHAR(50) NOT NULL DEFAULT 'Pending';
                     ALTER TABLE public.support_tickets ADD COLUMN IF NOT EXISTS created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now();
+                    ALTER TABLE public.support_tickets ALTER COLUMN id SET DEFAULT gen_random_uuid();
 
                     DO $$ 
                     BEGIN 
