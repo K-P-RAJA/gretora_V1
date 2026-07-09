@@ -61,6 +61,7 @@ namespace Gretora.API.Services
 
                     CREATE INDEX IF NOT EXISTS idx_system_logs_created_at ON public.system_logs(created_at DESC);
                     CREATE INDEX IF NOT EXISTS idx_system_logs_level ON public.system_logs(level);
+                    ALTER TABLE public.system_logs ALTER COLUMN id SET DEFAULT gen_random_uuid();
                 ";
                 cmd.ExecuteNonQuery();
                 Console.WriteLine("[Database Service] Database initialized successfully (support_tickets and system_logs tables verified).");
