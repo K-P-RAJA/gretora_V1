@@ -7,6 +7,7 @@ import styles from "./HomePage.module.css";
 
 import { uploadVideo } from "../api/videoService";
 import { createGreeting, getMyGreetings } from "../api/greetingService";
+import { logClientError } from "../api/logService";
 import { useAlert } from "../context/AlertContext";
 
 import AppNavbar from "../components/AppNavbar";
@@ -112,6 +113,11 @@ export default function HomePage() {
       });
     } catch (err) {
       console.error(err);
+      await logClientError("Failed to generate greeting on HomePage", err.stack || err.message || err, {
+        recipientName,
+        occasion,
+        messageLength: message?.length
+      });
       await showAlert(err.message || "Something went wrong.", "error");
     } finally {
       setLoading(false);

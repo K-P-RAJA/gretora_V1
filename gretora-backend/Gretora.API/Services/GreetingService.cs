@@ -9,15 +9,18 @@ namespace Gretora.API.Services
         private readonly DatabaseService _db;
         private readonly IConfiguration _config;
         private readonly R2Service _r2Service;
+        private readonly LogService _logService;
 
         public GreetingService(
             DatabaseService db,
             IConfiguration config,
-            R2Service r2Service)
+            R2Service r2Service,
+            LogService logService)
         {
             _db = db;
             _config = config;
             _r2Service = r2Service;
+            _logService = logService;
         }
 
         // =========================================
@@ -102,6 +105,17 @@ namespace Gretora.API.Services
             {
                 response.StatusCode = 2;
                 response.StatusMessage = ex.Message;
+                
+                try
+                {
+                    await _logService.LogAsync(
+                        "ERROR",
+                        "GreetingService",
+                        $"Failed to create greeting for user {userId}: {ex.Message}",
+                        ex.ToString()
+                    );
+                }
+                catch {}
             }
 
             return response;
@@ -507,6 +521,7 @@ namespace Gretora.API.Services
             catch (Exception ex)
             {
                 Console.WriteLine($"[ERROR] ReportGreeting failed: {ex.Message}");
+                try { await _logService.LogAsync("ERROR", "GreetingService", $"ReportGreeting failed for greeting {greetingId}: {ex.Message}", ex.ToString()); } catch {}
                 return false;
             }
         }

@@ -129,12 +129,10 @@ input, textarea, select {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  filter: drop-shadow(0 0 10px rgba(124, 110, 248, 0.35));
-  transition: background-position 0.5s ease, filter 0.3s ease;
+  transition: background-position 0.5s ease;
 }
 
 .brandName:hover {
   background-position: 100% 50%;
-  filter: drop-shadow(0 0 18px rgba(244, 114, 182, 0.45));
 }
 

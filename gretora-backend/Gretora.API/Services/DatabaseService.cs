@@ -32,9 +32,21 @@ namespace Gretora.API.Services
                       message TEXT NOT NULL,
                       status VARCHAR(50) NOT NULL DEFAULT 'Pending',
                       created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
-                      CONSTRAINT support_tickets_pkey PRIMARY KEY (id),
+                    CONSTRAINT support_tickets_pkey PRIMARY KEY (id),
                       CONSTRAINT chk_ticket_status CHECK (status IN ('Pending', 'Resolved'))
                     );
+
+                    -- Ensure columns and constraints exist in support_tickets (in case table existed before)
+                    ALTER TABLE public.support_tickets ADD COLUMN IF NOT EXISTS subject TEXT NULL;
+                    ALTER TABLE public.support_tickets ADD COLUMN IF NOT EXISTS status VARCHAR(50) NOT NULL DEFAULT 'Pending';
+                    ALTER TABLE public.support_tickets ADD COLUMN IF NOT EXISTS created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now();
+
+                    DO $$ 
+                    BEGIN 
+                        IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'chk_ticket_status') THEN
+                            ALTER TABLE public.support_tickets ADD CONSTRAINT chk_ticket_status CHECK (status IN ('Pending', 'Resolved'));
+                        END IF;
+                    END $$;
 
                     CREATE TABLE IF NOT EXISTS public.system_logs (
                       id UUID NOT NULL DEFAULT gen_random_uuid(),

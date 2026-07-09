@@ -9,11 +9,13 @@ namespace Gretora.API.Services
     {
         private readonly DatabaseService _db;
         private readonly R2Service _r2Service;
+        private readonly LogService _logService;
 
-        public VideoService(DatabaseService db, R2Service r2Service)
+        public VideoService(DatabaseService db, R2Service r2Service, LogService logService)
         {
             _db = db;
             _r2Service = r2Service;
+            _logService = logService;
         }
 
         public async Task<UploadVideoResponse> UploadVideo(Guid userId, IFormFile file)
@@ -53,6 +55,17 @@ namespace Gretora.API.Services
             {
                 response.StatusCode = 2;
                 response.StatusMessage = ex.Message;
+                
+                try
+                {
+                    await _logService.LogAsync(
+                        "ERROR",
+                        "VideoService",
+                        $"Failed to upload video for user {userId}: {ex.Message}",
+                        ex.ToString()
+                    );
+                }
+                catch {}
             }
 
             return response;

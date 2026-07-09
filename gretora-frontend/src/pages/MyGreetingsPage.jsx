@@ -8,6 +8,7 @@ import {
   updateGreeting
 } from "../api/greetingService";
 import { uploadVideo } from "../api/videoService";
+import { logClientError } from "../api/logService";
 import { useAlert } from "../context/AlertContext";
 
 import AppNavbar from "../components/AppNavbar";
@@ -39,6 +40,7 @@ export default function MyGreetingsPage() {
       setGreetings(data);
     } catch (err) {
       console.error(err);
+      await logClientError("Failed to load greetings in MyGreetingsPage", err.stack || err.message || err);
       await showAlert("Failed to load greetings", "error");
     } finally {
       setLoading(false);
@@ -62,6 +64,7 @@ export default function MyGreetingsPage() {
       await showAlert("Greeting deleted successfully", "success");
     } catch (err) {
       console.error(err);
+      await logClientError("Failed to delete greeting in MyGreetingsPage", err.stack || err.message || err, { greetingId: id });
       await showAlert("Failed to delete greeting", "error");
     }
   }
@@ -137,6 +140,10 @@ export default function MyGreetingsPage() {
       await showAlert("Greeting updated successfully", "success");
     } catch (err) {
       console.error(err);
+      await logClientError("Failed to update greeting in MyGreetingsPage", err.stack || err.message || err, {
+        greetingId: editingGreetingId,
+        hasNewVideo: !!newVideoFile
+      });
       await showAlert("Failed to update greeting.", "error");
     } finally {
       setIsSaving(false);

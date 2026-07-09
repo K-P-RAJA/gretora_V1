@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./theme.css";
+import API_BASE_URL from "./api/api";
 
 // Global frontend error capturing
 window.addEventListener("error", (event) => {
@@ -17,7 +18,7 @@ window.addEventListener("error", (event) => {
     userAgent: navigator.userAgent
   };
 
-  fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5143"}/api/logs/client`, {
+  fetch(`${API_BASE_URL}/logs/client`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
@@ -34,7 +35,7 @@ window.addEventListener("unhandledrejection", (event) => {
     userAgent: navigator.userAgent
   };
 
-  fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5143"}/api/logs/client`, {
+  fetch(`${API_BASE_URL}/logs/client`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)

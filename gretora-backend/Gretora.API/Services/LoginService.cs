@@ -15,12 +15,14 @@ namespace Gretora.API.Services
     {
         private readonly DatabaseService _db;
         private readonly IConfiguration _config;
+        private readonly LogService _logService;
         private static readonly ConcurrentDictionary<Guid, (string Otp, DateTime Expiry)> _otpCache = new();
 
-        public LoginService(DatabaseService db, IConfiguration config)
+        public LoginService(DatabaseService db, IConfiguration config, LogService logService)
         {
             _db = db;
             _config = config;
+            _logService = logService;
         }
 
         public async Task<CommonStatusResponse> CreateProfile(CreateProfileModel request)
@@ -46,6 +48,7 @@ namespace Gretora.API.Services
             {
                 response.StatusCode = 2;
                 response.StatusMessage = ex.Message;
+                try { await _logService.LogAsync("ERROR", "LoginService", $"Failed to create profile: {ex.Message}", ex.ToString()); } catch {}
             }
 
             return response;
@@ -99,10 +102,10 @@ namespace Gretora.API.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
                 response.StatusCode = 3;
                 response.StatusMessage = ex.Message;
                 response.Data = null;
+                try { await _logService.LogAsync("ERROR", "LoginService", $"Failed to fetch profile for user {userId}: {ex.Message}", ex.ToString()); } catch {}
             }
 
             return response;
@@ -139,6 +142,7 @@ namespace Gretora.API.Services
             {
                 response.StatusCode = 3;
                 response.StatusMessage = ex.Message;
+                try { await _logService.LogAsync("ERROR", "LoginService", $"Failed to update profile for user {userId}: {ex.Message}", ex.ToString()); } catch {}
             }
 
             return response;
@@ -218,6 +222,7 @@ namespace Gretora.API.Services
             {
                 response.StatusCode = 3;
                 response.StatusMessage = ex.Message;
+                try { await _logService.LogAsync("ERROR", "LoginService", $"Failed to load dashboard statistics for user {userId}: {ex.Message}", ex.ToString()); } catch {}
             }
 
             return response;
@@ -253,6 +258,7 @@ namespace Gretora.API.Services
             {
                 response.StatusCode = 3;
                 response.StatusMessage = ex.Message;
+                try { await _logService.LogAsync("ERROR", "LoginService", $"Failed to accept policy for user {userId}: {ex.Message}", ex.ToString()); } catch {}
             }
 
             return response;
@@ -332,6 +338,7 @@ namespace Gretora.API.Services
                 transaction.Rollback();
                 response.StatusCode = 3;
                 response.StatusMessage = "Account deletion failed: " + ex.Message;
+                try { await _logService.LogAsync("ERROR", "LoginService", $"Permanently delete account transaction rollback for user {userId}: {ex.Message}", ex.ToString()); } catch {}
             }
             return response;
         }
