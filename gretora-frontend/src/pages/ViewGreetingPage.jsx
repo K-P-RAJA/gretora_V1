@@ -167,6 +167,7 @@ export default function ViewGreetingPage() {
                             controls
                             autoPlay
                             playsInline
+                            preload="metadata"
                             className={styles.videoPlayer}
                             onClick={(e) => e.stopPropagation()}
                           >

@@ -35,8 +35,12 @@ namespace Gretora.API.Services
                 BucketName = _bucketName,
                 Key = filePath,
                 InputStream = stream,
-                ContentType = file.ContentType,
-                DisablePayloadSigning = true
+                ContentType = "video/mp4", // force correct MIME type for browser streaming
+                DisablePayloadSigning = true,
+                Headers =
+                {
+                    ContentDisposition = "inline" // tell browser to play, not download
+                }
             };
 
             await _client.PutObjectAsync(request);
@@ -51,7 +55,7 @@ namespace Gretora.API.Services
             {
                 BucketName = _bucketName,
                 Key = filePath,
-                Expires = DateTime.UtcNow.AddMinutes(10), // adjust if needed
+                Expires = DateTime.UtcNow.AddHours(2),
                 Verb = HttpVerb.GET
             };
 
