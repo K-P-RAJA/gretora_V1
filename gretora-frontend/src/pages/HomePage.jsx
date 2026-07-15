@@ -208,17 +208,11 @@ export default function HomePage() {
                                <QRCode
                                  value="https://Gretora.com/g/demo"
                                  size={120}
-                                 bgColor="transparent"
-                                 fgColor="#2a1610"
-                                 qrStyle="dots"
-                                 eyeRadius={8}
-                                 eyeColor="#b48c50"
-                                 logoImage="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2I0OGM1MCI+PHBhdGggZD0iTTEyIDIxLjM1bC0xLjQ1LTEuMzJDNS40IDE1LjM2IDIgMTIuMjggMiA4LjVDMiA1LjQyIDQuNDIgMyA3LjUgM2MxLjc0IDAgMy40MS44MSA0LjUgMi4wOUMxMy4wOSAzLjgxIDE0Ljc2IDMgMTYuNSAzbDMuMDggMGMzLjA4IDAgNS41IDIuNDIgNS41IDUuNSAwIDMuNzgtMy40IDYuODYtOC41NSAxMS41NEwxMiAyMS4zNXoiLz48L3N2Zz4="
-                                 logoWidth={24}
-                                 logoHeight={24}
-                                 logoPadding={3}
-                                 logoPaddingStyle="circle"
-                                 removeQrCodeBehindLogo={true}
+                                 bgColor="#ffffff"
+                                 fgColor="#1a1010"
+                                 qrStyle="squares"
+                                 eyeRadius={6}
+                                 eyeColor="#1a1010"
                                />
                             </div>
                           </div>

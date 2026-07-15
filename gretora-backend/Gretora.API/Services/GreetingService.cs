@@ -505,12 +505,13 @@ namespace Gretora.API.Services
             try
             {
                 var sql = @"
-                    INSERT INTO reports (greeting_id, reason, details)
-                    VALUES (@GreetingId, @Reason, @Details);
+                    INSERT INTO reports (id, greeting_id, reason, details)
+                    VALUES (@Id, @GreetingId, @Reason, @Details);
                 ";
 
                 await dbConnection.ExecuteAsync(sql, new
                 {
+                    Id = Guid.NewGuid(),
                     GreetingId = greetingId,
                     Reason = reason,
                     Details = details
