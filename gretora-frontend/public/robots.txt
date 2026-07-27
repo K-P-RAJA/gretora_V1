@@ -1,3 +1,4 @@
+# Gretora Robots Directive & Crawl Rules
 User-agent: *
 Allow: /
 Allow: /g/
@@ -7,4 +8,6 @@ Disallow: /admin
 Disallow: /suspended
 Disallow: /reset-password
 
+# Sitemap Indexing
+Sitemap: https://gretora.com/sitemap.xml
 Sitemap: https://www.gretora.com/sitemap.xml

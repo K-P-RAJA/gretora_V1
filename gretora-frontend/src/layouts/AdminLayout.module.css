@@ -2,6 +2,7 @@
   min-height: 100vh;
   background: var(--bg-deep);
   display: flex;
+  overflow-x: hidden;
 }
 
 .adminMain {
@@ -9,22 +10,26 @@
   margin-left: 260px; /* offset sidebar width */
   min-width: 0; /* prevents flex items from overflowing */
   transition: margin-left 0.3s ease;
+  width: 100%;
 }
 
 .contentWrapper {
   padding: 40px;
   max-width: 1400px;
   margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 @media (max-width: 1024px) {
   .adminMain {
     margin-left: 0;
-    padding-top: 70px; /* offset mobile header height */
+    padding-top: 74px; /* offset mobile header height with clean buffer */
   }
 
   .contentWrapper {
-    padding: 24px;
+    padding: 20px 16px 40px;
   }
 }
+
 

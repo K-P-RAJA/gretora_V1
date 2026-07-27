@@ -1,9 +1,10 @@
 .dashboard {
   animation: fadeIn 0.4s ease-out;
+  isolation: isolate;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -110,9 +111,12 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s ease, box-shadow 0.25s ease;
   display: flex;
   flex-direction: column;
+  isolation: isolate;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .statCard::after {
@@ -153,6 +157,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .cardBody {
@@ -163,8 +168,11 @@
 .cardValue {
   font-size: 36px;
   font-weight: 800;
+  line-height: 1.1;
   letter-spacing: -0.03em;
   margin-bottom: 4px;
+  color: var(--text-main);
+  display: block;
 }
 
 .cardSub {
@@ -431,9 +439,37 @@
   line-height: 1.5;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  .header {
+    margin-bottom: 24px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .statCard {
+    padding: 20px;
+  }
+
   .detailsGrid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .detailsCard {
+    padding: 20px 16px;
   }
 }
+
 
