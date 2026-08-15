@@ -260,7 +260,7 @@ export default function HomePage() {
                         </div>
 
                         <div className={styles.waxSeal}>
-                          <span>S</span>
+                          <span>G</span>
                         </div>
                         
                         <span className={styles.signature}>With love, {profile?.name || "Sender"}</span>
@@ -269,9 +269,14 @@ export default function HomePage() {
                       {/* OUTSIDE COVER PAGE (Visible when closed) */}
                       <div className={styles.cardFrontOutside}>
                         <div className={styles.coverText}>
-                          <h2>For<br/>{recipientName || "Someone\nSpecial"}</h2>
+                          <div className={styles.coverDeco}>
+                            <span className={styles.coverDecoIcon}>❆</span>
+                          </div>
+                          <span className={styles.coverSub}>With Love &amp; Warmth, For</span>
+                          <h2 className={styles.coverName}>{recipientName || "Someone Special"}</h2>
+                          <div className={styles.coverNameDivider} />
                         </div>
-                        {!cardOpened && <div className={styles.tapPrompt}>Tap to fold open</div>}
+                        {!cardOpened && <div className={styles.tapPrompt}>❆ Tap to Reveal ❆</div>}
                       </div>
                     </div>
                     

@@ -140,7 +140,7 @@ export default function LuxeQrCard({ qrUrl, recipientName, occasion, message }) 
             </div>
 
             <div className={styles.waxSeal}>
-              <span>S</span>
+              <span>G</span>
             </div>
           </div>
 

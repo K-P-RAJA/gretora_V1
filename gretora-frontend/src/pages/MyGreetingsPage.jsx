@@ -127,8 +127,12 @@ export default function MyGreetingsPage() {
         videoId = uploadRes.videoId;
       }
 
+      const updatedTitle = editFormData.receiptantName 
+        ? `${editFormData.occassion || 'Greeting'} for ${editFormData.receiptantName}` 
+        : editFormData.title;
+
       await updateGreeting(editingGreetingId, {
-        title: editFormData.title,
+        title: updatedTitle,
         message: editFormData.message,
         occassion: editFormData.occassion,
         receiptantName: editFormData.receiptantName,

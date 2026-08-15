@@ -94,16 +94,19 @@ export default function ViewGreetingPage() {
     return <LoadingScreen message="Opening your surprise..." />;
   }
 
-  let occasion = "Birthday Surprise";
-  let recipientName = "Someone Special";
-  if (greeting && greeting.title) {
+  let occasion = greeting?.occassion || "Birthday Surprise";
+  let recipientName = greeting?.receiptantName || greeting?.recipientName;
+
+  if (!recipientName && greeting?.title) {
     if (greeting.title.includes(" for ")) {
       const parts = greeting.title.split(" for ");
-      occasion = parts[0];
+      occasion = occasion || parts[0];
       recipientName = parts[1];
-    } else {
-      occasion = greeting.title;
     }
+  }
+
+  if (!recipientName) {
+    recipientName = "Someone Special";
   }
 
   return (
@@ -149,7 +152,7 @@ export default function ViewGreetingPage() {
                   </div>
 
                   <div className={styles.senderSection}>
-                    <div className={styles.waxSeal}><span>S</span></div>
+                    <div className={styles.waxSeal}><span>G</span></div>
                     <span className={styles.signature}>Sent with love</span>
                   </div>
                 </div>
@@ -184,9 +187,14 @@ export default function ViewGreetingPage() {
                 {/* OUTSIDE COVER */}
                 <div className={styles.cardFrontOutside}>
                   <div className={styles.coverText}>
-                    <h2>For<br />{recipientName}</h2>
+                    <div className={styles.coverDeco}>
+                      <span className={styles.coverDecoIcon}>✦</span>
+                    </div>
+                    <span className={styles.coverSub}>With Love & Warmth, For</span>
+                    <h2 className={styles.coverName}>{recipientName}</h2>
+                    <div className={styles.coverNameDivider} />
                   </div>
-                  {!cardOpened && <div className={styles.tapPrompt}>Tap to open surprise</div>}
+                  {!cardOpened && <div className={styles.tapPrompt}>✦ Tap to Reveal ✦</div>}
                 </div>
               </div>
             </div>

@@ -100,7 +100,7 @@ export default function GreetingCards() {
                 </div>
 
                 <div className={styles.waxSeal}>
-                  <span>S</span>
+                  <span>G</span>
                 </div>
                 
                 <span className={styles.signature}>With love, Alex</span>

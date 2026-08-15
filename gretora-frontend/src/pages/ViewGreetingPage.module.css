@@ -237,48 +237,105 @@
   box-shadow: 5px 0 20px rgba(0,0,0,0.35);
 }
 
-.cardFrontOutside::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(30,20,50,0.2), rgba(9,9,11,0.72));
-  border-radius: 12px;
-}
+/* No dark overlay — let the beautiful floral image breathe */
 
 .coverText {
   position: relative;
   z-index: 1;
   text-align: center;
-  padding: 30px;
+  padding: 22px 20px;
+  width: 85%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(196, 133, 154, 0.35);
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(180, 100, 130, 0.12), 0 1px 4px rgba(180, 100, 130, 0.08);
 }
 
-.coverText h2 {
+.coverDeco {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+}
+
+.coverDeco::before,
+.coverDeco::after {
+  content: '';
+  display: block;
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #c4859a);
+}
+
+.coverDeco::after {
+  background: linear-gradient(90deg, #c4859a, transparent);
+}
+
+.coverDecoIcon {
+  font-size: 13px;
+  color: #b07a8a;
+  line-height: 1;
+}
+
+.coverSub {
   font-family: 'Cinzel', serif;
-  font-size: 30px;
-  color: #fff;
-  line-height: 1.3;
-  text-shadow: 0 4px 14px rgba(0,0,0,0.6);
-  letter-spacing: 2px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #7b3f5e;
+  letter-spacing: 3px;
   text-transform: uppercase;
+  display: block;
+}
+
+.coverName {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(14px, 4vw, 20px);
+  color: #3b1228;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  max-width: 100%;
+  width: 100%;
+}
+
+.coverNameDivider {
+  width: 50px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #c4859a, transparent);
+  border-radius: 2px;
 }
 
 .tapPrompt {
   position: absolute;
-  bottom: 28px;
+  bottom: 24px;
   z-index: 1;
-  background: rgba(255,255,255,0.13);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   padding: 8px 22px;
   border-radius: 100px;
-  color: #fff;
+  color: #3b1228;
   font-family: 'Lato', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
   text-transform: uppercase;
   animation: pulseRecipient 2s infinite;
-  border: 1px solid rgba(255,255,255,0.12);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  border: 1px solid rgba(180, 100, 130, 0.35);
+  box-shadow: 0 2px 12px rgba(180, 100, 130, 0.2);
 }
 
 @keyframes pulseRecipient {
@@ -427,13 +484,18 @@
 
 .recipientNameLarge {
   font-family: 'Cinzel', serif;
-  font-size: 22px;
+  font-size: clamp(14px, 3.5vw, 22px);
   font-weight: 700;
   color: #2a1610;
   letter-spacing: 1px;
   text-transform: uppercase;
   margin: 0;
   line-height: 1.2;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  max-width: 100%;
+  text-align: center;
 }
 
 .goldDivider {
