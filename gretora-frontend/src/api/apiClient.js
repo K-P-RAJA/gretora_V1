@@ -1,8 +1,16 @@
 import API_BASE_URL from "../api/api";
+import { supabase } from "../api/supabaseClient";
 
 export async function apiRequest(path, options = {}) {
+  let token = null;
 
-  const token = localStorage.getItem("token");
+  try {
+    const { data } = await supabase.auth.getSession();
+    token = data?.session?.access_token || localStorage.getItem("token");
+  } catch (err) {
+    console.error("Failed to retrieve token from Supabase session:", err);
+    token = localStorage.getItem("token");
+  }
 
   const headers = {
     ...(token && { Authorization: `Bearer ${token}` }),
@@ -28,11 +36,13 @@ export async function apiRequest(path, options = {}) {
   }
 
   if (!res.ok) {
-    throw new Error(
+    const error = new Error(
       data?.statusMessage ||
       data?.message ||
       "API error"
     );
+    error.status = res.status;
+    throw error;
   }
 
   return data;
