@@ -134,7 +134,9 @@ namespace Gretora.API.Services
                     v.file_path as file_path, 
                     g.title as title, 
                     g.message as message,
-                    g.video_id as video_id
+                    g.video_id as video_id,
+                    g.receiptant_name as receiptant_name,
+                    g.occassion as occassion
                 FROM greetings g
                 JOIN videos v ON g.video_id = v.id
                 WHERE g.id = @Id;
@@ -155,6 +157,8 @@ namespace Gretora.API.Services
                 var message = data.message?.ToString();
                 var filePath = data.file_path?.ToString();
                 var videoIdStr = data.video_id?.ToString();
+                var occassion = data.occassion?.ToString();
+                var receiptantName = data.receiptant_name?.ToString();
 
                 if (string.IsNullOrEmpty(filePath)) return null;
 
@@ -237,6 +241,8 @@ namespace Gretora.API.Services
                 {
                     title = title,
                     message = message,
+                    occassion = occassion,
+                    receiptantName = receiptantName,
                     videoUrl = _r2Service.GetSignedUrl(filePath)
                 };
             }
