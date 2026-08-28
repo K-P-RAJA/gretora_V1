@@ -4,6 +4,18 @@ using Gretora.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Render's shared hosts enforce a low inotify (FileSystemWatcher) limit.
+// Disable config reload-on-change so no FileSystemWatcher is created (avoids
+// "The configured user limit on the number of inotify instances has been reached").
+builder.Configuration.Sources.Clear();
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
+builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: false);
+builder.Configuration.AddEnvironmentVariables();
+if (args is { Length: > 0 })
+{
+    builder.Configuration.AddCommandLine(args);
+}
+
 // ✅ Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

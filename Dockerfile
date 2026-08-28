@@ -22,7 +22,7 @@ COPY --from=publish /app/publish .
 
 # Expose port 80 for Render
 EXPOSE 80
-ENV ASPNETCORE_HTTP_PORTS=80
+ENV ASPNETCORE_URLS=http://0.0.0.0:80
 ENV ASPNETCORE_ENVIRONMENT=Production
 
 ENTRYPOINT ["dotnet", "Gretora.API.dll"]
