@@ -24,5 +24,10 @@ COPY --from=publish /app/publish .
 EXPOSE 80
 ENV ASPNETCORE_URLS=http://0.0.0.0:80
 ENV ASPNETCORE_ENVIRONMENT=Production
+# Render's shared hosts enforce a low inotify (FileSystemWatcher) limit (128).
+# Force .NET to poll for file changes instead of using inotify instances,
+# otherwise WebApplication.CreateBuilder crashes at startup with
+# "The configured user limit on the number of inotify instances has been reached".
+ENV DOTNET_USE_POLLING_FILE_WATCHER=true
 
 ENTRYPOINT ["dotnet", "Gretora.API.dll"]
