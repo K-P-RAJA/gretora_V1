@@ -7,6 +7,7 @@ import { checkAdmin } from "../api/adminService";
 import { useAlert } from "../context/AlertContext";
 
 import styles from "./AppNavbar.module.css";
+import BrandLogo from "./BrandLogo";
 
 export default function AppNavbar() {
   const navigate = useNavigate();
@@ -15,21 +16,20 @@ export default function AppNavbar() {
   const { showAlert } = useAlert();
 
   useEffect(() => {
-    async function loadAdminStatus() {
-      const status = await checkAdmin();
-      setIsAdmin(status);
+    async function verifyAdmin() {
+      const adminStatus = await checkAdmin();
+      setIsAdmin(adminStatus);
     }
-    loadAdminStatus();
+    verifyAdmin();
   }, []);
 
   async function handleLogout() {
     try {
       await logoutUser();
-
       navigate("/login");
+      // Use the global alert instead of local alert
+      await showAlert("You have been signed out.", "success");
     } catch (err) {
-      console.error(err);
-
       await showAlert("Logout failed", "error");
     }
   }
@@ -42,9 +42,7 @@ export default function AppNavbar() {
           className={styles.logoWrap}
           onClick={() => navigate("/home")}
         >
-          <div className={styles.logo}>
-            <span className="brandName">Gretora</span>
-          </div>
+          <BrandLogo size="md" showTagline={true} />
         </div>
 
         {/* CENTER */}

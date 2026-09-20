@@ -127,15 +127,22 @@ export default function MyGreetingsPage() {
         videoId = uploadRes.videoId;
       }
 
-      const updatedTitle = editFormData.receiptantName 
-        ? `${editFormData.occassion || 'Greeting'} for ${editFormData.receiptantName}` 
+      const cleanRecipient = editFormData.receiptantName || editFormData.recipientName;
+      const cleanOccasion = editFormData.occassion || editFormData.occasion;
+
+      const updatedTitle = cleanRecipient 
+        ? `${cleanOccasion || 'Greeting'} for ${cleanRecipient}` 
         : editFormData.title;
 
       await updateGreeting(editingGreetingId, {
         title: updatedTitle,
         message: editFormData.message,
-        occassion: editFormData.occassion,
-        receiptantName: editFormData.receiptantName,
+        occasion: cleanOccasion,
+        recipientName: cleanRecipient,
+        occassion: cleanOccasion,
+        receiptantName: cleanRecipient,
+        Occassion: cleanOccasion,
+        ReceiptantName: cleanRecipient,
         videoId: videoId
       });
 
@@ -144,11 +151,14 @@ export default function MyGreetingsPage() {
       await showAlert("Greeting updated successfully", "success");
     } catch (err) {
       console.error(err);
-      await logClientError("Failed to update greeting in MyGreetingsPage", err.stack || err.message || err, {
-        greetingId: editingGreetingId,
-        hasNewVideo: !!newVideoFile
-      });
-      await showAlert("Failed to update greeting.", "error");
+      const isNetworkErr = err.message?.includes("fetch") || err.message?.includes("Network") || err.message?.includes("Load failed");
+      if (!isNetworkErr) {
+        await logClientError("Failed to update greeting in MyGreetingsPage", err.stack || err.message || err, {
+          greetingId: editingGreetingId,
+          hasNewVideo: !!newVideoFile
+        });
+      }
+      await showAlert(isNetworkErr ? "Network error. Please try again." : "Failed to update greeting.", "error");
     } finally {
       setIsSaving(false);
     }

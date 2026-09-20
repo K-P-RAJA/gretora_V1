@@ -23,10 +23,10 @@
   padding-left: 12px;
 }
 
-.logo {
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
+.logoImage {
+  height: 68px;
+  width: auto;
+  object-fit: contain;
 }
 
 
@@ -168,10 +168,14 @@
   }
 
   .mobileLogo {
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: -0.04em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     cursor: pointer;
+  }
+  
+  .mobileLogo img {
+    height: 50px;
   }
 
   .adminBadge {

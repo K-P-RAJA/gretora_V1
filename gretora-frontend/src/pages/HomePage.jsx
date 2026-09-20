@@ -73,17 +73,26 @@ export default function HomePage() {
         return;
       }
 
-      if (
-        !recipientName ||
-        !occasion ||
-        !message ||
-        !videoFile
-      ) {
+      const cleanRecipient = recipientName?.trim();
+      const cleanOccasion = occasion?.trim();
+      const cleanMessage = message?.trim();
+
+      if (!cleanRecipient || !cleanOccasion || !cleanMessage || !videoFile) {
         await showAlert("Please complete all fields.", "warning");
         return;
       }
 
-      if (message.length > 300) {
+      if (cleanRecipient.length < 2) {
+        await showAlert("Recipient name must be at least 2 characters.", "warning");
+        return;
+      }
+
+      if (cleanOccasion.length < 2) {
+        await showAlert("Occasion must be at least 2 characters.", "warning");
+        return;
+      }
+
+      if (cleanMessage.length > 300) {
         await showAlert("Greeting message cannot exceed 300 characters.", "warning");
         return;
       }
@@ -94,10 +103,12 @@ export default function HomePage() {
 
       const greetingRes = await createGreeting({
         videoId: uploadRes.videoId,
-        title: `${occasion} for ${recipientName}`,
-        message: message,
-        Occassion: occasion,
-        ReceiptantName: recipientName,
+        title: `${cleanOccasion} for ${cleanRecipient}`,
+        message: cleanMessage,
+        occasion: cleanOccasion,
+        recipientName: cleanRecipient,
+        Occassion: cleanOccasion,
+        ReceiptantName: cleanRecipient,
       });
 
       const greetingId = greetingRes.greetingId || greetingRes.greetingid;
@@ -106,19 +117,22 @@ export default function HomePage() {
       navigate(`/greeting/${greetingId}`, {
         state: {
           qrUrl: qrUrl,
-          recipientName,
-          occasion,
-          message,
+          recipientName: cleanRecipient,
+          occasion: cleanOccasion,
+          message: cleanMessage,
         },
       });
     } catch (err) {
       console.error(err);
-      await logClientError("Failed to generate greeting on HomePage", err.stack || err.message || err, {
-        recipientName,
-        occasion,
-        messageLength: message?.length
-      });
-      await showAlert(err.message || "Something went wrong.", "error");
+      const isNetworkErr = err.message?.includes("fetch") || err.message?.includes("Network") || err.message?.includes("Load failed");
+      if (!isNetworkErr) {
+        await logClientError("Failed to generate greeting on HomePage", err.stack || err.message || err, {
+          recipientName,
+          occasion,
+          messageLength: message?.length
+        });
+      }
+      await showAlert(isNetworkErr ? "Network error. Please check your connection and try again." : (err.message || "Something went wrong."), "error");
     } finally {
       setLoading(false);
     }

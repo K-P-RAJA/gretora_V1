@@ -78,16 +78,16 @@ namespace Gretora.API.Services
 
                 var topCountriesRaw = await dbConnection.QueryAsync<dynamic>(@"
                     SELECT 
-                        country_code AS CountryCode, 
+                        COALESCE(NULLIF(country_code, ''), 'Other') AS CountryCode, 
                         COUNT(*) AS ScanCount
                     FROM scan_logs
-                    GROUP BY country_code
+                    GROUP BY COALESCE(NULLIF(country_code, ''), 'Other')
                     ORDER BY ScanCount DESC
-                    LIMIT 3
+                    LIMIT 10
                 ");
                 topCountries = topCountriesRaw.Select(c => new {
-                    CountryCode = c.countrycode,
-                    ScanCount = c.scancount
+                    CountryCode = (string)(c.countrycode ?? "Other"),
+                    ScanCount = Convert.ToInt32(c.scancount)
                 });
             }
             catch (Exception ex)

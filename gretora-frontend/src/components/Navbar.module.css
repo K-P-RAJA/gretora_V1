@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 72px;
+  height: 84px;
   background: var(--glass-bg);
   backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid var(--glass-border);
@@ -24,12 +24,15 @@
 }
 
 .navLogo {
-  font-size: 24px;
-  font-weight: 900;
   text-decoration: none;
-  letter-spacing: -0.5px;
   display: flex;
   align-items: center;
+}
+
+.logoImage {
+  height: 72px;
+  width: auto;
+  object-fit: contain;
 }
 
 

@@ -5,6 +5,7 @@ import { loginUser, sendPasswordReset, loginWithGoogle } from "../api/authServic
 import { useNavigate } from "react-router-dom";
 import { createProfile, getProfile } from "../api/UserService";
 import InfoModal from "../components/InfoModal";
+import BrandLogo from "../components/BrandLogo";
 
 export default function LoginPage() {
   const [step, setStep] = useState("login"); // "login" | "setup" | "forgot"
@@ -125,7 +126,7 @@ export default function LoginPage() {
         <div className={styles.glow2} />
 
         <div className={styles.brand}>
-          <div className={styles.brandName}><span className="brandName">Gretora</span></div>
+          <div className={styles.brandName}><BrandLogo size="lg" showTagline={false} /></div>
           <div className={styles.brandTag}>Video gifting platform</div>
         </div>
 
@@ -165,7 +166,7 @@ export default function LoginPage() {
           {/* ── LOGIN STEP ── */}
           {step === "login" && (
             <>
-              <div className={styles.cardLogo}><span className="brandName">Gretora</span></div>
+              <div className={styles.cardLogo}><BrandLogo size="md" showTagline={false} /></div>
               <div className={styles.cardHead}>Welcome back</div>
               <div className={styles.cardSub}>
                 Sign in to create or manage your video gifts.
@@ -301,7 +302,7 @@ export default function LoginPage() {
           {/* ── FORGOT STEP ── */}
           {step === "forgot" && (
             <>
-              <div className={styles.cardLogo}><span className="brandName">Gretora</span></div>
+              <div className={styles.cardLogo}><BrandLogo size="md" showTagline={false} /></div>
               <div className={styles.cardHead}>Reset password</div>
               <div className={styles.cardSub}>
                 Enter your email address and we&apos;ll send you a link to reset your password.

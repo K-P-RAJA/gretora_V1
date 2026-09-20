@@ -291,34 +291,39 @@ export default function AdminDashboard() {
           {/* Geographical Analytics */}
           <div className={styles.detailsCard}>
             <h3 className={styles.cardHeading}>Geographical Traffic</h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-              {stats.topCountries.map((country, index) => {
-                const total = stats.totalScans || 1;
-                const percentage = Math.round((country.scanCount / total) * 100);
-                return (
-                  <div key={country.countryCode || index} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "13px" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                        <span style={{ fontSize: "18px" }}>{getFlagEmoji(country.countryCode)}</span>
-                        <span style={{ fontWeight: "700", textTransform: "uppercase" }}>{country.countryCode || "Other"}</span>
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              {(() => {
+                const geoTotal = stats.topCountries.reduce((sum, c) => sum + (c.scanCount || 0), 0) || 1;
+                return stats.topCountries.map((country, index) => {
+                  const percentage = Math.round(((country.scanCount || 0) / geoTotal) * 100);
+                  const isOther = !country.countryCode || country.countryCode.toUpperCase() === "OTHER";
+                  return (
+                    <div key={country.countryCode || index} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "13px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                          <span style={{ fontSize: "18px" }}>{isOther ? "🌐" : getFlagEmoji(country.countryCode)}</span>
+                          <span style={{ fontWeight: "700", textTransform: "uppercase" }}>
+                            {isOther ? "Other / Unspecified" : country.countryCode}
+                          </span>
+                        </div>
+                        <span style={{ color: "var(--text-muted)", fontWeight: "600" }}>
+                          {country.scanCount} scans ({percentage}%)
+                        </span>
                       </div>
-                      <span style={{ color: "var(--text-muted)", fontWeight: "600" }}>
-                        {country.scanCount} scans ({percentage}%)
-                      </span>
+                      <div style={{ width: "100%", height: "6px", backgroundColor: "var(--bg-elevated)", borderRadius: "10px", overflow: "hidden" }}>
+                        <div 
+                          style={{ 
+                            width: `${Math.max(percentage, 2)}%`, 
+                            height: "100%",
+                            borderRadius: "10px",
+                            backgroundColor: index === 0 ? "var(--brand)" : index === 1 ? "var(--accent-pink)" : index === 2 ? "var(--accent-teal)" : "rgba(255, 255, 255, 0.2)"
+                          }} 
+                        />
+                      </div>
                     </div>
-                    <div style={{ width: "100%", height: "6px", backgroundColor: "var(--bg-elevated)", borderRadius: "10px", overflow: "hidden" }}>
-                      <div 
-                        style={{ 
-                          width: `${percentage}%`, 
-                          height: "100%",
-                          borderRadius: "10px",
-                          backgroundColor: index === 0 ? "var(--brand)" : index === 1 ? "var(--accent-pink)" : "var(--accent-teal)" 
-                        }} 
-                      />
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                });
+              })()}
             </div>
           </div>
         </div>

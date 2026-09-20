@@ -30,10 +30,13 @@
 }
 
 .footerBrandName {
-  font-size: 26px;
-  font-weight: 900;
-  letter-spacing: -1.2px;
   margin-bottom: 12px;
+}
+
+.footerLogoImage {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
 }
 
 

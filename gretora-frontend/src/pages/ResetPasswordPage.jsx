@@ -3,6 +3,7 @@ import { updatePassword } from "../api/authService";
 import { supabase } from "../api/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import styles from "./LoginPage.module.css"; // Reuse premium login card styling!
+import BrandLogo from "../components/BrandLogo";
 
 export default function ResetPasswordPage() {
   const [newPassword, setNewPassword] = useState("");
@@ -91,7 +92,7 @@ export default function ResetPasswordPage() {
         <div className={styles.card}>
           <div className={styles.cardGlow} />
           
-          <div className={styles.cardLogo}><span className="brandName">Gretora</span></div>
+          <div className={styles.cardLogo}><BrandLogo size="md" showTagline={false} /></div>
           <h2 className={styles.cardHead}>Create new password</h2>
           <p className={styles.cardSub}>
             Set a secure password for your Gretora account to restore access.

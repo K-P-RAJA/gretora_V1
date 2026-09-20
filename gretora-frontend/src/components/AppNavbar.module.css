@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 72px; /* Revert to standard */
+  height: 84px;
   background: var(--glass-bg);
   backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid var(--glass-border);
@@ -17,7 +17,7 @@
 .navContainer {
   width: 100%;
   max-width: 1200px;
-  padding: 0 40px; /* Revert to standard */
+  padding: 0 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -30,14 +30,11 @@
   cursor: pointer;
 }
 
-.logo {
-  font-size: 22px;
-  font-weight: 900;
-  letter-spacing: -0.5px;
-  display: flex;
-  align-items: center;
+.logoImage {
+  height: 70px;
+  width: auto;
+  object-fit: contain;
 }
-
 
 .navLinks {
   display: flex;
@@ -111,8 +108,8 @@
   .navContainer { 
     padding: 0 16px; 
   }
-  .logo { 
-    font-size: 18px; 
+  .logoImage { 
+    height: 50px; 
   }
   .logoutBtn { 
     padding: 6px 12px; 

@@ -1,0 +1,98 @@
+.logoWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  user-select: none;
+}
+
+.logoIcon {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 14px rgba(124, 110, 248, 0.3));
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+
+.brandName {
+  font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #ffffff 60%, rgba(255, 255, 255, 0.8) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.tagline {
+  font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-size: 10.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+/* ── SIZES ── */
+.sm {
+  gap: 10px;
+}
+.sm .logoIcon {
+  height: 38px;
+}
+.sm .brandName {
+  font-size: 16px;
+}
+.sm .tagline {
+  font-size: 9px;
+  margin-top: 1px;
+}
+
+.md {
+  gap: 14px;
+}
+.md .logoIcon {
+  height: 52px;
+}
+.md .brandName {
+  font-size: 22px;
+}
+.md .tagline {
+  font-size: 10.5px;
+}
+
+.lg {
+  gap: 16px;
+}
+.lg .logoIcon {
+  height: 68px;
+}
+.lg .brandName {
+  font-size: 28px;
+}
+.lg .tagline {
+  font-size: 12px;
+}
+
+.xl {
+  gap: 20px;
+}
+.xl .logoIcon {
+  height: 84px;
+}
+.xl .brandName {
+  font-size: 34px;
+}
+.xl .tagline {
+  font-size: 13.5px;
+}

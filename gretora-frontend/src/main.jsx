@@ -5,15 +5,35 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "./theme.css";
 import API_BASE_URL from "./api/api";
 
+// Helper to check if an error is third-party / browser-internal noise
+function isIgnorableError(msg, stack = "") {
+  const str = `${msg} ${stack}`.toLowerCase();
+  return (
+    str.includes("extension") ||
+    str.includes("inject") ||
+    str.includes("lock:sb-") ||
+    str.includes("stole it") ||
+    str.includes("iabjs://") ||
+    str.includes("postmessage") ||
+    str.includes("java exception") ||
+    str.includes("resizeobserver") ||
+    str.includes("script error") ||
+    str.includes("notfounderror") ||
+    str.includes("invalidstateerror") ||
+    str.includes("indexsizeerror")
+  );
+}
+
 // Global frontend error capturing
 window.addEventListener("error", (event) => {
-  // Ignore minor browser extension errors
-  if (event.message && (event.message.includes("Extension") || event.message.includes("inject"))) return;
+  const msg = event.message || "";
+  const stack = event.error?.stack || "";
+  if (isIgnorableError(msg, stack)) return;
 
   const payload = {
     level: "ERROR",
-    message: event.message || "Unhandled Frontend Error",
-    stackTrace: event.error?.stack || "",
+    message: msg || "Unhandled Frontend Error",
+    stackTrace: stack,
     url: window.location.href,
     userAgent: navigator.userAgent
   };
@@ -22,15 +42,20 @@ window.addEventListener("error", (event) => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
-  }).catch(() => {}); // Suppress loop if logging api is offline
+  }).catch(() => {});
 });
 
 window.addEventListener("unhandledrejection", (event) => {
   const reason = event.reason;
+  const msg = reason?.message || String(reason || "");
+  const stack = reason?.stack || "";
+
+  if (isIgnorableError(msg, stack)) return;
+
   const payload = {
     level: "ERROR",
-    message: `Unhandled Promise Rejection: ${reason?.message || reason || "Unknown"}`,
-    stackTrace: reason?.stack || "",
+    message: `Unhandled Promise Rejection: ${msg || "Unknown"}`,
+    stackTrace: stack,
     url: window.location.href,
     userAgent: navigator.userAgent
   };

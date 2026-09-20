@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { isAuthenticated } from "../api/authService";
 import styles from './Navbar.module.css';
+import BrandLogo from './BrandLogo';
 
 export default function Navbar() {
   const [isAuth, setIsAuth] = useState(false);
@@ -17,7 +18,9 @@ export default function Navbar() {
   return (
     <nav className={styles.nav}>
       <div className={styles.navContainer}>
-        <Link to="/" className={styles.navLogo}><span className="brandName">Gretora</span></Link>
+        <Link to="/" className={styles.navLogo}>
+          <BrandLogo size="md" showTagline={true} />
+        </Link>
 
         <ul className={styles.navLinks}>
           <li><a href="/#how-it-works">How it works</a></li>

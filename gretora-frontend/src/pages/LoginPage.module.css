@@ -52,10 +52,14 @@
 }
 
 .brandName {
-  font-size: 32px;
-  font-weight: 900;
   display: flex;
   align-items: center;
+}
+
+.brandLogoImg {
+  height: 64px;
+  width: auto;
+  object-fit: contain;
 }
 
 
@@ -233,12 +237,15 @@
 }
 
 .cardLogo {
-  font-size: 22px;
-  font-weight: 900;
   margin-bottom: 28px;
   display: inline-flex;
 }
 
+.cardLogoImg {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+}
 
 .cardHead {
   font-size: 26px;

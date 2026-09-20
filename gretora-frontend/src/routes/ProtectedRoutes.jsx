@@ -126,9 +126,9 @@ export default function ProtectedRoute({ children }) {
               <line x1="12" y1="17" x2="12.01" y2="17"/>
             </svg>
           </div>
-          <h2 style={{ fontSize: "22px", marginBottom: "12px", fontWeight: "700", letterSpacing: "-0.5px" }}>Connection Delay</h2>
+          <h2 style={{ fontSize: "22px", marginBottom: "12px", fontWeight: "700", letterSpacing: "-0.5px" }}>Something went wrong</h2>
           <p style={{ color: "rgba(255, 255, 255, 0.65)", fontSize: "14px", lineHeight: "1.6", marginBottom: "28px" }}>
-            We are having trouble establishing a connection to the server. This usually happens if the server is waking up after being idle. Thank you for your patience!
+            We were unable to load your account. Please try again or sign in once more.
           </p>
           <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
             <button 
@@ -145,7 +145,7 @@ export default function ProtectedRoute({ children }) {
                 boxShadow: "0 4px 14px rgba(124, 110, 248, 0.4)"
               }}
             >
-              Retry Connection
+              Try Again
             </button>
             <button 
               onClick={async () => {

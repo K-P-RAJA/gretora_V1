@@ -512,12 +512,11 @@ namespace Gretora.API.Services
             {
                 var sql = @"
                     INSERT INTO reports (id, greeting_id, reason, details)
-                    VALUES (@Id, @GreetingId, @Reason, @Details);
+                    VALUES (gen_random_uuid(), @GreetingId, @Reason, @Details);
                 ";
 
                 await dbConnection.ExecuteAsync(sql, new
                 {
-                    Id = Guid.NewGuid(),
                     GreetingId = greetingId,
                     Reason = reason,
                     Details = details

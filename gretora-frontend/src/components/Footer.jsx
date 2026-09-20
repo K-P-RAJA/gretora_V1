@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./Footer.module.css";
 import InfoModal from "./InfoModal";
+import BrandLogo from "./BrandLogo";
 
 export default function Footer() {
   const [activeModal, setActiveModal] = useState(null);
@@ -15,9 +16,8 @@ export default function Footer() {
       <div className={styles.footerTop}>
         <div>
           <div className={styles.footerBrandName}>
-            <span className="brandName">Gretora</span>
+            <BrandLogo size="lg" showTagline={true} />
           </div>
-          <div className={styles.footerTagline}>Your words. Their smile. One scan.</div>
           <p className={styles.footerDesc}>
             Gretora turns any video message into a scannable QR code gift — for every occasion
             worth celebrating. Free to start, forever to keep.
