@@ -10,7 +10,7 @@ const steps = [
       </svg>
     ),
     title: 'Upload your video',
-    desc: 'Record or upload any video message up to 50MB. A birthday message, a wedding vow, a heartfelt "I love you from 3,000 miles away" — anything worth saying once and remembering forever.',
+    desc: 'Record or upload any video message up to 50MB. A birthday message, a wedding vow, a heartfelt "I love you from 3,000 miles away" — anything worth saying once and remembering.',
   },
   {
     number: '02',
@@ -63,7 +63,7 @@ export default function HowItWorks() {
           Three steps to a gift<br /><em>they'll never forget</em>
         </h2>
         <p className={styles.sectionLead}>
-          No technical skills needed. No app to download. Just a video, a QR code, and a memory that lasts forever.
+          No technical skills needed. No app to download. Just a video, a QR code, and a memory that lasts.
         </p>
       </div>
 

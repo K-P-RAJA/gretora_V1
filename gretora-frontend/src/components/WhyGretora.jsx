@@ -17,8 +17,8 @@ const features = [
         <polyline points="12,6 12,12 16,14"/>
       </svg>
     ),
-    title: 'Works forever',
-    desc: "Your QR code never expires. Print it once, scan it for years. A wedding invitation from 2026 will still play the video in 2046. Memories shouldn't have an expiry date.",
+    title: '3-Day celebration window',
+    desc: 'Each greeting gives your recipient a full 3-day viewing window with unlimited scans — perfect for birthday celebrations, weddings, and milestones. Upgrade to keep them forever.',
   },
   {
     icon: (
@@ -48,7 +48,7 @@ const features = [
       </svg>
     ),
     title: 'Completely free to start',
-    desc: 'Your first three video QR codes are completely free — no credit card, no trial period, no catch. Create your first Gretora in under 2 minutes.',
+    desc: 'Create your video QR greeting card for free — no credit card, no subscription needed. Create your first Gretora in under 2 minutes.',
   },
   {
     icon: (

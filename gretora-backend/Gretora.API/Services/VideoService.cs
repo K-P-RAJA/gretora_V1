@@ -33,8 +33,8 @@ namespace Gretora.API.Services
 
                 // ? 2. Save in DB
                 var sql = @"
-                    INSERT INTO videos (id, user_id, file_name, file_path, created_at)
-                    VALUES (@Id, @UserId, @FileName, @FilePath, NOW());
+                    INSERT INTO videos (id, user_id, file_name, file_path, created_at, size_bytes)
+                    VALUES (@Id, @UserId, @FileName, @FilePath, NOW(), @SizeBytes);
                 ";
 
                 var video = new
@@ -42,7 +42,8 @@ namespace Gretora.API.Services
                     Id = videoId,
                     UserId = userId,
                     FileName = file.FileName,
-                    FilePath = filePath
+                    FilePath = filePath,
+                    SizeBytes = file.Length
                 };
 
                 await dbConnection.ExecuteAsync(sql, video);

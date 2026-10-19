@@ -112,9 +112,9 @@ export default function LoginPage() {
   ];
 
   const STATS = [
-    { value: "48K+", label: "Gifts sent" },
-    { value: "4.9★", label: "Avg rating" },
-    { value: "120+", label: "Countries" },
+    { value: "100%", label: "Private & secure" },
+    { value: "Instant", label: "Camera scan" },
+    { value: "HD", label: "Edge video delivery" },
   ];
 
   return (

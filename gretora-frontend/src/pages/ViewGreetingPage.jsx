@@ -94,6 +94,41 @@ export default function ViewGreetingPage() {
     return <LoadingScreen message="Opening your surprise..." />;
   }
 
+  if (greeting.isExpired) {
+    return (
+      <div style={{
+        minHeight: "100vh", background: "#09090b",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontFamily: "'Plus Jakarta Sans', sans-serif", position: "relative", overflow: "hidden",
+      }}>
+        <div style={{
+          position: "absolute", top: -100, right: -100,
+          width: 400, height: 400, borderRadius: "50%",
+          background: "rgba(108,71,255,0.25)", filter: "blur(90px)", pointerEvents: "none",
+        }} />
+        <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "40px" }}>
+          <div style={{ fontSize: 56, marginBottom: 20 }}>⏳</div>
+          <h2 style={{ color: "#ffffff", fontSize: 28, fontWeight: 800, letterSpacing: "-0.5px", marginBottom: 12 }}>
+            This greeting has expired
+          </h2>
+          <p style={{ color: "#a1a1aa", fontSize: 15, lineHeight: 1.7, marginBottom: 32, maxWidth: 360, margin: "0 auto 32px auto" }}>
+            The free 3-day viewing period for <strong>{greeting.title}</strong> has ended.
+          </p>
+          <a href="/" style={{
+            display: "inline-block",
+            background: "linear-gradient(135deg, #6c47ff, #4f2fe8)",
+            color: "white", textDecoration: "none",
+            padding: "13px 32px", borderRadius: 14,
+            fontSize: 15, fontWeight: 700,
+            boxShadow: "0 4px 18px rgba(108,71,255,0.35)",
+          }}>
+            Create your own free greeting
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   let occasion = greeting?.occassion || "Birthday Surprise";
   let recipientName = greeting?.receiptantName || greeting?.recipientName;
 

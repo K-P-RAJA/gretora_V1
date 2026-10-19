@@ -1,72 +1,87 @@
-ALTER TABLE profiles ADD COLUMN IF NOT EXISTS has_accepted_policy BOOLEAN DEFAULT FALSE;
+-- ============================================================
+-- EXPIRATION & TRACKING COLUMNS
+-- ==========================================================--
 
-CREATE TABLE reports (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+-- Add expiration tracking to greetings (already exists, but included for completeness)
+ALTER TABLE public.greetings ADD COLUMN IF NOT EXISTS expires_at TIMESTAMP WITHOUT TIME ZONE;
 
-    greeting_id UUID NOT NULL
-        REFERENCES greetings(id)
-        ON DELETE CASCADE,
+-- Add soft delete column (from original plan - marks greetings as deleted but keeps them accessible)
+ALTER TABLE public.greetings ADD COLUMN IF NOT EXISTS is_deleted BOOLEAN DEFAULT FALSE;
 
-    reason VARCHAR(255) NOT NULL,
+-- Add permanent preservation column (new - marks greetings to never auto-delete)
+ALTER TABLE public.greetings ADD COLUMN IF NOT EXISTS is_permanent BOOLEAN DEFAULT FALSE;
 
-    details TEXT,
+-- Add file size tracking to videos table (for R2 storage calculation)
+ALTER TABLE public.videos ADD COLUMN IF NOT EXISTS size_bytes BIGINT DEFAULT 0;
 
-    reported_at TIMESTAMP WITH TIME ZONE
-        DEFAULT CURRENT_TIMESTAMP,
+-- ============================================================
+-- INITIAL MIGRATION: SET EXPIRATIONS & MARK PERMANENT GREETINGS
+-- ==========================================================--
 
-    status VARCHAR(50)
-        DEFAULT 'Pending',
+-- Step 1: Give ALL existing greetings 3-day expiration from now
+UPDATE public.greetings 
+SET expires_at = NOW() + INTERVAL '3 days'
+WHERE expires_at IS NULL;
 
-    CONSTRAINT chk_report_status
-        CHECK (status IN ('Pending', 'Reviewed', 'Rejected', 'Removed'))
+-- Step 2: Mark max-scan-count greetings as PERMANENT (preserved forever)
+-- Use your existing logic to identify which greetings to keep (max scans per user)
+UPDATE greetings
+SET is_permanent = TRUE
+WHERE id IN (
+    SELECT DISTINCT ON (g.user_id) g.id
+    FROM greetings g
+    LEFT JOIN qr_codes qc ON g.video_id = qc.video_id
+    WHERE g.is_deleted = FALSE
+    GROUP BY g.id, g.user_id, qc.scan_count, g.created_at
+    ORDER BY g.user_id, COALESCE(qc.scan_count, 0) DESC, g.created_at DESC
 );
 
--- Optional indexes for faster admin queries
-CREATE INDEX idx_reports_greeting_id
-ON reports(greeting_id);
+-- Step 3: Optional - Soft delete old greetings that aren't the "keepers"
+-- This marks them as deleted but keeps them in DB for reference/recovery
+UPDATE greetings
+SET is_deleted = TRUE
+WHERE id NOT IN (
+    SELECT DISTINCT ON (g.user_id) g.id
+    FROM greetings g
+    LEFT JOIN qr_codes qc ON g.video_id = qc.video_id
+    WHERE g.is_deleted = FALSE
+    GROUP BY g.id, g.user_id, qc.scan_count, g.created_at
+    ORDER BY g.user_id, COALESCE(qc.scan_count, 0) DESC, g.created_at DESC
+)
+AND is_deleted = FALSE;
 
-CREATE INDEX idx_reports_status
-ON reports(status);
+-- ============================================================
+-- ADMIN / CLEANUP LOGIC (run via worker or admin endpoint)
+-- ==========================================================--
 
-CREATE INDEX idx_reports_reported_at
-ON reports(reported_at DESC);
+-- Soft delete greetings past 3 days (but within 7-day grace period)
+-- This sets is_deleted = TRUE, showing "Expired" badge in dashboard
+UPDATE greetings
+SET is_deleted = TRUE
+WHERE is_deleted = FALSE 
+  AND expires_at < NOW() 
+  AND expires_at >= NOW() - INTERVAL '4 days';
 
--- Admin Panel updates (is_admin and is_banned)
-ALTER TABLE profiles ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE;
-ALTER TABLE profiles ADD COLUMN IF NOT EXISTS is_banned BOOLEAN DEFAULT FALSE;
+-- Hard delete greetings past 7 days (permanently removes + R2 video deletion)
+-- Only delete non-permanent greetings
+DELETE FROM greetings
+WHERE is_permanent = FALSE
+  AND is_deleted = TRUE
+  AND expires_at < NOW() - INTERVAL '4 days';
 
--- QR Codes Tracking Table
-CREATE TABLE IF NOT EXISTS public.qr_codes (
-  id uuid not null default gen_random_uuid (),
-  video_id uuid null,
-  watch_url text not null,
-  scan_count integer null default 0,
-  created_at timestamp without time zone null default now(),
-  constraint qr_codes_pkey primary key (id)
-);
+-- Delete R2 videos for hard-deleted greetings (skip permanent videos)
+-- Delete from R2 only if video is not marked permanent
+-- (This would be in your C# cleanup worker, not pure SQL)
+-- Example: DELETE FROM videos WHERE id IN (<list from deleted greetings>) AND is_permanent = FALSE;
 
--- QR Scan Logs Table for Country Analytics
-CREATE TABLE IF NOT EXISTS public.scan_logs (
-  id uuid not null default gen_random_uuid (),
-  qr_id uuid null,
-  scanned_at timestamp without time zone null default now(),
-  country_code text null,
-  constraint scan_logs_pkey primary key (id),
-  constraint scan_logs_qr_id_fkey foreign KEY (qr_id) references public.qr_codes (id) ON DELETE CASCADE
-);
+-- Clean up orphaned videos (not used by any remaining greeting)
+DELETE FROM videos 
+WHERE id NOT IN (SELECT DISTINCT video_id FROM greetings WHERE video_id IS NOT NULL);
 
--- Support Tickets Table
-CREATE TABLE IF NOT EXISTS public.support_tickets (
-  id UUID NOT NULL DEFAULT gen_random_uuid(),
-  name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  subject TEXT NULL,
-  message TEXT NOT NULL,
-  status VARCHAR(50) NOT NULL DEFAULT 'Pending',
-  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
-  CONSTRAINT support_tickets_pkey PRIMARY KEY (id),
-  CONSTRAINT chk_ticket_status CHECK (status IN ('Pending', 'Resolved'))
-);
+-- ============================================================
+-- INDEXES FOR ADMIN QUERIES (optional but recommended)
+-- ==========================================================--
 
-
-
+CREATE INDEX idx_greetings_is_permanent ON public.greetings(is_permanent);
+CREATE INDEX idx_greetings_is_deleted ON public.greetings(is_deleted);
+CREATE INDEX idx_greetings_expires_at ON public.greetings(expires_at);

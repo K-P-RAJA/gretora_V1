@@ -11,7 +11,9 @@ import {
   ArrowRight,
   QrCode,
   Globe,
-  Mail
+  Mail,
+  HardDrive,
+  Clock
 } from "lucide-react";
 import { getDashboardStats } from "../../api/adminService";
 import { useNavigate } from "react-router-dom";
@@ -28,6 +30,13 @@ function getFlagEmoji(countryCode) {
   } catch {
     return "🌐";
   }
+}
+
+function formatBytes(bytes = 0) {
+  if (!bytes || bytes <= 0) return "0 B";
+  const units = ["B", "KB", "MB", "GB", "TB"];
+  const i = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+  return `${(bytes / Math.pow(1024, i)).toFixed(i >= 2 ? 2 : 1)} ${units[i]}`;
 }
 
 export default function AdminDashboard() {
@@ -71,64 +80,106 @@ export default function AdminDashboard() {
     );
   }
 
-  const statCards = [
+  const cardGroups = [
     {
-      title: "Total Users",
-      value: stats?.totalUsers || 0,
-      sub: stats?.usersGrowth ? `+${stats.usersGrowth} new (7d)` : "0 new (7d)",
-      icon: <Users size={22} />,
-      color: "violet",
-      path: "/admin/users"
+      groupTitle: "Platform & Engagement",
+      groupDesc: "User acquisition, active greetings, and QR scan metrics",
+      cards: [
+        {
+          title: "Total Users",
+          value: stats?.totalUsers || 0,
+          sub: stats?.usersGrowth ? `+${stats.usersGrowth} new (7d)` : "0 new (7d)",
+          icon: <Users size={22} />,
+          color: "violet",
+          path: "/admin/users"
+        },
+        {
+          title: "Active Greetings",
+          value: stats?.totalGreetings || 0,
+          sub: "Greetings created",
+          icon: <Gift size={22} />,
+          color: "pink",
+          path: "/admin/greetings"
+        },
+        {
+          title: "QR Codes Generated",
+          value: stats?.totalQrCodes || 0,
+          sub: "Active physical QR links",
+          icon: <QrCode size={22} />,
+          color: "violet",
+          path: "/admin/greetings"
+        },
+        {
+          title: "Total QR Scans",
+          value: stats?.totalScans || 0,
+          sub: "All surprise watch views",
+          icon: <TrendingUp size={22} />,
+          color: "teal",
+          path: "/admin/greetings"
+        },
+      ]
     },
     {
-      title: "Active Greetings",
-      value: stats?.totalGreetings || 0,
-      sub: "Greetings created",
-      icon: <Gift size={22} />,
-      color: "pink",
-      path: "/admin/greetings"
+      groupTitle: "Storage & Video Retention",
+      groupDesc: "Cloudflare R2 media usage, free tier limits, and lifecycle cleanup",
+      cards: [
+        {
+          title: "Stored Videos",
+          value: stats?.totalVideos || 0,
+          sub: "In Cloudflare R2",
+          icon: <Video size={22} />,
+          color: "teal",
+          path: "/admin/cleanup"
+        },
+        {
+          title: "Occupied Storage",
+          value: formatBytes(stats?.totalStorageBytes || 0),
+          sub: "Total R2 usage",
+          icon: <HardDrive size={22} />,
+          color: "violet",
+          path: "/admin/cleanup"
+        },
+        {
+          title: "Storage Balance",
+          value: formatBytes(Math.max(0, (10 * 1024 * 1024 * 1024) - (stats?.totalStorageBytes || 0))),
+          sub: "Free tier remaining",
+          icon: <CheckCircle size={22} />,
+          color: "teal",
+          path: "/admin/cleanup"
+        },
+        {
+          title: "Expiring Today",
+          value: stats?.expiringTodayCount || 0,
+          sub: "Greetings reaching 7 days",
+          icon: <Clock size={22} />,
+          color: "pink",
+          path: "/admin/cleanup"
+        },
+      ]
     },
     {
-      title: "QR Codes Generated",
-      value: stats?.totalQrCodes || 0,
-      sub: "Active physical QR links",
-      icon: <QrCode size={22} />,
-      color: "violet",
-      path: "/admin/greetings"
-    },
-    {
-      title: "Total QR Scans",
-      value: stats?.totalScans || 0,
-      sub: "All surprise watch views",
-      icon: <TrendingUp size={22} />,
-      color: "teal",
-      path: "/admin/greetings"
-    },
-    {
-      title: "Stored Videos",
-      value: stats?.totalVideos || 0,
-      sub: "In Cloudflare R2",
-      icon: <Video size={22} />,
-      color: "teal",
-      path: "/admin/greetings"
-    },
-    {
-      title: "Pending Reports",
-      value: stats?.reports?.pending ?? 0,
-      sub: stats?.reports?.pending > 0 ? "Requires attention" : "System clean",
-      icon: <AlertOctagon size={22} />,
-      color: stats?.reports?.pending > 0 ? "red" : "gray",
-      path: "/admin/reports",
-      pulse: stats?.reports?.pending > 0
-    },
-    {
-      title: "Support Tickets",
-      value: stats?.tickets?.pending ?? 0,
-      sub: stats?.tickets?.pending > 0 ? `${stats.tickets.pending} unresolved requests` : "All caught up!",
-      icon: <Mail size={22} />,
-      color: stats?.tickets?.pending > 0 ? "pink" : "gray",
-      path: "/admin/support",
-      pulse: stats?.tickets?.pending > 0
+      groupTitle: "Trust & Support",
+      groupDesc: "Community safety flags, moderation queue, and user tickets",
+      cards: [
+        {
+          title: "Pending Reports",
+          value: stats?.reports?.pending ?? 0,
+          sub: stats?.reports?.pending > 0 ? "Requires attention" : "System clean",
+          icon: <AlertOctagon size={22} />,
+          color: stats?.reports?.pending > 0 ? "red" : "gray",
+          path: "/admin/reports",
+          pulse: stats?.reports?.pending > 0
+        },
+        {
+          title: "Support Tickets",
+          value: stats?.tickets?.pending ?? 0,
+          sub: stats?.tickets?.pending > 0 ? `${stats.tickets.pending} unresolved requests` : "All caught up!",
+          icon: <Mail size={22} />,
+          color: stats?.tickets?.pending > 0 ? "pink" : "gray",
+          path: "/admin/support",
+          pulse: stats?.tickets?.pending > 0
+        }
+      ]
     }
   ];
 
@@ -141,29 +192,39 @@ export default function AdminDashboard() {
         </div>
       </header>
 
-      {/* Grid Stats */}
-      <section className={styles.statsGrid}>
-        {statCards.map((card, idx) => (
-          <div 
-            key={idx} 
-            className={`${styles.statCard} ${styles[card.color]} ${card.pulse ? styles.pulseCard : ""}`}
-            onClick={() => navigate(card.path)}
-          >
-            <div className={styles.cardHeader}>
-              <span className={styles.cardTitle}>{card.title}</span>
-              <div className={styles.iconWrap}>{card.icon}</div>
+      {/* Grouped Stats Sections */}
+      <div className={styles.groupsContainer}>
+        {cardGroups.map((group, gIdx) => (
+          <div key={gIdx} className={styles.statGroupSection}>
+            <div className={styles.groupHeader}>
+              <h2 className={styles.groupTitle}>{group.groupTitle}</h2>
+              <span className={styles.groupDesc}>{group.groupDesc}</span>
             </div>
-            <div className={styles.cardBody}>
-              <h2 className={styles.cardValue}>{card.value}</h2>
-              <span className={styles.cardSub}>{card.sub}</span>
-            </div>
-            <div className={styles.cardFooter}>
-              <span>Manage</span>
-              <ArrowRight size={14} />
+            <div className={styles.statsGrid}>
+              {group.cards.map((card, idx) => (
+                <div 
+                  key={idx} 
+                  className={`${styles.statCard} ${styles[card.color]} ${card.pulse ? styles.pulseCard : ""}`}
+                  onClick={() => navigate(card.path)}
+                >
+                  <div className={styles.cardHeader}>
+                    <span className={styles.cardTitle}>{card.title}</span>
+                    <div className={styles.iconWrap}>{card.icon}</div>
+                  </div>
+                  <div className={styles.cardBody}>
+                    <h2 className={styles.cardValue}>{card.value}</h2>
+                    <span className={styles.cardSub}>{card.sub}</span>
+                  </div>
+                  <div className={styles.cardFooter}>
+                    <span>Manage</span>
+                    <ArrowRight size={14} />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         ))}
-      </section>
+      </div>
 
       {/* Reports Summary & Activity Section */}
       <div className={styles.detailsGrid}>

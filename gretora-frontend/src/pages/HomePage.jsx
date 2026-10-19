@@ -31,7 +31,7 @@ export default function HomePage() {
   
   const [profile, setProfile] = useState(null);
   const [cardOpened, setCardOpened] = useState(false);
-  const [greetingsCount, setGreetingsCount] = useState(0);
+  const [hasActiveGreeting, setHasActiveGreeting] = useState(false);
 
   useEffect(() => {
     async function loadProfileAndGreetings() {
@@ -40,9 +40,10 @@ export default function HomePage() {
         setProfile(p);
         
         const greetings = await getMyGreetings();
-        setGreetingsCount(greetings.length);
+        const active = greetings.some(g => !g.isDeleted && (!g.expiresAt || new Date(g.expiresAt) > new Date()));
+        setHasActiveGreeting(active);
       } catch (err) {
-        console.error("Failed to load user profile or greetings count:", err);
+        console.error("Failed to load user profile or greetings:", err);
       }
     }
     loadProfileAndGreetings();
@@ -68,8 +69,8 @@ export default function HomePage() {
 
   const handleGenerateGreeting = async () => {
     try {
-      if (greetingsCount >= 3) {
-        await showAlert("You have already used your free quota of 3 greetings. You can delete an older greeting card from your dashboard or upgrade to a subscription.", "warning");
+      if (hasActiveGreeting) {
+        await showAlert("You already have an active greeting. Please wait for it to expire (3 days) or delete it from your dashboard before creating a new one.", "warning");
         return;
       }
 
@@ -169,18 +170,18 @@ export default function HomePage() {
 
             <div className={styles.heroStats}>
               <div className={styles.heroStat}>
-                <strong>10k+</strong>
-                <span>Greetings Shared</span>
+                <strong>Instant</strong>
+                <span>Camera Scan</span>
               </div>
 
               <div className={styles.heroStat}>
-                <strong>4.9★</strong>
-                <span>User Experience</span>
+                <strong>HD Edge</strong>
+                <span>Video Playback</span>
               </div>
 
               <div className={styles.heroStat}>
                 <strong>100%</strong>
-                <span>Personalized</span>
+                <span>Private & Secure</span>
               </div>
             </div>
           </div>

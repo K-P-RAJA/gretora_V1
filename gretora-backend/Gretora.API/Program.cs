@@ -32,6 +32,7 @@ builder.Services.AddScoped<GreetingService>();
 builder.Services.AddScoped<AdminService>();
 builder.Services.AddScoped<LogService>();
 builder.Services.AddHostedService<LogCleanupWorker>();
+builder.Services.AddHostedService<GreetingCleanupWorker>();
 
 // ✅ CORS
 builder.Services.AddCors(options =>
@@ -58,7 +59,13 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.Authority = builder.Configuration["Supabase:Url"] + "/auth/v1";
+    var supabaseAuthUrl = builder.Configuration["Supabase:Url"] + "/auth/v1";
+    options.Authority = supabaseAuthUrl;
+    // Supabase signs current access tokens with rotating asymmetric (ES256)
+    // keys. Set the metadata endpoint explicitly so the local API retrieves
+    // the matching JWKS key instead of relying on a legacy shared JWT secret.
+    options.MetadataAddress = supabaseAuthUrl + "/.well-known/openid-configuration";
+    options.RefreshOnIssuerKeyNotFound = true;
     options.RequireHttpsMetadata = false;
 
     options.TokenValidationParameters = new TokenValidationParameters
@@ -69,6 +76,18 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true
     };
+
+    if (builder.Environment.IsDevelopment())
+    {
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                context.Response.Headers["X-Gretora-Auth-Diagnostic"] = context.Exception.GetType().Name;
+                return Task.CompletedTask;
+            }
+        };
+    }
 });
 
 builder.Services.AddAuthorization();

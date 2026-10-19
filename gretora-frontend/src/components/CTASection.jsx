@@ -34,8 +34,8 @@ export default function CTASection() {
           they'll <em>never forget.</em>
         </h2>
         <p>
-          Your first three videos are completely free. No credit card. No setup.
-          Upload once — remembered forever.
+          Free to start with a full 3-day viewing window and unlimited scans. No credit card required.
+          A surprise moment they'll cherish.
         </p>
         <button
           className={styles.btn}

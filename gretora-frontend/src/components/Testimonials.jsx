@@ -1,25 +1,29 @@
 import styles from './Testimonials.module.css';
 
-const testimonials = [
+const moments = [
   {
-    stars: '★★★★★',
-    text: '"I sent my mum a birthday card with a QR code on it. She scanned it and watched a 90-second video of our whole family singing to her. She cried for 20 minutes. Worth every second."',
-    author: '— Divya R., Bangalore',
+    icon: '🎂',
+    title: 'Family Celebrations',
+    tag: 'Birthdays & Anniversaries',
+    desc: 'Surprise parents and loved ones with a physical greeting card that plays heartfelt video wishes directly from family members near and far.',
   },
   {
-    stars: '★★★★★',
-    text: '"Used Gretora for my dad\'s retirement gift. Collected videos from 14 colleagues and linked them all. He still scans it every few weeks. Says it\'s the best gift he\'s ever received."',
-    author: '— Karthik S., Hyderabad',
+    icon: '💍',
+    title: 'Weddings & Invitations',
+    tag: 'Weddings & Vows',
+    desc: 'Embed your genuine love story or personal greetings into printed invitation cards for a surprise that guests will remember before they even arrive.',
   },
   {
-    stars: '★★★★★',
-    text: '"We embedded a QR on our wedding invites — it played a 60 second video of us telling our story. Guests were in tears before they even arrived."',
-    author: '— Arjun & Ashwini, Chennai',
+    icon: '✈️',
+    title: 'Long-Distance Love',
+    tag: 'Across Continents',
+    desc: 'Bridge thousands of miles with a tangible printed QR gift. One camera scan, and your voice, smile, and presence are right in front of them.',
   },
   {
-    stars: '★★★★★',
-    text: '"My son is studying in Canada. I sent him a Diwali card with a Gretora QR. He called me immediately after scanning. He was sobbing. So was I."',
-    author: '— Sunita M., Mumbai',
+    icon: '🎓',
+    title: 'Milestones & Memories',
+    tag: 'Graduations & Retirements',
+    desc: 'Collect video tributes from friends, classmates, or colleagues into a single scannable keepsake that marks life\'s greatest milestones.',
   },
 ];
 
@@ -29,32 +33,39 @@ export default function Testimonials() {
       <div>
         <div className={styles.header}>
           <h2 id="testimonials-title">
-            Moments that <em>moved people</em>
+            Gifts designed for <em>moments that matter</em>
           </h2>
           <p className={styles.sectionLead}>
-            These aren't marketing lines. They're what people actually said after sending their first Gretora.
+            A printed card shows you remembered. A video message shows you were right there in person.
           </p>
         </div>
 
         <div className={styles.grid}>
-          {testimonials.map((t, i) => (
+          {moments.map((m, i) => (
             <div className={styles.item} key={i}>
-              <p className={styles.quote}>{t.text}</p>
+              <div style={{ fontSize: '32px', marginBottom: '16px' }}>{m.icon}</div>
+              <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', marginBottom: '8px' }}>{m.title}</h3>
+              <p className={styles.quote} style={{ fontStyle: 'normal', marginBottom: '20px', fontSize: '14.5px', color: 'var(--text-muted)' }}>{m.desc}</p>
               <div className={styles.footer}>
-                <div className={styles.avatar}>
-                  {t.author.split('—')[1]?.trim()[0] || 'S'}
-                </div>
-                <div className={styles.info}>
-                  <h4>{t.author.split(',')[0]}</h4>
-                  <p>{t.author.split(',')[1]}</p>
-                </div>
+                <span style={{
+                  fontSize: '11px',
+                  fontWeight: '700',
+                  color: 'var(--brand-light)',
+                  background: 'var(--brand-soft)',
+                  border: '1px solid var(--brand-border)',
+                  padding: '4px 10px',
+                  borderRadius: '20px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em'
+                }}>
+                  {m.tag}
+                </span>
               </div>
             </div>
           ))}
         </div>
       </div>
     </section>
-
   );
 }
 

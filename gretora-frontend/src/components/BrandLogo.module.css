@@ -96,3 +96,32 @@
 .xl .tagline {
   font-size: 13.5px;
 }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .logoWrap {
+    gap: 10px;
+  }
+  .sm .tagline,
+  .md .tagline {
+    display: none;
+  }
+  .md .logoIcon {
+    height: 38px;
+  }
+  .md .brandName {
+    font-size: 19px;
+  }
+}
+
+@media (max-width: 380px) {
+  .logoWrap {
+    gap: 8px;
+  }
+  .md .logoIcon {
+    height: 34px;
+  }
+  .md .brandName {
+    font-size: 17px;
+  }
+}

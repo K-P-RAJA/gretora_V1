@@ -63,6 +63,11 @@ namespace Gretora.API.Services
                     CREATE INDEX IF NOT EXISTS idx_system_logs_level ON public.system_logs(level);
                     ALTER TABLE public.system_logs ALTER COLUMN id SET DEFAULT gen_random_uuid();
                     ALTER TABLE public.reports ALTER COLUMN id SET DEFAULT gen_random_uuid();
+
+                    ALTER TABLE public.greetings ADD COLUMN IF NOT EXISTS expires_at TIMESTAMP WITHOUT TIME ZONE;
+                    ALTER TABLE public.greetings ADD COLUMN IF NOT EXISTS is_deleted BOOLEAN DEFAULT FALSE;
+                    ALTER TABLE public.greetings ADD COLUMN IF NOT EXISTS is_permanent BOOLEAN DEFAULT FALSE;
+                    ALTER TABLE public.videos ADD COLUMN IF NOT EXISTS size_bytes BIGINT DEFAULT 0;
                 ";
                 cmd.ExecuteNonQuery();
                 Console.WriteLine("[Database Service] Database initialized successfully (support_tickets and system_logs tables verified).");

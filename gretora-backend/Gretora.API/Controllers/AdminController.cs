@@ -10,10 +10,12 @@ namespace Gretora.API.Controllers
     public class AdminController : ControllerBase
     {
         private readonly AdminService _adminService;
+        private readonly IServiceProvider _serviceProvider;
 
-        public AdminController(AdminService adminService)
+        public AdminController(AdminService adminService, IServiceProvider serviceProvider)
         {
             _adminService = adminService;
+            _serviceProvider = serviceProvider;
         }
 
         // =========================================
@@ -206,7 +208,7 @@ namespace Gretora.API.Controllers
         // =========================================
         // ENDPOINT: DELETE SUPPORT TICKET
         // =========================================
-        [Authorize]
+[Authorize]
         [HttpDelete("support/{id}")]
         public async Task<IActionResult> DeleteTicket(Guid id)
         {
@@ -218,6 +220,45 @@ namespace Gretora.API.Controllers
                 return NotFound("Support ticket not found");
 
             return Ok(new { StatusCode = 1, StatusMessage = "Support ticket deleted successfully" });
+        }
+
+        // =========================================
+        // ENDPOINT: PREVIEW GREETING CLEANUP
+        // =========================================
+        [Authorize]
+        [HttpGet("cleanup-preview")]
+        public async Task<IActionResult> GetGreetingCleanupPreview()
+        {
+            if (!await CheckIfAdmin())
+                return Forbid();
+
+            return Ok(await _adminService.GetGreetingCleanupPreviewAsync());
+        }
+
+        // =========================================
+        // ENDPOINT: TRIGGER GREETING CLEANUP
+        // =========================================
+        [Authorize]
+        [HttpPost("trigger-cleanup")]
+        public async Task<IActionResult> TriggerGreetingCleanup()
+        {
+            if (!await CheckIfAdmin())
+                return Forbid();
+
+            using var scope = _serviceProvider.CreateScope();
+            var greetingService = scope.ServiceProvider.GetRequiredService<GreetingService>();
+            var result = await greetingService.RunRetentionCleanupAsync();
+
+            return Ok(new
+            {
+                StatusCode = 1,
+                StatusMessage = "Greeting cleanup triggered successfully",
+                RetiredCount = result.RetiredCount,
+                DeletedCount = result.DeletedCount,
+                ReclaimedStorageBytes = result.ReclaimedStorageBytes,
+                ExecutedAtUtc = result.ExecutedAtUtc,
+                Note = "Expired non-permanent greetings were retired; retired greetings past the four-day grace period were permanently removed."
+            });
         }
 
         // =========================================

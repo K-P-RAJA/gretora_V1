@@ -25,7 +25,7 @@ export default function Navbar() {
         <ul className={styles.navLinks}>
           <li><a href="/#how-it-works">How it works</a></li>
           <li><a href="/#occasions">Occasions</a></li>
-          <li><a href="/#testimonials">Stories</a></li>
+          <li><a href="/#testimonials">Moments</a></li>
           <li><a href="/#faq">FAQ</a></li>
           <li><a href="/#pricing">Pricing</a></li>
         </ul>

@@ -37,7 +37,23 @@ namespace Gretora.API.Services
 
             try
             {
+                // Check if user already has an active greeting
+                var activeGreetingCount = await dbConnection.ExecuteScalarAsync<int>(@"
+                    SELECT COUNT(*) FROM greetings 
+                    WHERE user_id = @UserId
+                      AND COALESCE(is_deleted, FALSE) = FALSE
+                      AND expires_at > NOW();
+                ", new { UserId = userId });
+
+                if (activeGreetingCount > 0)
+                {
+                    response.StatusCode = 2;
+                    response.StatusMessage = "You already have an active greeting. Please wait for it to expire or delete it.";
+                    return response;
+                }
+
                 var greetingId = Guid.NewGuid();
+                var expiresAt = DateTime.UtcNow.AddDays(3);
 
                 var sql = @"
                     INSERT INTO greetings
@@ -48,7 +64,8 @@ namespace Gretora.API.Services
                         title,
                         message,
                         occassion,
-                        receiptant_name
+                        receiptant_name,
+                        expires_at
                     )
                     VALUES
                     (
@@ -58,7 +75,8 @@ namespace Gretora.API.Services
                         @Title,
                         @Message,
                         @Occassion,
-                        @ReceiptantName
+                        @ReceiptantName,
+                        @ExpiresAt
                     );
                 ";
 
@@ -71,6 +89,7 @@ namespace Gretora.API.Services
                     Message = request.Message,
                     Occassion = request.Occassion,
                     ReceiptantName = request.ReceiptantName,
+                    ExpiresAt = expiresAt
                 });
 
                 var baseUrl = _config["App:FrontendUrl"];
@@ -136,10 +155,13 @@ namespace Gretora.API.Services
                     g.message as message,
                     g.video_id as video_id,
                     g.receiptant_name as receiptant_name,
-                    g.occassion as occassion
+                    g.occassion as occassion,
+                    g.expires_at as expires_at,
+                    COALESCE(g.is_permanent, FALSE) as is_permanent
                 FROM greetings g
                 JOIN videos v ON g.video_id = v.id
-                WHERE g.id = @Id;
+                WHERE g.id = @Id
+                  AND COALESCE(g.is_deleted, FALSE) = FALSE;
             ";
 
             try 
@@ -159,6 +181,19 @@ namespace Gretora.API.Services
                 var videoIdStr = data.video_id?.ToString();
                 var occassion = data.occassion?.ToString();
                 var receiptantName = data.receiptant_name?.ToString();
+                DateTime? expiresAt = data.expires_at;
+                bool isPermanent = data.is_permanent ?? false;
+
+                if (!isPermanent && expiresAt.HasValue && DateTime.UtcNow > expiresAt.Value)
+                {
+                    return new 
+                    {
+                        isExpired = true,
+                        title = title,
+                        receiptantName = receiptantName,
+                        occassion = occassion
+                    };
+                }
 
                 if (string.IsNullOrEmpty(filePath)) return null;
 
@@ -268,6 +303,9 @@ namespace Gretora.API.Services
                     g.title,
                     g.message,
                     g.created_at,
+                    g.expires_at,
+                    COALESCE(g.is_deleted, FALSE) AS is_deleted,
+                    COALESCE(g.is_permanent, FALSE) AS is_permanent,
                     g.receiptant_name,
                     g.occassion,
                     v.file_path,
@@ -296,14 +334,17 @@ namespace Gretora.API.Services
                 title = g.title,
                 message = g.message,
                 createdAt = g.created_at,
+                expiresAt = g.expires_at,
+                isDeleted = g.is_deleted,
+                isPermanent = (bool)g.is_permanent,
                 receiptantName = g.receiptant_name,
                 occassion = g.occassion,
 
                 qrUrl = $"{baseUrl}/g/{g.id}",
 
-                videoUrl = _r2Service.GetSignedUrl(
-                    (string)g.file_path
-                ),
+                // Retired greetings remain visible to their owner during the grace
+                // period, but their media must no longer be accessible.
+                videoUrl = (g.is_deleted && !(bool)g.is_permanent) ? null : _r2Service.GetSignedUrl((string)g.file_path),
 
                 scanCount = g.scan_count,
                 status = g.moderation_status
@@ -419,7 +460,10 @@ namespace Gretora.API.Services
                 @"
                 SELECT video_id
                 FROM greetings
-                WHERE id = @GreetingId AND user_id = @UserId;
+                WHERE id = @GreetingId
+                  AND user_id = @UserId
+                  AND COALESCE(is_deleted, FALSE) = FALSE
+                  AND COALESCE(is_permanent, FALSE) = FALSE;
                 ",
                 new { GreetingId = greetingId, UserId = userId }
             );
@@ -510,6 +554,16 @@ namespace Gretora.API.Services
 
             try
             {
+                var greetingIsAvailable = await dbConnection.ExecuteScalarAsync<bool>(@"
+                    SELECT EXISTS (
+                        SELECT 1 FROM greetings
+                        WHERE id = @GreetingId
+                          AND COALESCE(is_deleted, FALSE) = FALSE
+                    );", new { GreetingId = greetingId });
+
+                if (!greetingIsAvailable)
+                    return false;
+
                 var sql = @"
                     INSERT INTO reports (id, greeting_id, reason, details)
                     VALUES (gen_random_uuid(), @GreetingId, @Reason, @Details);
@@ -530,6 +584,62 @@ namespace Gretora.API.Services
                 try { await _logService.LogAsync("ERROR", "GreetingService", $"ReportGreeting failed for greeting {greetingId}: {ex.Message}", ex.ToString()); } catch {}
                 return false;
             }
+        }
+        // =========================================
+        // RETENTION CLEANUP
+        // =========================================
+
+        public sealed record GreetingCleanupResult(
+            int RetiredCount,
+            int DeletedCount,
+            long ReclaimedStorageBytes,
+            DateTime ExecutedAtUtc);
+
+        public async Task<GreetingCleanupResult> RunRetentionCleanupAsync(int daysRetentionAfterExpiration = 4)
+        {
+            using var dbConnection = _db.CreateConnection();
+            var executedAtUtc = DateTime.UtcNow;
+            var purgeBefore = executedAtUtc.AddDays(-daysRetentionAfterExpiration);
+
+            // A greeting becomes unavailable as soon as it expires. Keeping it for the
+            // grace period lets the owner see the retired state without exposing it publicly.
+            var retiredCount = await dbConnection.ExecuteAsync(@"
+                UPDATE greetings
+                SET is_deleted = TRUE
+                WHERE COALESCE(is_deleted, FALSE) = FALSE
+                  AND COALESCE(is_permanent, FALSE) = FALSE
+                  AND expires_at IS NOT NULL
+                  AND expires_at <= @ExecutedAtUtc;",
+                new { ExecutedAtUtc = executedAtUtc });
+
+            var candidates = (await dbConnection.QueryAsync<dynamic>(@"
+                SELECT g.id, g.user_id, g.video_id, v.size_bytes
+                FROM greetings g
+                LEFT JOIN videos v ON v.id = g.video_id
+                WHERE COALESCE(g.is_deleted, FALSE) = TRUE
+                  AND COALESCE(g.is_permanent, FALSE) = FALSE
+                  AND g.expires_at IS NOT NULL
+                  AND g.expires_at <= @PurgeBefore;",
+                new { PurgeBefore = purgeBefore })).ToList();
+
+            var deletedCount = 0;
+            long reclaimedStorageBytes = 0;
+            foreach (var greeting in candidates)
+            {
+                var videoWillBeRemoved = greeting.video_id != null &&
+                    await dbConnection.ExecuteScalarAsync<int>(
+                        "SELECT COUNT(*) FROM greetings WHERE video_id = @VideoId;",
+                        new { VideoId = greeting.video_id }) == 1;
+
+                if (await DeleteGreeting((Guid)greeting.id, (Guid)greeting.user_id))
+                {
+                    deletedCount++;
+                    if (videoWillBeRemoved)
+                        reclaimedStorageBytes += Convert.ToInt64(greeting.size_bytes ?? 0);
+                }
+            }
+
+            return new GreetingCleanupResult(retiredCount, deletedCount, reclaimedStorageBytes, executedAtUtc);
         }
     }
 }

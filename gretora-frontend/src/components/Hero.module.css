@@ -333,6 +333,12 @@
   .qrFloat { left: 50%; transform: translateX(-50%) translateY(40px); }
 }
 
+@media (max-width: 768px) {
+  .hero {
+    padding: 100px 0 60px;
+  }
+}
+
 @media (max-width: 480px) {
   .heroInner { padding: 0 20px; }
   .heroActions { flex-direction: column; }

@@ -20,6 +20,7 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import AdminGreetings from "./pages/admin/AdminGreetings";
 import AdminSupport from "./pages/admin/AdminSupport";
 import AdminLogs from "./pages/admin/AdminLogs";
+import AdminCleanup from "./pages/admin/AdminCleanup";
 import SuspendedPage from "./pages/SuspendedPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import PrivacyPage from "./pages/PrivacyPage";
@@ -116,6 +117,7 @@ function App() {
           <Route path="greetings" element={<AdminGreetings />} />
           <Route path="support" element={<AdminSupport />} />
           <Route path="logs" element={<AdminLogs />} />
+          <Route path="cleanup" element={<AdminCleanup />} />
         </Route>
 
         {/* CATCH-ALL */}

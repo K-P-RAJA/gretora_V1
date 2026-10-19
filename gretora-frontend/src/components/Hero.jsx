@@ -27,14 +27,14 @@ export default function Hero() {
 
           <h1 className={styles.h1}>
             Turn any video<br />
-            into a gift they<br />
-            <em>scan forever.</em>
+            into a gift they'll<br />
+            <em>never forget.</em>
           </h1>
 
           <p className={styles.heroDesc}>
             Upload a video message — a birthday wish, wedding vow, or a heartfelt "I love you."
             Gretora instantly generates a unique QR code. Print it on any card, frame, or gift tag.
-            Anyone who scans it watches your video, forever. No app needed.
+            Anyone who scans it watches your video. No app needed.
           </p>
 
           <div className={styles.heroActions}>
@@ -60,16 +60,16 @@ export default function Hero() {
 
           <div className={styles.heroMetrics}>
             <div className={styles.metricItem}>
-              <div className={styles.metricVal}>3</div>
-              <div className={styles.metricLabel}>Free videos</div>
+              <div className={styles.metricVal}>1</div>
+              <div className={styles.metricLabel}>Active greeting</div>
             </div>
             <div className={styles.metricItem}>
-              <div className={styles.metricVal}>50 MB</div>
-              <div className={styles.metricLabel}>Max video size</div>
+              <div className={styles.metricVal}>3 Days</div>
+              <div className={styles.metricLabel}>Viewing window</div>
             </div>
             <div className={styles.metricItem}>
               <div className={styles.metricVal}>∞</div>
-              <div className={styles.metricLabel}>Scans forever</div>
+              <div className={styles.metricLabel}>Unlimited scans</div>
             </div>
           </div>
         </div>

@@ -26,6 +26,83 @@ namespace Gretora.API.Services
         }
 
         // =========================================
+        // RETENTION CLEANUP PREVIEW
+        // =========================================
+        public async Task<object> GetGreetingCleanupPreviewAsync(int sampleSize = 10)
+        {
+            using var dbConnection = _db.CreateConnection();
+            var purgeBefore = DateTime.UtcNow.AddDays(-4);
+
+            var summary = await dbConnection.QuerySingleAsync<dynamic>(@"
+                WITH eligible AS (
+                    SELECT id, video_id
+                    FROM greetings
+                    WHERE COALESCE(is_deleted, FALSE) = TRUE
+                      AND COALESCE(is_permanent, FALSE) = FALSE
+                      AND expires_at IS NOT NULL
+                      AND expires_at <= @PurgeBefore
+                ), reclaimable_videos AS (
+                    SELECT DISTINCT e.video_id
+                    FROM eligible e
+                    WHERE e.video_id IS NOT NULL
+                      AND NOT EXISTS (
+                          SELECT 1
+                          FROM greetings remaining
+                          WHERE remaining.video_id = e.video_id
+                            AND remaining.id NOT IN (SELECT id FROM eligible)
+                      )
+                )
+                SELECT
+                    (SELECT COUNT(*) FROM eligible) AS eligible_count,
+                    COALESCE((
+                        SELECT SUM(COALESCE(v.size_bytes, 0))
+                        FROM videos v
+                        JOIN reclaimable_videos rv ON rv.video_id = v.id
+                    ), 0) AS reclaimable_storage_bytes;",
+                new { PurgeBefore = purgeBefore });
+
+            var samples = await dbConnection.QueryAsync<dynamic>(@"
+                WITH eligible AS (
+                    SELECT id, video_id
+                    FROM greetings
+                    WHERE COALESCE(is_deleted, FALSE) = TRUE
+                      AND COALESCE(is_permanent, FALSE) = FALSE
+                      AND expires_at IS NOT NULL
+                      AND expires_at <= @PurgeBefore
+                )
+                SELECT g.id, g.title, g.receiptant_name, g.expires_at,
+                       COALESCE(v.size_bytes, 0) AS storage_bytes,
+                       NOT EXISTS (
+                           SELECT 1
+                           FROM greetings remaining
+                           WHERE remaining.video_id = g.video_id
+                             AND remaining.id NOT IN (SELECT id FROM eligible)
+                       ) AS video_will_be_removed
+                FROM greetings g
+                JOIN eligible e ON e.id = g.id
+                LEFT JOIN videos v ON v.id = g.video_id
+                ORDER BY g.expires_at ASC
+                LIMIT @SampleSize;",
+                new { PurgeBefore = purgeBefore, SampleSize = Math.Clamp(sampleSize, 1, 25) });
+
+            return new
+            {
+                EligibleGreetingCount = Convert.ToInt32(summary.eligible_count),
+                ReclaimableStorageBytes = Convert.ToInt64(summary.reclaimable_storage_bytes),
+                EvaluatedAtUtc = DateTime.UtcNow,
+                Samples = samples.Select(sample => new
+                {
+                    Id = sample.id,
+                    Title = sample.title,
+                    RecipientName = sample.receiptant_name,
+                    ExpiresAt = sample.expires_at,
+                    StorageBytes = Convert.ToInt64(sample.storage_bytes),
+                    VideoWillBeRemoved = sample.video_will_be_removed
+                })
+            };
+        }
+
+        // =========================================
         // DASHBOARD STATS
         // =========================================
         public async Task<dynamic> GetDashboardStats()
@@ -35,6 +112,26 @@ namespace Gretora.API.Services
             var totalUsers = await dbConnection.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM profiles");
             var totalGreetings = await dbConnection.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM greetings");
             var totalVideos = await dbConnection.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM videos");
+
+            long totalStorageBytes = 0;
+            try
+            {
+                totalStorageBytes = await dbConnection.ExecuteScalarAsync<long>("SELECT COALESCE(SUM(size_bytes), 0) FROM videos");
+            }
+            catch { }
+
+            int expiringTodayCount = 0;
+            try
+            {
+                // Day 7 is expires_at + 4 days
+                expiringTodayCount = await dbConnection.ExecuteScalarAsync<int>(@"
+                    SELECT COUNT(*) FROM greetings 
+                    WHERE expires_at IS NOT NULL 
+                    AND expires_at < NOW() - INTERVAL '3 days'
+                    AND expires_at >= NOW() - INTERVAL '4 days'
+                ");
+            }
+            catch { }
 
             var pendingReports = await dbConnection.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM reports WHERE status = 'Pending'");
             var reviewedReports = await dbConnection.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM reports WHERE status = 'Reviewed'");
@@ -113,6 +210,8 @@ namespace Gretora.API.Services
                 TotalUsers = totalUsers,
                 TotalGreetings = totalGreetings,
                 TotalVideos = totalVideos,
+                TotalStorageBytes = totalStorageBytes,
+                ExpiringTodayCount = expiringTodayCount,
                 UsersGrowth = usersGrowth,
                 TotalQrCodes = totalQrCodes,
                 TotalScans = totalScans,

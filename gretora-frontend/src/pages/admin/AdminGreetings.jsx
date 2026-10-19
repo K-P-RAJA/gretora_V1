@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { 
   Gift, 
   Search, 
   Trash2, 
-  Play, 
   Calendar,
   User,
   AlertTriangle,
-  X,
-  Sparkles,
-  ExternalLink
+  Shield,
+  ChevronDown,
+  Layers,
+  Lock
 } from "lucide-react";
 import { getGreetings, deleteGreetingAdmin } from "../../api/adminService";
 import { useAlert } from "../../context/AlertContext";
@@ -22,16 +22,14 @@ export default function AdminGreetings() {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-
-  // Preview & Action states
-  const [previewGreeting, setPreviewGreeting] = useState(null);
+  const [expandedUsers, setExpandedUsers] = useState({});
   const [actioningId, setActioningId] = useState(null);
 
   // Search debouncing
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(searchQuery);
-    }, 450);
+    }, 400);
     return () => clearTimeout(handler);
   }, [searchQuery]);
 
@@ -45,6 +43,13 @@ export default function AdminGreetings() {
     try {
       const data = await getGreetings(debouncedSearch);
       setGreetings(data || []);
+      // Expand all by default on first load
+      const initialExpanded = {};
+      (data || []).forEach(g => {
+        const key = g.creatorEmail || "Unknown";
+        initialExpanded[key] = true;
+      });
+      setExpandedUsers(initialExpanded);
     } catch (err) {
       console.error(err);
       setError("Failed to fetch greetings list. Please try again.");
@@ -53,9 +58,43 @@ export default function AdminGreetings() {
     }
   }
 
-  async function handleDelete(id, title) {
+  // Group greetings by user email
+  const userGroups = useMemo(() => {
+    const map = new Map();
+    greetings.forEach((g) => {
+      const email = g.creatorEmail || "Unknown / Unregistered";
+      if (!map.has(email)) {
+        map.set(email, {
+          email,
+          name: g.creatorName || "Anonymous User",
+          greetings: []
+        });
+      }
+      map.get(email).greetings.push(g);
+    });
+    return Array.from(map.values());
+  }, [greetings]);
+
+  const toggleUser = (email) => {
+    setExpandedUsers(prev => ({
+      ...prev,
+      [email]: !prev[email]
+    }));
+  };
+
+  const handleExpandAll = () => {
+    const all = {};
+    userGroups.forEach(u => { all[u.email] = true; });
+    setExpandedUsers(all);
+  };
+
+  const handleCollapseAll = () => {
+    setExpandedUsers({});
+  };
+
+  async function handleDelete(id, occasion, userEmail) {
     const confirmed = await showConfirm(
-      `Are you absolutely sure you want to permanently delete the greeting "${title}"? This will delete the database record and purge its media file from storage.`,
+      `Permanently delete greeting ${id.substring(0, 8)}... (${occasion || "Greeting"}) created by ${userEmail}? The database record and any associated storage will be purged.`,
       "Moderate Greeting"
     );
 
@@ -65,7 +104,7 @@ export default function AdminGreetings() {
     try {
       await deleteGreetingAdmin(id);
       setGreetings(prev => prev.filter(g => g.id !== id));
-      await showAlert("Greeting successfully deleted.", "success");
+      await showAlert("Greeting successfully removed.", "success");
     } catch (err) {
       console.error(err);
       await showAlert(`Deletion failed: ${err.message}`, "error");
@@ -74,39 +113,68 @@ export default function AdminGreetings() {
     }
   }
 
+  const allExpanded = userGroups.length > 0 && userGroups.every(u => expandedUsers[u.email]);
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
         <div>
-          <h1 className={styles.title}>Greetings Database</h1>
-          <p className={styles.subtitle}>Browse, preview, and moderate all active video greetings.</p>
+          <h1 className={styles.title}>User Greetings Management</h1>
+          <p className={styles.subtitle}>
+            Monitor and moderate active greetings grouped by user account.
+          </p>
         </div>
       </header>
 
-      {/* Control Panel */}
-      <div className={styles.controls}>
-        <div className={styles.searchWrap}>
-          <Search size={18} className={styles.searchIcon} />
-          <input
-            type="text"
-            placeholder="Search by title, occasion, or creator…"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className={styles.searchInput}
-          />
-          {searchQuery && (
-            <button className={styles.clearSearch} onClick={() => setSearchQuery("")}>
-              ✕
-            </button>
-          )}
+      {/* User Privacy Protection Banner */}
+      <div className={styles.privacyBanner}>
+        <Shield size={18} className={styles.privacyIcon} />
+        <div>
+          <strong>Privacy Protection Active:</strong> Personal greeting messages and private video playback streams are excluded from administrative logs to protect user confidentiality.
         </div>
       </div>
 
-      {/* Content list */}
+      {/* Control Panel */}
+      <div className={styles.controls}>
+        <div className={styles.toolbarRow}>
+          <div className={styles.searchWrap}>
+            <Search size={16} className={styles.searchIcon} />
+            <input
+              type="text"
+              placeholder="Filter by user email, name, or occasion…"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={styles.searchInput}
+            />
+            {searchQuery && (
+              <button className={styles.clearSearch} onClick={() => setSearchQuery("")}>
+                ✕
+              </button>
+            )}
+          </div>
+
+          <div className={styles.toolbarActions}>
+            <span className={styles.statsPill}>
+              {userGroups.length} {userGroups.length === 1 ? "User" : "Users"} · {greetings.length} {greetings.length === 1 ? "Greeting" : "Greetings"}
+            </span>
+
+            {userGroups.length > 0 && (
+              <button
+                className={styles.toggleBtn}
+                onClick={allExpanded ? handleCollapseAll : handleExpandAll}
+              >
+                {allExpanded ? "Collapse All" : "Expand All"}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Loading & Error States */}
       {loading && greetings.length === 0 ? (
         <div className={styles.loadingArea}>
           <div className={styles.spinner}></div>
-          <p>Retrieving greeting catalog…</p>
+          <p>Retrieving user greeting catalog…</p>
         </div>
       ) : error ? (
         <div className={styles.errorArea}>
@@ -114,179 +182,122 @@ export default function AdminGreetings() {
           <p>{error}</p>
           <button onClick={loadGreetings} className={styles.retryBtn}>Retry</button>
         </div>
-      ) : greetings.length === 0 ? (
+      ) : userGroups.length === 0 ? (
         <div className={styles.emptyArea}>
           <Gift size={40} className={styles.emptyIcon} />
           <h3>No Greetings Found</h3>
-          <p>We couldn't find any greetings matching your search parameters.</p>
+          <p>No user greetings matched your search filters.</p>
         </div>
       ) : (
-        <div className={styles.tableCard}>
-          <div className={styles.tableResponsive}>
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>Greeting</th>
-                  <th>Occasion</th>
-                  <th>Recipient</th>
-                  <th>Creator</th>
-                  <th>Date Created</th>
-                  <th style={{ textAlign: "center" }}>Reports</th>
-                  <th style={{ textAlign: "right" }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {greetings.map((g) => (
-                  <tr key={g.id} className={styles.tableRow}>
-                    {/* Title cell */}
-                    <td className={styles.titleCell}>
-                      <div className={styles.greetingHeader}>
-                        <span className={styles.greetingTitle}>{g.title || "Untitled"}</span>
-                        {g.videoUrl && (
-                          <button 
-                            className={styles.previewBtn} 
-                            onClick={() => setPreviewGreeting(g)}
-                            title="Play Video Greeting"
-                          >
-                            <Play size={10} fill="currentColor" /> Preview
-                          </button>
-                        )}
-                      </div>
-                      <span className={styles.idLabel}>{g.id}</span>
-                    </td>
+        /* User-Wise Grouping */
+        <div className={styles.userGroupsContainer}>
+          {userGroups.map((group) => {
+            const isExpanded = !!expandedUsers[group.email];
+            const initial = (group.name || group.email || "U")[0].toUpperCase();
 
-                    {/* Occasion */}
-                    <td>
-                      <span className={styles.occasionBadge}>{g.occasion || "General"}</span>
-                    </td>
-
-                    {/* Recipient */}
-                    <td className={styles.recipientCell}>
-                      {g.recipient || "Someone"}
-                    </td>
-
-                    {/* Creator profile */}
-                    <td className={styles.creatorCell}>
-                      <div>
-                        <div className={styles.creatorName}>{g.creatorName || "Anonymous"}</div>
-                        <div className={styles.creatorEmail}>{g.creatorEmail || "N/A"}</div>
-                      </div>
-                    </td>
-
-                    {/* Date */}
-                    <td>
-                      <div className={styles.dateWrap}>
-                        <Calendar size={13} />
-                        <span>
-                          {g.createdAt 
-                            ? new Date(g.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
-                            : "N/A"}
-                        </span>
-                      </div>
-                    </td>
-
-                    {/* Reports count badge */}
-                    <td style={{ textAlign: "center" }}>
-                      {g.reportsCount > 0 ? (
-                        <span className={styles.alertReports} title={`${g.reportsCount} active report flags!`}>
-                          {g.reportsCount}
-                        </span>
-                      ) : (
-                        <span className={styles.cleanReports}>0</span>
-                      )}
-                    </td>
-
-                    {/* Actions */}
-                    <td className={styles.actionsCell}>
-                      <button
-                        title="Delete Greeting Permanently"
-                        className={styles.deleteBtn}
-                        disabled={actioningId === g.id}
-                        onClick={() => handleDelete(g.id, g.title)}
-                      >
-                        <Trash2 size={15} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {/* Video Preview Modal */}
-      {previewGreeting && (
-        <div className={styles.modalOverlay} onClick={() => setPreviewGreeting(null)}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.modalHeader}>
-              <h3 className={styles.modalTitle}>
-                <Sparkles size={16} className={styles.modalSparkle} />
-                <span>Greeting Preview</span>
-              </h3>
-              <button className={styles.closeModal} onClick={() => setPreviewGreeting(null)}>
-                <X size={20} />
-              </button>
-            </div>
-            
-            <div className={styles.modalBody}>
-              <h2 className={styles.modalGreetingTitle}>{previewGreeting.title}</h2>
-              
-              <div className={styles.videoWrapper}>
-                <video 
-                  controls 
-                  autoPlay 
-                  className={styles.videoPlayer}
-                  src={previewGreeting.videoUrl}
+            return (
+              <div key={group.email} className={styles.userCard}>
+                <div
+                  className={styles.userHeader}
+                  onClick={() => toggleUser(group.email)}
                 >
-                  Your browser does not support playing C# video streams.
-                </video>
+                  <div className={styles.userInfo}>
+                    <div className={styles.userAvatar}>
+                      {initial}
+                    </div>
+                    <div className={styles.userMeta}>
+                      <span className={styles.userEmail}>{group.email}</span>
+                      <span className={styles.userName}>{group.name}</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.userActions}>
+                    <span className={styles.greetingBadge}>
+                      {group.greetings.length} {group.greetings.length === 1 ? "Greeting" : "Greetings"}
+                    </span>
+                    <ChevronDown
+                      size={18}
+                      className={`${styles.chevronIcon} ${isExpanded ? styles.chevronIconRotated : ""}`}
+                    />
+                  </div>
+                </div>
+
+                {isExpanded && (
+                  <div className={styles.userContent}>
+                    <div className={styles.tableResponsive}>
+                      <table className={styles.table}>
+                        <thead>
+                          <tr>
+                            <th>Greeting ID</th>
+                            <th>Occasion</th>
+                            <th>Recipient</th>
+                            <th>Created</th>
+                            <th>Reports</th>
+                            <th style={{ textAlign: "right" }}>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {group.greetings.map((g) => (
+                            <tr key={g.id} className={styles.tableRow}>
+                              <td>
+                                <span className={styles.idLabel}>
+                                  {g.id}
+                                </span>
+                              </td>
+                              <td>
+                                <span className={styles.occasionBadge}>
+                                  {g.occasion || "General"}
+                                </span>
+                              </td>
+                              <td className={styles.recipientCell}>
+                                {g.recipient || "—"}
+                              </td>
+                              <td>
+                                <div className={styles.dateWrap}>
+                                  <Calendar size={13} />
+                                  <span>
+                                    {g.createdAt ? new Date(g.createdAt).toLocaleDateString() : "—"}
+                                  </span>
+                                </div>
+                              </td>
+                              <td>
+                                {g.reportsCount > 0 ? (
+                                  <span className={styles.alertReports}>
+                                    ⚠️ {g.reportsCount} reported
+                                  </span>
+                                ) : (
+                                  <span className={styles.cleanReports}>
+                                    0 reports
+                                  </span>
+                                )}
+                              </td>
+                              <td className={styles.actionsCell}>
+                                <button
+                                  className={styles.deleteBtn}
+                                  onClick={() => handleDelete(g.id, g.occasion, group.email)}
+                                  disabled={actioningId === g.id}
+                                  title="Delete Greeting"
+                                >
+                                  <Trash2 size={14} />
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className={styles.userContentFooter}>
+                      <Lock size={12} />
+                      <span>Greeting text messages and raw video media are private to this user.</span>
+                    </div>
+                  </div>
+                )}
               </div>
-
-              <div className={styles.videoMeta}>
-                <div className={styles.metaField}>
-                  <strong>Occasion:</strong>
-                  <span>{previewGreeting.occasion}</span>
-                </div>
-                <div className={styles.metaField}>
-                  <strong>Recipient:</strong>
-                  <span>{previewGreeting.recipient}</span>
-                </div>
-                <div className={styles.metaField}>
-                  <strong>Created by:</strong>
-                  <span>{previewGreeting.creatorName} ({previewGreeting.creatorEmail})</span>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.modalFooter}>
-              <a 
-                href={`/g/${previewGreeting.id}`}
-                target="_blank" 
-                rel="noreferrer" 
-                className={styles.externalLink}
-              >
-                <span>Open Public Page</span>
-                <ExternalLink size={14} />
-              </a>
-
-              <button 
-                className={styles.modalDeleteBtn}
-                onClick={() => {
-                  const id = previewGreeting.id;
-                  const title = previewGreeting.title;
-                  setPreviewGreeting(null);
-                  handleDelete(id, title);
-                }}
-              >
-                Delete Greeting
-              </button>
-            </div>
-          </div>
+            );
+          })}
         </div>
       )}
     </div>
   );
 }
-
-

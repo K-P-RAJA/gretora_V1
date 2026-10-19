@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { QRCode } from "react-qrcode-logo";
 import Footer from "../components/Footer";
 
 import {
@@ -221,68 +222,53 @@ export default function MyGreetingsPage() {
         </div>
       ) : (
         <div className={styles.grid}>
-          {greetings.map((greeting) => (
-            <div
-              key={greeting.id}
-              className={styles.card}
-            >
-              {/* TOP */}
-              <div className={styles.cardTop}>
-                <div>
-                  <div className={styles.occasionTag}>
-                    {greeting.occassion}
+          {greetings.map((greeting) => {
+            const isPermanent = Boolean(greeting.isPermanent);
+            const isExpired = !isPermanent && (greeting.isDeleted || (greeting.expiresAt && new Date(greeting.expiresAt) < new Date()));
+            const expiresDateStr = greeting.expiresAt ? new Date(greeting.expiresAt).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) : "";
+            const createdDateStr = greeting.createdAt ? new Date(greeting.createdAt).toLocaleDateString(undefined, { month: "short", day: "numeric" }) : "";
+            
+            return (
+              <div
+                key={greeting.id}
+                className={`${styles.card} ${isPermanent ? styles.permanentCard : ""} ${isExpired ? styles.expiredCard : ""}`}
+              >
+                {/* TOP HEADER: BADGES & OCCASION */}
+                <div className={styles.cardHeader}>
+                  <div className={styles.occasionBadge}>
+                    <span className={styles.occasionDot}></span>
+                    {greeting.occassion || "Special Greeting"}
                   </div>
 
-                  <h2>{greeting.title}</h2>
-
-                  <p className={styles.recipient}>
-                    For{" "}
-                    {
-                      greeting.receiptantName
-                    }
-                  </p>
+                  {isPermanent ? (
+                    <div className={styles.permanentPill}>
+                      <span className={styles.pillIcon}>🔒</span> Permanent Vault
+                    </div>
+                  ) : isExpired ? (
+                    <div className={styles.expiredPill}>
+                      <span className={styles.pillIcon}>⚠️</span> Expired
+                    </div>
+                  ) : (
+                    <div className={styles.activePill}>
+                      <span className={styles.pillIcon}>●</span> Active
+                    </div>
+                  )}
                 </div>
-              </div>
 
-              {/* PREVIEW */}
-              <div className={styles.previewBox}>
+                {/* RECIPIENT & TITLE BLOCK */}
+                <div className={styles.cardIdentity}>
+                  <div className={styles.recipientRow}>
+                    <span className={styles.recipientLabel}>Recipient</span>
+                    <h3 className={styles.recipientName}>
+                      {greeting.receiptantName || "Someone Special"}
+                    </h3>
+                  </div>
+                  <h2 className={styles.cardTitle}>{greeting.title || "Surprise Video Card"}</h2>
+                </div>
+
+                {/* DIGITAL EXPERIENCE QR & META SHOWCASE */}
                 <div
-                  className={
-                    styles.previewOverlay
-                  }
-                >
-                  ▶ View Experience
-                </div>
-              </div>
-
-              {/* MESSAGE */}
-              <p className={styles.message}>
-                {greeting.message}
-              </p>
-
-              {/* TELEMETRY */}
-              <div className={styles.telemetryBar}>
-                <div className={styles.telemetryItem}>
-                  <span className={styles.telemetryLabel}>Total Scans</span>
-                  <span className={styles.telemetryValue}>
-                    📊 {greeting.scanCount ?? 0}
-                  </span>
-                </div>
-                <div className={styles.telemetryItem}>
-                  <span className={styles.telemetryLabel}>Status</span>
-                  <span className={`${styles.statusBadge} ${styles[greeting.status?.toLowerCase().replace(" ", "")] || styles.active}`}>
-                    {greeting.status === "Pending" ? "⏳ Under Review" : 
-                     greeting.status === "Rejected" ? "✅ Safe" : 
-                     greeting.status === "Reviewed" ? "👀 Reviewed" : 
-                     "✨ Active"}
-                  </span>
-                </div>
-              </div>
-
-              {/* FOOTER */}
-              <div className={styles.footer}>
-                <button
-                  className={styles.viewBtn}
+                  className={styles.experienceShowcase}
                   onClick={() =>
                     navigate(`/greeting/${greeting.id}`, {
                       state: {
@@ -294,29 +280,128 @@ export default function MyGreetingsPage() {
                     })
                   }
                 >
-                  Open Greeting
-                </button>
+                  <div className={styles.qrPlate}>
+                    <QRCode
+                      value={greeting.qrUrl || `https://Gretora.com/g/${greeting.id}`}
+                      size={86}
+                      bgColor="#ffffff"
+                      fgColor="#18181b"
+                      qrStyle="dots"
+                      eyeRadius={[6, 6, 6, 6]}
+                      eyeColor="#6366f1"
+                    />
+                  </div>
 
-                <button
-                  className={styles.editBtn}
-                  onClick={() => handleEditClick(greeting)}
-                >
-                  Edit
-                </button>
+                  <div className={styles.showcaseDetails}>
+                    <div className={styles.showcaseMetaTag}>Interactive QR Greeting</div>
+                    <p className={styles.showcaseHint}>
+                      Tap to launch full-screen receiver surprise & QR page
+                    </p>
+                    <div className={styles.launchLink}>
+                      <span>Open Experience</span>
+                      <span className={styles.arrowIcon}>→</span>
+                    </div>
+                  </div>
+                </div>
 
-                <button
-                  className={styles.deleteBtn}
-                  onClick={() =>
-                    handleDelete(
-                      greeting.id
-                    )
-                  }
-                >
-                  Delete
-                </button>
+                {/* HEARTFELT MESSAGE SNIPPET */}
+                {greeting.message ? (
+                  <div className={styles.messageSnippet}>
+                    <span className={styles.quoteSymbol}>“</span>
+                    <p className={styles.messageText}>{greeting.message}</p>
+                  </div>
+                ) : (
+                  <div className={styles.messageSnippetEmpty}>
+                    <span className={styles.emptyNote}>No written note attached to this greeting.</span>
+                  </div>
+                )}
+
+                {/* METRICS & RETENTION STRIP */}
+                <div className={styles.metaStrip}>
+                  <div className={styles.metricItem}>
+                    <span className={styles.metricLabel}>Total Scans</span>
+                    <span className={styles.metricValue}>
+                      <strong>{greeting.scanCount ?? 0}</strong> views
+                    </span>
+                  </div>
+                  <div className={styles.metricDivider}></div>
+                  <div className={styles.metricItem}>
+                    <span className={styles.metricLabel}>Retention Window</span>
+                    <span className={isPermanent ? styles.retentionPermanent : isExpired ? styles.retentionExpired : styles.metricValue}>
+                      {isPermanent ? "Never Expires" : isExpired ? "Ended" : (expiresDateStr ? `Until ${expiresDateStr}` : "3 Days")}
+                    </span>
+                  </div>
+                  {createdDateStr && (
+                    <>
+                      <div className={styles.metricDivider}></div>
+                      <div className={styles.metricItem}>
+                        <span className={styles.metricLabel}>Created</span>
+                        <span className={styles.metricDate}>{createdDateStr}</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {/* PERMANENT / EXPIRED INFORMATIVE BANNERS */}
+                {isPermanent && (
+                  <div className={styles.permanentNoticeBanner}>
+                    🛡️ Preserved forever in your vault. Editing is locked.
+                  </div>
+                )}
+
+                {isExpired && (
+                  <div className={styles.expiredNoticeBanner}>
+                    ⚠️ Free 3-day viewing window expired. Video playback paused.
+                  </div>
+                )}
+
+                {/* ACTION CONTROLS */}
+                <div className={styles.cardActions}>
+                  <button
+                    className={styles.primaryActionBtn}
+                    onClick={() =>
+                      navigate(`/greeting/${greeting.id}`, {
+                        state: {
+                          qrUrl: greeting.qrUrl,
+                          recipientName: greeting.receiptantName,
+                          occasion: greeting.occassion,
+                          message: greeting.message
+                        }
+                      })
+                    }
+                  >
+                    View Details
+                  </button>
+
+                  {!isPermanent && !isExpired && (
+                    <button
+                      className={styles.secondaryActionBtn}
+                      onClick={() => handleEditClick(greeting)}
+                    >
+                      Edit
+                    </button>
+                  )}
+
+                  {isExpired && (
+                    <button
+                      className={styles.restoreActionBtn}
+                      onClick={() => showAlert("Premium feature to regain greetings coming soon!", "info")}
+                    >
+                      Restore
+                    </button>
+                  )}
+
+                  <button
+                    className={styles.deleteActionBtn}
+                    title="Delete greeting"
+                    onClick={() => handleDelete(greeting.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

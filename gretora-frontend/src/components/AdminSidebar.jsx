@@ -9,7 +9,8 @@ import {
   Menu,
   X,
   Mail,
-  Terminal
+  Terminal,
+  Trash2
 } from "lucide-react";
 import { useState } from "react";
 import { logoutUser } from "../api/authService";
@@ -41,6 +42,11 @@ export default function AdminSidebar() {
       name: "Greetings",
       path: "/admin/greetings",
       icon: <Gift size={20} />
+    },
+    {
+      name: "Retention Cleanup",
+      path: "/admin/cleanup",
+      icon: <Trash2 size={20} />
     },
     {
       name: "Support Tickets",

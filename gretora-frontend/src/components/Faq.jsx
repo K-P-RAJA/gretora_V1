@@ -7,7 +7,7 @@ const faqs = [
   },
   {
     q: 'Is Gretora really free?',
-    a: "Yes — completely. Your first 3 video QR codes are free forever. No credit card required, no trial period, no hidden charges. Each video can be up to 50MB in file size. We generate revenue through non-intrusive ads on the upload and dashboard pages — never on the watch page, so your recipient's experience is always uninterrupted.",
+    a: "Yes — completely. Your active video greeting is free with a full 3-day viewing window and unlimited scans. No credit card required, no trial period, no hidden charges. Each video can be up to 50MB in file size.",
   },
   {
     q: 'Does the person scanning need an app?',
@@ -15,7 +15,7 @@ const faqs = [
   },
   {
     q: 'How long does the QR code last?',
-    a: "Your Gretora QR code works as long as your account is active. We are committed to link permanence — if we ever shut down (which we plan never to do), we'll give 90 days notice so you can download all your videos. You can also download your original video at any time as a personal backup.",
+    a: "On the free tier, your video greeting is active for 3 days of unlimited scanning once created, followed by a grace period. Need to preserve your memories forever? Permanent retention and greeting regain options are coming soon with Gretora Premium.",
   },
   {
     q: 'Is my video private?',

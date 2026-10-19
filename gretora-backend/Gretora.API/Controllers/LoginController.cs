@@ -20,14 +20,15 @@ namespace Gretora.API.Controllers
             _loginService = loginService;
         }
 
+        private string? GetUserId() => User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("sub")?.Value;
+        private string? GetEmail() => User.FindFirst(ClaimTypes.Email)?.Value ?? User.FindFirst("email")?.Value;
+
         [Authorize]
         [HttpPost("CreateProfile")]
         public async Task<IActionResult> CreateProfile([FromBody] CreateProfileRequest request)
         {
-            
-
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var userId = GetUserId();
+            var email = GetEmail();
 
             if (userId == null || email == null)
             {
@@ -52,8 +53,8 @@ namespace Gretora.API.Controllers
         [HttpGet("GetProfile")]
         public async Task<GetUserProfileResponse> GetProfile()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var userId = GetUserId();
+            var email = GetEmail();
             var name = User.FindFirst("name")?.Value ?? User.FindFirst(ClaimTypes.Name)?.Value;
 
             if (userId == null)
@@ -73,7 +74,7 @@ namespace Gretora.API.Controllers
         [HttpPut("UpdateProfile")]
         public async Task<CommonStatusResponse> UpdateProfile([FromBody] UpdateProfileRequest request)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = GetUserId();
 
             if (userId == null)
             {
@@ -94,7 +95,7 @@ namespace Gretora.API.Controllers
         [HttpGet("profile/dashboard")]
         public async Task<IActionResult> GetProfileDashboard()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = GetUserId();
 
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized();
@@ -110,7 +111,7 @@ namespace Gretora.API.Controllers
         [HttpPost("accept-policy")]
         public async Task<IActionResult> AcceptPolicy()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = GetUserId();
 
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized();
@@ -124,8 +125,8 @@ namespace Gretora.API.Controllers
         [HttpPost("delete-account")]
         public async Task<IActionResult> DeleteAccount()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var userId = GetUserId();
+            var email = GetEmail();
 
             if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(email))
                 return Unauthorized();

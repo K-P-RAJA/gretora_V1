@@ -20,7 +20,7 @@ export default function Footer() {
           </div>
           <p className={styles.footerDesc}>
             Gretora turns any video message into a scannable QR code gift — for every occasion
-            worth celebrating. Free to start, forever to keep.
+            worth celebrating. Free to start, premium to keep forever.
           </p>
         </div>
 

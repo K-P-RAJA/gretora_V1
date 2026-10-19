@@ -27,7 +27,7 @@ export default function GreetingCards() {
           </h2>
           <p className={styles.sub}>
             We've combined the emotion of a physical greeting card with the magic of video. 
-            No more boring links. Give them an experience they can open, watch, and keep forever.
+            No more boring links. Give them an experience they can open, watch, and enjoy.
             Click on the card to open it and interact!
           </p>
 

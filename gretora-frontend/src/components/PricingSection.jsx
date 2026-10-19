@@ -23,23 +23,27 @@ export default function PricingSection() {
         </div>
 
         <div className={styles.grid}>
-          {/* Card 1: Free Beta */}
+          {/* Card 1: Free Tier */}
           <article className={styles.card}>
             <div className={styles.cardHeader}>
-              <div className={styles.planBadge}>early backer access</div>
-              <h3>Gretora Beta</h3>
-              <p className={styles.planDesc}>Perfect to try out the magic of video greeting cards.</p>
+              <div className={styles.planBadge}>free forever tier</div>
+              <h3>Gretora Free</h3>
+              <p className={styles.planDesc}>Perfect for surprise celebrations, birthdays & weddings.</p>
               <div className={styles.priceWrap}>
                 <span className={styles.currency}>$</span>
                 <span className={styles.amount}>0</span>
-                <span className={styles.period}>/forever</span>
+                <span className={styles.period}>/free</span>
               </div>
             </div>
 
             <ul className={styles.features}>
               <li>
                 <span className={styles.checkIcon}>✓</span>
-                3 active QR greeting cards
+                1 active video greeting card
+              </li>
+              <li>
+                <span className={styles.checkIcon}>✓</span>
+                3-day full viewing window
               </li>
               <li>
                 <span className={styles.checkIcon}>✓</span>
@@ -47,15 +51,11 @@ export default function PricingSection() {
               </li>
               <li>
                 <span className={styles.checkIcon}>✓</span>
-                Secure cloud video hosting
+                Fast HD video streaming
               </li>
               <li>
                 <span className={styles.checkIcon}>✓</span>
-                High-resolution PNG/PDF exports
-              </li>
-              <li>
-                <span className={styles.checkIcon}>✓</span>
-                Standard wax seal designs
+                Print-ready QR code download
               </li>
             </ul>
 
@@ -70,7 +70,7 @@ export default function PricingSection() {
             <div className={styles.cardHeader}>
               <div className={`${styles.planBadge} ${styles.comingSoonBadge}`}>coming soon</div>
               <h3>Gretora Premium</h3>
-              <p className={styles.planDesc}>Unlocks ultimate creativity and personalization.</p>
+              <p className={styles.planDesc}>Keep memories active forever with unlimited greetings.</p>
               <div className={styles.priceWrap}>
                 <span className={styles.currency}>$</span>
                 <span className={styles.amount}>4.99</span>
@@ -81,15 +81,15 @@ export default function PricingSection() {
             <ul className={styles.features}>
               <li>
                 <span className={`${styles.checkIcon} ${styles.premiumCheck}`}>✓</span>
-                <strong>Unlimited</strong> QR greeting cards
+                <strong>Permanent</strong> greetings (never expire)
               </li>
               <li>
                 <span className={`${styles.checkIcon} ${styles.premiumCheck}`}>✓</span>
-                No advertising on dashboards
+                <strong>Unlimited</strong> active QR greeting cards
               </li>
               <li>
                 <span className={`${styles.checkIcon} ${styles.premiumCheck}`}>✓</span>
-                Custom wax seal colors & monograms
+                Regain & restore expired greetings
               </li>
               <li>
                 <span className={`${styles.checkIcon} ${styles.premiumCheck}`}>✓</span>
@@ -97,7 +97,7 @@ export default function PricingSection() {
               </li>
               <li>
                 <span className={`${styles.checkIcon} ${styles.premiumCheck}`}>✓</span>
-                Custom QR frame templates
+                Custom wax seal colors & monograms
               </li>
               <li>
                 <span className={`${styles.checkIcon} ${styles.premiumCheck}`}>✓</span>
@@ -106,7 +106,7 @@ export default function PricingSection() {
             </ul>
 
             <button className={`${styles.ctaBtn} ${styles.disabledBtn}`} disabled>
-              Beta Backer — Reserved
+              Coming Soon
             </button>
           </article>
         </div>

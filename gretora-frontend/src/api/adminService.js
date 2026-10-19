@@ -18,6 +18,14 @@ export async function getDashboardStats() {
   });
 }
 
+export async function getGreetingCleanupPreview() {
+  return await apiRequest("/admin/cleanup-preview", { method: "GET" });
+}
+
+export async function triggerGreetingCleanup() {
+  return await apiRequest("/admin/trigger-cleanup", { method: "POST" });
+}
+
 export async function getReports(status = "All") {
   const query = status && status !== "All" ? `?status=${encodeURIComponent(status)}` : "";
   return await apiRequest(`/admin/reports${query}`, {
@@ -90,4 +98,3 @@ export async function getSystemLogs(page = 1, pageSize = 50, level = "", source 
     method: "GET",
   });
 }
-
