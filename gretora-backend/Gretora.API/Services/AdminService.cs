@@ -31,7 +31,8 @@ namespace Gretora.API.Services
         public async Task<object> GetGreetingCleanupPreviewAsync(int sampleSize = 10)
         {
             using var dbConnection = _db.CreateConnection();
-            var purgeBefore = DateTime.UtcNow.AddDays(-4);
+            var now = DateTime.UtcNow;
+            var purgeBefore = now.AddDays(-4);
 
             var summary = await dbConnection.QuerySingleAsync<dynamic>(@"
                 WITH eligible AS (
@@ -41,6 +42,16 @@ namespace Gretora.API.Services
                       AND COALESCE(is_permanent, FALSE) = FALSE
                       AND expires_at IS NOT NULL
                       AND expires_at <= @PurgeBefore
+                ), grace_period AS (
+                    SELECT id, video_id
+                    FROM greetings
+                    WHERE COALESCE(is_permanent, FALSE) = FALSE
+                      AND expires_at IS NOT NULL
+                      AND (
+                          -- Either already marked deleted/retired, or expires_at has passed but still within 4 days
+                          (COALESCE(is_deleted, FALSE) = TRUE AND expires_at > @PurgeBefore)
+                          OR (COALESCE(is_deleted, FALSE) = FALSE AND expires_at <= @Now AND expires_at > @PurgeBefore)
+                      )
                 ), reclaimable_videos AS (
                     SELECT DISTINCT e.video_id
                     FROM eligible e
@@ -51,6 +62,17 @@ namespace Gretora.API.Services
                           WHERE remaining.video_id = e.video_id
                             AND remaining.id NOT IN (SELECT id FROM eligible)
                       )
+                ), grace_videos AS (
+                    SELECT DISTINCT g.video_id
+                    FROM grace_period g
+                    WHERE g.video_id IS NOT NULL
+                      AND NOT EXISTS (
+                          SELECT 1
+                          FROM greetings remaining
+                          WHERE remaining.video_id = g.video_id
+                            AND remaining.id NOT IN (SELECT id FROM grace_period)
+                            AND remaining.id NOT IN (SELECT id FROM eligible)
+                      )
                 )
                 SELECT
                     (SELECT COUNT(*) FROM eligible) AS eligible_count,
@@ -58,8 +80,14 @@ namespace Gretora.API.Services
                         SELECT SUM(COALESCE(v.size_bytes, 0))
                         FROM videos v
                         JOIN reclaimable_videos rv ON rv.video_id = v.id
-                    ), 0) AS reclaimable_storage_bytes;",
-                new { PurgeBefore = purgeBefore });
+                    ), 0) AS reclaimable_storage_bytes,
+                    (SELECT COUNT(*) FROM grace_period) AS grace_count,
+                    COALESCE((
+                        SELECT SUM(COALESCE(v.size_bytes, 0))
+                        FROM videos v
+                        JOIN grace_videos gv ON gv.video_id = v.id
+                    ), 0) AS grace_storage_bytes;",
+                new { Now = now, PurgeBefore = purgeBefore });
 
             var samples = await dbConnection.QueryAsync<dynamic>(@"
                 WITH eligible AS (
@@ -85,10 +113,33 @@ namespace Gretora.API.Services
                 LIMIT @SampleSize;",
                 new { PurgeBefore = purgeBefore, SampleSize = Math.Clamp(sampleSize, 1, 25) });
 
+            var graceSamples = await dbConnection.QueryAsync<dynamic>(@"
+                WITH grace_period AS (
+                    SELECT id, video_id
+                    FROM greetings
+                    WHERE COALESCE(is_permanent, FALSE) = FALSE
+                      AND expires_at IS NOT NULL
+                      AND (
+                          (COALESCE(is_deleted, FALSE) = TRUE AND expires_at > @PurgeBefore)
+                          OR (COALESCE(is_deleted, FALSE) = FALSE AND expires_at <= @Now AND expires_at > @PurgeBefore)
+                      )
+                )
+                SELECT g.id, g.title, g.receiptant_name, g.expires_at,
+                       COALESCE(v.size_bytes, 0) AS storage_bytes,
+                       (g.expires_at + INTERVAL '4 days') AS purge_date
+                FROM greetings g
+                JOIN grace_period gp ON gp.id = g.id
+                LEFT JOIN videos v ON v.id = g.video_id
+                ORDER BY g.expires_at ASC
+                LIMIT @SampleSize;",
+                new { Now = now, PurgeBefore = purgeBefore, SampleSize = Math.Clamp(sampleSize, 1, 25) });
+
             return new
             {
                 EligibleGreetingCount = Convert.ToInt32(summary.eligible_count),
                 ReclaimableStorageBytes = Convert.ToInt64(summary.reclaimable_storage_bytes),
+                GraceGreetingCount = Convert.ToInt32(summary.grace_count),
+                GraceStorageBytes = Convert.ToInt64(summary.grace_storage_bytes),
                 EvaluatedAtUtc = DateTime.UtcNow,
                 Samples = samples.Select(sample => new
                 {
@@ -98,6 +149,15 @@ namespace Gretora.API.Services
                     ExpiresAt = sample.expires_at,
                     StorageBytes = Convert.ToInt64(sample.storage_bytes),
                     VideoWillBeRemoved = sample.video_will_be_removed
+                }),
+                GraceSamples = graceSamples.Select(sample => new
+                {
+                    Id = sample.id,
+                    Title = sample.title,
+                    RecipientName = sample.receiptant_name,
+                    ExpiresAt = sample.expires_at,
+                    PurgeDate = sample.purge_date,
+                    StorageBytes = Convert.ToInt64(sample.storage_bytes)
                 })
             };
         }

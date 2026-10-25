@@ -449,3 +449,97 @@
   align-items: center;
   gap: 6px;
 }
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE DESIGN (TABLETS & MOBILE)
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .title {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 13.5px;
+  }
+
+  .privacyBanner {
+    padding: 10px 14px;
+    font-size: 12.5px;
+  }
+
+  .toolbarRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .searchWrap {
+    max-width: 100%;
+  }
+
+  .toolbarActions {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .statsPill {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .toggleBtn {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .userHeader {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .userInfo {
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .userAvatar {
+    width: 34px;
+    height: 34px;
+    font-size: 13px;
+  }
+
+  .userMeta {
+    min-width: 0;
+  }
+
+  .userEmail {
+    font-size: 13.5px;
+    word-break: break-all;
+  }
+
+  .userName {
+    font-size: 12px;
+  }
+
+  .userActions {
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .greetingBadge {
+    font-size: 11px;
+    padding: 3px 8px;
+    white-space: nowrap;
+  }
+
+  .table th,
+  .table td {
+    padding: 10px 14px;
+    white-space: nowrap;
+  }
+
+  .userContentFooter {
+    padding: 8px 14px;
+    font-size: 11.5px;
+  }
+}
