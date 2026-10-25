@@ -289,6 +289,33 @@ namespace Gretora.API.Controllers
                 TotalPages = (int)Math.Ceiling((double)totalCount / pageSize)
             });
         }
+
+        // =========================================
+        // ENDPOINT: PRUNE / DELETE OLD SYSTEM LOGS
+        // =========================================
+        [Authorize]
+        [HttpDelete("logs")]
+        public async Task<IActionResult> DeleteOldLogs(
+            [FromServices] LogService logService,
+            [FromQuery] int days = 30)
+        {
+            if (!await CheckIfAdmin())
+                return Forbid();
+
+            if (days < 0)
+                return BadRequest(new { statusMessage = "Days must be 0 or greater." });
+
+            var deletedCount = await logService.PruneLogsAsync(days);
+
+            return Ok(new
+            {
+                statusCode = 1,
+                deletedCount,
+                statusMessage = days == 0 
+                    ? $"All {deletedCount} system logs cleared successfully."
+                    : $"{deletedCount} logs older than {days} days deleted successfully."
+            });
+        }
     }
 }
 

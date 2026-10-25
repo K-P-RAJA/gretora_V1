@@ -4,28 +4,36 @@ import logoIcon from "../assets/logo-icon.png";
 
 const QUOTES = [
   {
-    text: "The greatest gift you can give someone is your time and attention.",
-    author: "— Unknown",
+    text: "The greatest gift you can give someone is your time and loving attention.",
+    author: "— Maya Angelou",
   },
   {
-    text: "A simple greeting can brighten someone's entire day.",
-    author: "— Unknown",
+    text: "Kind words can be short and easy to speak, but their echoes are truly endless.",
+    author: "— Mother Teresa",
   },
   {
-    text: "Words have the power to create smiles, heal hearts, and forge memories.",
-    author: "— Unknown",
+    text: "There is no exercise better for the heart than reaching down and lifting people up.",
+    author: "— John Holmes",
   },
   {
     text: "Every celebration deserves to be remembered. That's why we're here.",
     author: "— Gretora",
   },
   {
-    text: "Sending love doesn't require presence — just intention.",
-    author: "— Unknown",
+    text: "Spread love everywhere you go. Let no one ever come to you without leaving happier.",
+    author: "— Mother Teresa",
   },
   {
-    text: "The best moments in life are the ones shared with the people we love.",
-    author: "— Unknown",
+    text: "The best and most beautiful things in the world cannot be seen or touched — they must be felt with the heart.",
+    author: "— Helen Keller",
+  },
+  {
+    text: "A warm greeting is a universal language of kindness.",
+    author: "— Ralph Waldo Emerson",
+  },
+  {
+    text: "Cherish your human connections: your relationships with friends and family.",
+    author: "— Barbara Bush",
   },
 ];
 

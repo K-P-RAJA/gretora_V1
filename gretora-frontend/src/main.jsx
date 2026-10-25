@@ -20,7 +20,9 @@ function isIgnorableError(msg, stack = "") {
     str.includes("script error") ||
     str.includes("notfounderror") ||
     str.includes("invalidstateerror") ||
-    str.includes("indexsizeerror")
+    str.includes("indexsizeerror") ||
+    str.includes("zalo") ||
+    str.includes("zalosv2")
   );
 }
 

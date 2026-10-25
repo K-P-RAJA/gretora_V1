@@ -112,6 +112,10 @@ export default function HomePage() {
         ReceiptantName: cleanRecipient,
       });
 
+      if (greetingRes.statusCode === 2 || greetingRes.StatusCode === 2) {
+        throw new Error(greetingRes.statusMessage || greetingRes.StatusMessage || "Failed to create greeting");
+      }
+
       const greetingId = greetingRes.greetingId || greetingRes.greetingid;
       const qrUrl = greetingRes.qrUrl || greetingRes.qrurl;
 
@@ -127,7 +131,7 @@ export default function HomePage() {
       console.error(err);
       const isNetworkErr = err.message?.includes("fetch") || err.message?.includes("Network") || err.message?.includes("Load failed");
       if (!isNetworkErr) {
-        await logClientError("Failed to generate greeting on HomePage", err.stack || err.message || err, {
+        await logClientError(`Failed to generate greeting on HomePage: ${err.message || err}`, err.stack || String(err), {
           recipientName,
           occasion,
           messageLength: message?.length

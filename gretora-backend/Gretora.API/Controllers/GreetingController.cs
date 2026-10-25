@@ -17,6 +17,9 @@ namespace Gretora.API.Controllers
             _greetingService = greetingService;
         }
 
+        private string? GetUserId() =>
+            User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("sub")?.Value;
+
         // =========================================
         // CREATE GREETING
         // =========================================
@@ -26,7 +29,7 @@ namespace Gretora.API.Controllers
         public async Task<IActionResult> Create(
             [FromBody] CreateGreetingRequest request)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = GetUserId();
 
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized();
@@ -35,6 +38,11 @@ namespace Gretora.API.Controllers
                 Guid.Parse(userId),
                 request
             );
+
+            if (result.StatusCode == 2)
+            {
+                return BadRequest(result);
+            }
 
             return Ok(result);
         }
@@ -47,7 +55,7 @@ namespace Gretora.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetMyGreetings()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = GetUserId();
 
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized();
@@ -97,7 +105,7 @@ namespace Gretora.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGreeting(Guid id)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = GetUserId();
 
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized();
@@ -125,7 +133,7 @@ namespace Gretora.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateGreeting(Guid id, [FromBody] UpdateGreetingRequest request)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = GetUserId();
 
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized();

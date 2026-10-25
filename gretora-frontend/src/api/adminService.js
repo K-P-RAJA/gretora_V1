@@ -98,3 +98,9 @@ export async function getSystemLogs(page = 1, pageSize = 50, level = "", source 
     method: "GET",
   });
 }
+
+export async function deleteOldLogs(days = 30) {
+  return await apiRequest(`/Admin/logs?days=${days}`, {
+    method: "DELETE",
+  });
+}

@@ -98,6 +98,12 @@ namespace Gretora.API.Services
             try
             {
                 using var conn = _dbService.CreateConnection();
+                if (daysRetention <= 0)
+                {
+                    const string deleteAllSql = "DELETE FROM public.system_logs;";
+                    return await conn.ExecuteAsync(deleteAllSql);
+                }
+
                 const string sql = "DELETE FROM public.system_logs WHERE created_at < now() - CAST(@Interval AS INTERVAL);";
                 return await conn.ExecuteAsync(sql, new { Interval = $"{daysRetention} days" });
             }

@@ -15,6 +15,9 @@ public class VideoController : ControllerBase
         _videoService = videoService;
     }
 
+    private string? GetUserId() =>
+        User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("sub")?.Value;
+
     [Authorize]
     [HttpPost("upload")]
     [Consumes("multipart/form-data")]
@@ -22,7 +25,7 @@ public class VideoController : ControllerBase
         [FromForm] UploadVideoRequest request
     )
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = GetUserId();
 
         if (string.IsNullOrEmpty(userId))
         {

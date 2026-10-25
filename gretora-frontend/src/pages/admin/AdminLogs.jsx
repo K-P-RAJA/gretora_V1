@@ -9,12 +9,15 @@ import {
   Info, 
   X,
   FileText,
-  RefreshCw
+  RefreshCw,
+  Trash2
 } from "lucide-react";
-import { getSystemLogs } from "../../api/adminService";
+import { getSystemLogs, deleteOldLogs } from "../../api/adminService";
+import { useAlert } from "../../context/AlertContext";
 import styles from "./AdminLogs.module.css";
 
 export default function AdminLogs() {
+  const { showAlert, showConfirm } = useAlert();
   const [logs, setLogs] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -26,6 +29,8 @@ export default function AdminLogs() {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+  const [pruneDays, setPruneDays] = useState(30);
   
   // Selected log for showing full detail modal
   const [selectedLog, setSelectedLog] = useState(null);
@@ -60,6 +65,28 @@ export default function AdminLogs() {
     }
   }
 
+  async function handleDeleteOldLogs() {
+    const daysLabel = pruneDays === 0 ? "ALL system logs" : `system logs older than ${pruneDays} days`;
+    const confirmed = await showConfirm(
+      `Are you sure you want to permanently delete ${daysLabel}? This action cannot be undone.`,
+      "Delete Old Logs"
+    );
+    if (!confirmed) return;
+
+    try {
+      setDeleting(true);
+      const res = await deleteOldLogs(pruneDays);
+      await showAlert(res?.statusMessage || "Logs pruned successfully.", "success");
+      setPage(1);
+      await loadLogs();
+    } catch (err) {
+      console.error(err);
+      await showAlert(`Failed to delete logs: ${err.message || "Unknown error"}`, "error");
+    } finally {
+      setDeleting(false);
+    }
+  }
+
   function getLevelIcon(logLevel) {
     switch (logLevel?.toUpperCase()) {
       case "ERROR":
@@ -87,11 +114,37 @@ export default function AdminLogs() {
       <header className={styles.header}>
         <div>
           <h1 className={styles.title}>System Logs</h1>
-          <p className={styles.subtitle}>Monitor backend failures, client-side crashes, and audit trails. (60 days retention)</p>
+          <p className={styles.subtitle}>Monitor backend failures, client-side crashes, and audit trails. (60 days auto-retention)</p>
         </div>
-        <button onClick={loadLogs} className={styles.refreshBtn} title="Refresh Logs">
-          <RefreshCw size={18} className={loading ? styles.spinning : ""} />
-        </button>
+        <div className={styles.headerActions}>
+          <div className={styles.pruneControls}>
+            <select
+              value={pruneDays}
+              onChange={(e) => setPruneDays(Number(e.target.value))}
+              className={styles.pruneSelect}
+              disabled={deleting || loading}
+              title="Select cutoff age for logs"
+            >
+              <option value={7}>Older than 7 days</option>
+              <option value={14}>Older than 14 days</option>
+              <option value={30}>Older than 30 days</option>
+              <option value={60}>Older than 60 days</option>
+              <option value={0}>Clear all logs</option>
+            </select>
+            <button
+              onClick={handleDeleteOldLogs}
+              disabled={deleting || loading}
+              className={styles.deleteLogsBtn}
+              title="Delete old system logs"
+            >
+              <Trash2 size={16} />
+              <span>{deleting ? "Deleting…" : "Delete Old Logs"}</span>
+            </button>
+          </div>
+          <button onClick={loadLogs} className={styles.refreshBtn} title="Refresh Logs" disabled={loading}>
+            <RefreshCw size={18} className={loading ? styles.spinning : ""} />
+          </button>
+        </div>
       </header>
 
       {/* Filters and Search */}
